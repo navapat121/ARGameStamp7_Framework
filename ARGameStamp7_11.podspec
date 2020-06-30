@@ -17,7 +17,7 @@ DESC
     'AR_Game_Stamp/Asset', 
     'AR_Game_Stamp/Content', 
     'AR_Game_Stamp/art.scnassets',
-    'AR_Game_Stamp/*.{mp3,wav}',
+    'AR_Game_Stamp/Content/SoundEffect/**/*.{mp3,wav}',
     'AR_Game_Stamp/*.xib',
     'AR_Game_Stamp']
   #spec.resource_bundles = {
