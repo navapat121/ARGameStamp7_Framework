@@ -910,8 +910,8 @@ class GameViewController: UIViewController {
         
         // MARK: Turn On/Off Camera in game
         DispatchQueue.main.async {
-             let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)!
-             self.scene.background.contents = captureDevice
+             //let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)!
+             //self.scene.background.contents = captureDevice
          }
         scnView.delegate = self
     }
