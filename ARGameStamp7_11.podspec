@@ -14,9 +14,9 @@ DESC
   spec.source_files = "AR_Game_Stamp"
   spec.resource = ['AR_Game_Stamp/**/ARgame.storyboard' , 
     'AR_Game_Stamp/**/Assets.xcassets', 
-    'AR_Game_Stamp/Assets', 
+    'AR_Game_Stamp/Asset', 
     'AR_Game_Stamp/art.scnassets',
-    'AR_Game_Stamp/Content/*.mp3',
+    '*.{mp3,wav}',
     'AR_Game_Stamp/*.xib',
     'AR_Game_Stamp']
   #spec.resource_bundles = {
