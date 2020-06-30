@@ -9,7 +9,7 @@
 import SceneKit
 
 class Stamp : SCNNode {
-    let frameworkBundle = Bundle(identifier: "com.AR-Game-Stamp.framwork")
+    let frameworkBundle = Bundle(identifier: "org.cocoapods.ARGameStamp7-11")
     var id: String!
     var stampName: String!
     var hitCount: Int!
@@ -125,7 +125,7 @@ class Stamp : SCNNode {
     }
     
     func nodeFromResource(assetName: String, extensionName: String) -> SCNNode {
-        let frameworkBundle = Bundle(identifier: "com.AR-Game-Stamp.framwork")
+        let frameworkBundle = Bundle(identifier: "org.cocoapods.ARGameStamp7-11")
         let url = (frameworkBundle?.url(forResource: "art.scnassets/\(assetName)", withExtension: extensionName)!)!
         let node = SCNReferenceNode(url: url)!
         //print(node.boundingBox)
