@@ -40,7 +40,7 @@ extension UIViewController {
     }*/
     
     func ARGameBundle() -> Bundle? {
-        return Bundle(identifier: "com.AR-Game-Stamp.framwork")
+        return Bundle(identifier: "org.cocoapods.ARGameStamp7-11")
     }
     
     func windowHeight() -> CGFloat {
@@ -212,7 +212,7 @@ extension UIView {
 
 extension UIFont {
 static func register(path: String, fileNameString: String, type: String) throws {
-    let frameworkBundle = Bundle(identifier: "com.AR-Game-Stamp.framwork")
+    let frameworkBundle = Bundle(identifier: "org.cocoapods.ARGameStamp7-11")
     guard let resourceBundleURL = frameworkBundle!.path(forResource: path + "/" + fileNameString, ofType: type) else {
         return
   }
