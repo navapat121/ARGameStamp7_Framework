@@ -11,23 +11,10 @@
 		B6124EF724A9E82100FB849D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6124EF624A9E82100FB849D /* TutorialViewController.swift */; };
 		B623355F24A9ED9500E9AE24 /* SlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B623355E24A9ED9500E9AE24 /* SlideView.swift */; };
 		B623356124A9EDBB00E9AE24 /* Slide.xib in Resources */ = {isa = PBXBuildFile; fileRef = B623356024A9EDBB00E9AE24 /* Slide.xib */; };
-		B66F11A0249BC34D0027E623 /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = B66F1190249BC34D0027E623 /* Shader.metal */; };
-		B66F11A1249BC34D0027E623 /* MatrixMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F1191249BC34D0027E623 /* MatrixMath.swift */; };
-		B66F11A3249BC34D0027E623 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F1194249BC34D0027E623 /* Scene.swift */; };
-		B66F11A4249BC34D0027E623 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F1195249BC34D0027E623 /* GameScene.swift */; };
-		B66F11A5249BC34D0027E623 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F1197249BC34D0027E623 /* Model.swift */; };
-		B66F11A6249BC34D0027E623 /* Renderable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F1198249BC34D0027E623 /* Renderable.swift */; };
-		B66F11A7249BC34D0027E623 /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F1199249BC34D0027E623 /* Texturable.swift */; };
-		B66F11A9249BC34D0027E623 /* Stamp7.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F119B249BC34D0027E623 /* Stamp7.swift */; };
-		B66F11AA249BC34D0027E623 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F119C249BC34D0027E623 /* Node.swift */; };
-		B66F11AB249BC34D0027E623 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F119D249BC34D0027E623 /* Types.swift */; };
-		B66F11AC249BC34D0027E623 /* MetalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F119E249BC34D0027E623 /* MetalViewController.swift */; };
-		B66F11AD249BC34D0027E623 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F119F249BC34D0027E623 /* Renderer.swift */; };
 		B66F121D249BC35C0027E623 /* bombStamp.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B66F11BA249BC35C0027E623 /* bombStamp.jpg */; };
 		B66F126F249BC3CF0027E623 /* DataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F126B249BC3CF0027E623 /* DataFactory.swift */; };
 		B66F1270249BC3CF0027E623 /* ARGameAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F126C249BC3CF0027E623 /* ARGameAppDelegate.swift */; };
 		B66F1271249BC3CF0027E623 /* ObjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F126D249BC3CF0027E623 /* ObjectData.swift */; };
-		B66F1272249BC3CF0027E623 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F126E249BC3CF0027E623 /* ViewController.swift */; };
 		B66F1274249BC3E30027E623 /* Asset in Resources */ = {isa = PBXBuildFile; fileRef = B66F1273249BC3E30027E623 /* Asset */; };
 		B66F127F249BC40E0027E623 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F1276249BC40D0027E623 /* Extension.swift */; };
 		B66F1281249BC40E0027E623 /* SoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F1279249BC40E0027E623 /* SoundController.swift */; };
@@ -89,23 +76,10 @@
 		B623355E24A9ED9500E9AE24 /* SlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideView.swift; sourceTree = "<group>"; };
 		B623356024A9EDBB00E9AE24 /* Slide.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Slide.xib; sourceTree = "<group>"; };
 		B66F0B64249BC28E0027E623 /* AR_Game_Stamp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AR_Game_Stamp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B66F1190249BC34D0027E623 /* Shader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shader.metal; path = ../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/Shader.metal; sourceTree = "<group>"; };
-		B66F1191249BC34D0027E623 /* MatrixMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MatrixMath.swift; path = ../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/MatrixMath.swift; sourceTree = "<group>"; };
-		B66F1194249BC34D0027E623 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Scene.swift; path = ../../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/Scene/Scene.swift; sourceTree = "<group>"; };
-		B66F1195249BC34D0027E623 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = ../../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/Scene/GameScene.swift; sourceTree = "<group>"; };
-		B66F1197249BC34D0027E623 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = ../../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/GameObject/Model.swift; sourceTree = "<group>"; };
-		B66F1198249BC34D0027E623 /* Renderable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Renderable.swift; path = ../../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/GameObject/Renderable.swift; sourceTree = "<group>"; };
-		B66F1199249BC34D0027E623 /* Texturable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Texturable.swift; path = ../../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/GameObject/Texturable.swift; sourceTree = "<group>"; };
-		B66F119B249BC34D0027E623 /* Stamp7.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stamp7.swift; path = ../../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/GameObject/Stamp7.swift; sourceTree = "<group>"; };
-		B66F119C249BC34D0027E623 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Node.swift; path = ../../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/GameObject/Node.swift; sourceTree = "<group>"; };
-		B66F119D249BC34D0027E623 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Types.swift; path = ../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/Types.swift; sourceTree = "<group>"; };
-		B66F119E249BC34D0027E623 /* MetalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalViewController.swift; path = ../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/MetalViewController.swift; sourceTree = "<group>"; };
-		B66F119F249BC34D0027E623 /* Renderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Renderer.swift; path = ../../../AR_Game_Stamp/AR_Game_Stamp/MetalFrameworkCode/Renderer.swift; sourceTree = "<group>"; };
 		B66F11BA249BC35C0027E623 /* bombStamp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bombStamp.jpg; sourceTree = "<group>"; };
 		B66F126B249BC3CF0027E623 /* DataFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFactory.swift; sourceTree = "<group>"; };
 		B66F126C249BC3CF0027E623 /* ARGameAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARGameAppDelegate.swift; sourceTree = "<group>"; };
 		B66F126D249BC3CF0027E623 /* ObjectData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectData.swift; sourceTree = "<group>"; };
-		B66F126E249BC3CF0027E623 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B66F1273249BC3E30027E623 /* Asset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Asset; sourceTree = "<group>"; };
 		B66F1275249BC3FF0027E623 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		B66F1276249BC40D0027E623 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
@@ -191,7 +165,6 @@
 		B66F0B66249BC28E0027E623 /* AR_Game_Stamp */ = {
 			isa = PBXGroup;
 			children = (
-				B66F118F249BC34D0027E623 /* MetalFrameworkCode */,
 				B66F128E249BC4360027E623 /* Assets.xcassets */,
 				B66F1273249BC3E30027E623 /* Asset */,
 				B66F1275249BC3FF0027E623 /* art.scnassets */,
@@ -199,7 +172,6 @@
 				B66F126C249BC3CF0027E623 /* ARGameAppDelegate.swift */,
 				B66F126B249BC3CF0027E623 /* DataFactory.swift */,
 				B66F126D249BC3CF0027E623 /* ObjectData.swift */,
-				B66F126E249BC3CF0027E623 /* ViewController.swift */,
 				B6124EF624A9E82100FB849D /* TutorialViewController.swift */,
 				B623355E24A9ED9500E9AE24 /* SlideView.swift */,
 				B623356024A9EDBB00E9AE24 /* Slide.xib */,
@@ -218,41 +190,6 @@
 				B66F12D6249BCF2F0027E623 /* LaunchScreen.storyboard */,
 			);
 			path = AR_Game_Stamp;
-			sourceTree = "<group>";
-		};
-		B66F118F249BC34D0027E623 /* MetalFrameworkCode */ = {
-			isa = PBXGroup;
-			children = (
-				B66F1190249BC34D0027E623 /* Shader.metal */,
-				B66F1191249BC34D0027E623 /* MatrixMath.swift */,
-				B66F1193249BC34D0027E623 /* Scene */,
-				B66F1196249BC34D0027E623 /* GameObject */,
-				B66F119D249BC34D0027E623 /* Types.swift */,
-				B66F119E249BC34D0027E623 /* MetalViewController.swift */,
-				B66F119F249BC34D0027E623 /* Renderer.swift */,
-			);
-			path = MetalFrameworkCode;
-			sourceTree = "<group>";
-		};
-		B66F1193249BC34D0027E623 /* Scene */ = {
-			isa = PBXGroup;
-			children = (
-				B66F1194249BC34D0027E623 /* Scene.swift */,
-				B66F1195249BC34D0027E623 /* GameScene.swift */,
-			);
-			path = Scene;
-			sourceTree = "<group>";
-		};
-		B66F1196249BC34D0027E623 /* GameObject */ = {
-			isa = PBXGroup;
-			children = (
-				B66F1197249BC34D0027E623 /* Model.swift */,
-				B66F1198249BC34D0027E623 /* Renderable.swift */,
-				B66F1199249BC34D0027E623 /* Texturable.swift */,
-				B66F119B249BC34D0027E623 /* Stamp7.swift */,
-				B66F119C249BC34D0027E623 /* Node.swift */,
-			);
-			path = GameObject;
 			sourceTree = "<group>";
 		};
 		B66F11AE249BC35C0027E623 /* Content */ = {
@@ -412,6 +349,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				B6F459F424AB951C00EB40F5 /* PBXTargetDependency */,
+				B6F459F224AB951A00EB40F5 /* PBXTargetDependency */,
 			);
 			name = AR_Game_Stamp;
 			packageProductDependencies = (
@@ -519,37 +458,35 @@
 			buildActionMask = 2147483647;
 			files = (
 				B66F128D249BC4230027E623 /* GameUseStampViewController.swift in Sources */,
-				B66F11A4249BC34D0027E623 /* GameScene.swift in Sources */,
 				B66F1281249BC40E0027E623 /* SoundController.swift in Sources */,
-				B66F11A3249BC34D0027E623 /* Scene.swift in Sources */,
-				B66F11AD249BC34D0027E623 /* Renderer.swift in Sources */,
 				B674B5B6249CF0A8006BD89B /* StampSummary.swift in Sources */,
-				B66F11A6249BC34D0027E623 /* Renderable.swift in Sources */,
 				AA7967BF249F2A0F0085B9FC /* GameWebViewController.swift in Sources */,
 				B66F1286249BC40E0027E623 /* GameViewController.swift in Sources */,
 				B66F1284249BC40E0027E623 /* StampSumaryController.swift in Sources */,
 				B6124EF724A9E82100FB849D /* TutorialViewController.swift in Sources */,
 				B66F1282249BC40E0027E623 /* HomeViewController.swift in Sources */,
-				B66F11AB249BC34D0027E623 /* Types.swift in Sources */,
 				B66F1283249BC40E0027E623 /* SceneDelegate.swift in Sources */,
-				B66F11AA249BC34D0027E623 /* Node.swift in Sources */,
-				B66F11A7249BC34D0027E623 /* Texturable.swift in Sources */,
-				B66F11A1249BC34D0027E623 /* MatrixMath.swift in Sources */,
 				B66F1271249BC3CF0027E623 /* ObjectData.swift in Sources */,
 				B66F1285249BC40E0027E623 /* StampNode.swift in Sources */,
 				B66F1270249BC3CF0027E623 /* ARGameAppDelegate.swift in Sources */,
-				B66F11A5249BC34D0027E623 /* Model.swift in Sources */,
-				B66F11AC249BC34D0027E623 /* MetalViewController.swift in Sources */,
 				B623355F24A9ED9500E9AE24 /* SlideView.swift in Sources */,
-				B66F1272249BC3CF0027E623 /* ViewController.swift in Sources */,
 				B66F127F249BC40E0027E623 /* Extension.swift in Sources */,
 				B66F126F249BC3CF0027E623 /* DataFactory.swift in Sources */,
-				B66F11A0249BC34D0027E623 /* Shader.metal in Sources */,
-				B66F11A9249BC34D0027E623 /* Stamp7.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B6F459F224AB951A00EB40F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = B6F459F124AB951A00EB40F5 /* Lottie */;
+		};
+		B6F459F424AB951C00EB40F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = B6F459F324AB951C00EB40F5 /* SwiftyJSON */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B66F12D3249BCF1D0027E623 /* ARgame.storyboard */ = {
@@ -795,6 +732,16 @@
 			productName = Lottie;
 		};
 		B6859EA724A390BF00B6BCE1 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6859EA624A390BF00B6BCE1 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		B6F459F124AB951A00EB40F5 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B66F1290249BC4D50027E623 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		B6F459F324AB951C00EB40F5 /* SwiftyJSON */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B6859EA624A390BF00B6BCE1 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
