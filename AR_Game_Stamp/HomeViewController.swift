@@ -315,7 +315,7 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
         }
         
         //ptoon: set asset
-        let str = ARGameBundle()?.path(forResource: "AR_Game_Stamp/Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
+        let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
         let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
         //loadingAnimated.contentMode = UIView.ContentMode.scaleToFill
         lottieLoading.imageProvider = imageProvider
