@@ -12,5 +12,10 @@ DESC
   #spec.source       = { :http => 'file:' + __dir__ + "/" }
   spec.source       = { :git => "https://github.com/navapat121/ARGameStamp7_Framework.git", :tag => "1.0.0" }
   spec.source_files = "AR_Game_Stamp"
+  spec.resource_bundles = {
+    'ARGameStamp7_11' => ['AR_Game_Stamp/*.{storyboard,xib,xcassets,json,imageset,png}']
+  }
+  spec.dependency 'lottie-ios', '~> 3.1.8'
+  spec.dependency 'SwiftyJSON', '~> 4.0'
   spec.swift_version = "5.0"
 end
