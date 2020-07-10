@@ -16,6 +16,7 @@ class GameUseStampViewController: UIViewController {
     //var coreTokenObject:responseCoreTokenObject?
     var coreResultObject:responseCoreObject?
     var gameDetailResultObject:responseGameDetailObject?
+    var gameDetailResultString:String?
     var firebase_id: String?
     //var resultObject:responseCoreTokenObject?
     //var gameDetailResultObject:responseGameDetailObject?
@@ -149,11 +150,16 @@ class GameUseStampViewController: UIViewController {
     }
     
     func requestGameUseStamp(){
+        if !isConnectedToNetwork() {
+            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            return
+        }
+        
         //==========================
         // *** Use Stamp ***
         //==========================
         // request Use Stamp
-        if let game_uuid = self.coreResultObject?.data?.game.game_uuid {
+        if let game_uuid = self.coreResultObject?.data?.game?.game_uuid {
             strUrl = "game/" + game_uuid + "/use-mstamp"
             requestType = "POST"
             
@@ -202,22 +208,40 @@ class GameUseStampViewController: UIViewController {
                 if let error = error {
                     //print("Error took place \(error)")
                     // move all statusCode != 200 to here
-                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.coreResultObject?.msg)!), animated: true, completion: nil)
-                    return
+                   if let response = response as? HTTPURLResponse {
+                        print("Response HTTP Status code: \(response.statusCode)")
+                        self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
+                        return
+                    }
                 }
                 
                 let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
                 print("Response data string:\n \(dataString)")
                 // --------
                 // data ready, call next method here
-                self.gameUseStampResultObject = try! JSONDecoder().decode(responseGameUseStampObject.self, from: data!)
+                do{
+                    self.gameUseStampResultObject = try! JSONDecoder().decode(responseGameUseStampObject.self, from: data!)
+                } catch {
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "Response data. Game useStamp. Data Wrong"), animated: true, completion: nil)
+                    self.loadingBG.isHidden = true
+                    self.loadingImage.isHidden = true
+                    self.loading_ani.isHidden = true
+                    self.loading_ani.stop()
+                }
+                
                 
                 
                 DispatchQueue.main.async(execute: { () -> Void in
                     if ((self.gameUseStampResultObject?.code)! == 0){
                         self.performSegue(withIdentifier: "playGame", sender: nil)
                     } else {
-                        
+                        //self.present(self.systemAlertMessage(title: "Request Error", message: (self.gameUseStampResultObject?.msg)!), animated: true, completion: nil)
+                        self.popUpImage.image = UIImage(named: "m-stamp_notError", in: self.ARGameBundle(), compatibleWith: nil)
+                        self.confirm_btn.addTarget(self, action: #selector(self.buttonBack), for: .touchUpInside)
+                        self.loadingBG.isHidden = true
+                        self.loadingImage.isHidden = true
+                        self.loading_ani.isHidden = true
+                        self.loading_ani.stop()
                     }
                 })
             }
@@ -256,14 +280,18 @@ class GameUseStampViewController: UIViewController {
     }
     
     func requestGameStart(){
+        if !isConnectedToNetwork() {
+            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            return
+        }
         //==========================
         // *** Game Start ***
         //==========================
         // request Game detail
         //print(self.gameDetailResultObject!)
         //
-        var json: [String: Any] = ["lat": "13.756331",
-                                   "long": "100.501762"]
+        var json: [String: Any] = ["lat": 13.756331,
+                                   "long": 100.501762]
         // Request Lat, Long from Device
         let locManager = CLLocationManager()
         locManager.requestWhenInUseAuthorization()
@@ -275,15 +303,16 @@ class GameUseStampViewController: UIViewController {
                     "long": ((locManager.location?.coordinate.longitude)!)]
             } else {
                 //self.present(systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-                json = ["lat": "13.756331", "long": "100.501762"]
+                print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
+                json = ["lat": 13.756331, "long": 100.501762]
             }
         } else {
             //self.present(systemAlertMessage(title: "Unauthorize Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-            json = ["lat": "13.756331", "long": "100.501762"]
+            print("Unauthorize Location: Cannot recieve Lat,Long from device. Using Default location")
+            json = ["lat": 13.756331, "long": 100.501762]
         }
         
        
-        //firebase_id = coreTokenObject?.data?.firebase_id
         strUrl = "game/" + (self.gameDetailResultObject?.data?.game?.game_uuid)! + "/start"
         requestType = "POST"
         
@@ -302,7 +331,7 @@ class GameUseStampViewController: UIViewController {
          let jsonData = (try? JSONSerialization.data(withJSONObject: json))!
          let requestData = jsonData
          if(requestType == "POST"){
-         request.httpBody = requestData
+            request.httpBody = requestData
          }
          
         
@@ -332,8 +361,11 @@ class GameUseStampViewController: UIViewController {
             if let error = error {
                 //print("Error took place \(error)")
                 // move all statusCode != 200 to here
-                self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.coreResultObject?.msg)!), animated: true, completion: nil)
-                return
+                if let response = response as? HTTPURLResponse {
+                    print("Response HTTP Status code: \(response.statusCode)")
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
+                    return
+                }
             }
             
             let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
@@ -341,10 +373,13 @@ class GameUseStampViewController: UIViewController {
             // --------
             // data ready, call next method here
             do{
-
                 self.gameStartResultObject = try JSONDecoder().decode(responseGameStartObject.self, from: data!)
             }catch{
-                
+                self.present(self.systemAlertMessage(title: "Request Error", message: "Response data Game Start. Data Wrong"), animated: true, completion: nil)
+                self.loadingBG.isHidden = true
+                self.loadingImage.isHidden = true
+                self.loading_ani.isHidden = true
+                self.loading_ani.stop()
             }
             
             DispatchQueue.main.async(execute: { () -> Void in
@@ -352,8 +387,7 @@ class GameUseStampViewController: UIViewController {
                     // request game start
                     self.requestGameUseStamp()
                 } else {
-                    self.popUpImage.image = UIImage(named: "m-stamp_notError", in: self.ARGameBundle(), compatibleWith: nil)
-                    self.confirm_btn.addTarget(self, action: #selector(self.buttonBack), for: .touchUpInside)
+                    self.present(self.systemAlertMessage(title: "Request Error", message: (self.gameStartResultObject?.msg)!), animated: true, completion: nil)
                     self.loadingBG.isHidden = true
                     self.loadingImage.isHidden = true
                     self.loading_ani.isHidden = true
@@ -376,12 +410,16 @@ class GameUseStampViewController: UIViewController {
     }
     
     func requestGameDetail(){
+        if !isConnectedToNetwork() {
+            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            return
+        }
         // MARK: Game Detail
         //==========================
         // *** Game Detail ***
         //==========================
         // Request Game Detail
-        if let game_uuid = self.coreResultObject?.data?.game.game_uuid{
+        if let game_uuid = self.coreResultObject?.data?.game?.game_uuid{
             //let requestUrl = "game/" + game_uuid
             strUrl = "game/" + game_uuid
             requestType = "GET"
@@ -432,15 +470,29 @@ class GameUseStampViewController: UIViewController {
                 if let error = error {
                     //print("Error took place \(error)")
                     // move all statusCode != 200 to here
-                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.coreResultObject?.msg)!), animated: true, completion: nil)
-                    return
+                    if let response = response as? HTTPURLResponse {
+                        print("Response HTTP Status code: \(response.statusCode)")
+                        self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
+                        return
+                    }
                 }
                 
                 let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+                self.gameDetailResultString = dataString
                 print("Response data string:\n \(dataString)")
                 // --------
                 // data ready, call next method here
-                self.gameDetailResultObject = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
+                do {
+                    self.gameDetailResultObject = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
+                } catch {
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "Response data Game Detail. Data Wrong"), animated: true, completion: nil)
+                    self.loading_ani.isHidden = true
+                    self.loadingImage.isHidden = true
+                    self.loadingBG.isHidden = true
+                    self.loading_ani.stop()
+                    return
+                }
+                
                 
                 DispatchQueue.main.async(execute: { () -> Void in
                     if((self.gameDetailResultObject?.code)! == 0){
@@ -451,10 +503,13 @@ class GameUseStampViewController: UIViewController {
                             self.loading_ani.stop()
                             self.performSegue(withIdentifier: "tutorialFirstTime", sender: nil)
                         } else {
-                            self.loading_ani.isHidden = true
-                            self.loadingImage.isHidden = true
-                            self.loadingBG.isHidden = true
-                            self.loading_ani.stop()
+                            self.performSegue(withIdentifier: "useStamp_to_webView", sender: self)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                self.loading_ani.isHidden = true
+                                self.loadingImage.isHidden = true
+                                self.loadingBG.isHidden = true
+                                self.loading_ani.stop()
+                            })
                         }
                     }
                 })
@@ -495,6 +550,18 @@ class GameUseStampViewController: UIViewController {
             }else{
                 self.present(systemAlertMessage(title: "Request Error", message: (self.gameDetailResultObject?.msg)!), animated: true, completion: nil)
             }
+        }
+    }
+    
+    @objc(UseStampToWebView) class UseStampToWebView: UIStoryboardSegue {
+        override func perform() {
+            let sourceViewController = self.source as! GameUseStampViewController
+            let destinationViewController = self.destination as! GameWebViewController
+            
+            destinationViewController.webType = 12
+            destinationViewController.coreResultObject = sourceViewController.coreResultObject
+            destinationViewController.gameDetailObject = sourceViewController.gameDetailResultObject
+            sourceViewController.present(destinationViewController, animated: false, completion: nil)
         }
     }
 }

@@ -63,22 +63,26 @@ struct responseCoreObject : Codable {
 
 struct coreData : Codable {
     //var uuid: String
-    var firebase_id:String
-    //var allmember:String
-    var firstname:String
-    var lastname:String
-    //var mobile_no:String
-    var mstamp:Int
-    var game:gameInfo
+    var firebase_id:String?
+    var email:String?
+    var username:String?
+    var allmember:String?
+    var firstname:String?
+    var lastname:String?
+    var mobile_no:String?
+    var mstamp:Int?
+    var is_accept:Bool?
+    var game:gameInfo?
 }
 struct gameInfo : Codable {
     var game_uuid:String
-    var title:String
-    var detail:String
-    var description:String
+    var title:String?
+    var detail:String?
+    var description:String?
     var is_firsttime:Bool?
-    var start_date:String
-    var end_date:String
+    var start_date:String?
+    var end_date:String?
+    var schedule:scheduleObject?
 }
 
 //--------------------------------------//
@@ -148,6 +152,7 @@ struct gameStart : Codable {
 
 struct scheduleObject : Codable {
     var mstamp_use:Int?
+    var is_store:Bool?
     var items: [itemsArray?]
 }
 
@@ -238,6 +243,7 @@ struct couponFinishData: Codable {
     var promotion_code:String?
     var condition_url:String?
     var thumbnail_img:String?
+    var stamp_url:String?
 }
 
 struct requestGameFinishData:Codable {
@@ -368,10 +374,12 @@ struct couponRewardData:Codable{
     var name:String
     var description:String
     var image_url:String
-    init(name:String,description:String,image_url:String){
+    var stamp_url:String?
+    init(name:String,description:String,image_url:String,stamp_url:String?){
         self.name = name
         self.description = description
         self.image_url = image_url
+        self.stamp_url = stamp_url
     }
 }
 
@@ -385,6 +393,13 @@ struct SendDataToRewardWebView:Codable{
 struct  SendDataToSummary :Codable{
     var data:[summaryWebViewData]
     init(data:[summaryWebViewData]) {
+        self.data = data
+    }
+}
+
+struct  SendDataToGameDetail :Codable{
+    var data:responseGameDetailObject
+    init(data:responseGameDetailObject) {
         self.data = data
     }
 }

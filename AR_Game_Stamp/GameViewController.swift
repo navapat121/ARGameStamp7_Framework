@@ -16,6 +16,8 @@ import Darwin
 import CoreLocation
 import Lottie
 
+
+
 class GameViewHeaderController: UIViewController {
     
     @IBOutlet weak var timer_label: UILabel!
@@ -45,6 +47,7 @@ class GameViewHeaderController: UIViewController {
         self.timereffect_animate.removeFromSuperview()
         self.netHeaderFlashAnimated.removeFromSuperview()
         self.netHeaderFlashAnimated2.removeFromSuperview()
+        self.timer_label.removeFromSuperview()
         dismiss(animated: false, completion: nil)
     }
 }
@@ -115,7 +118,7 @@ class GameViewController: UIViewController {
     var gameDetail:responseGameDetailObject?
     var resultGameStartDetail:responseGameStartObject?
     var gameFinishResultObject:responseGameFinishObject?
-    var catchStamp:[String: Any]?
+    var specialImgUrl:[String]?
     // #####################
     // MUST SEE: 1
     var cameraNode: SCNNode!
@@ -125,6 +128,7 @@ class GameViewController: UIViewController {
     
     var camera: SCNCamera!
     var scene: SCNScene!
+    var scnView: SCNView!
     let motionManager = CMMotionManager()
     var frameworkBundle:Bundle?
     // #####################
@@ -141,7 +145,8 @@ class GameViewController: UIViewController {
     var is_timeup:Bool = false
     var normal_stamp_amount = 0
     var game_is_start = false
-    
+    var timer_realtime:Int = 0
+    var captureDevice:AVCaptureDevice?
     // Animation File
     
     var motionTimer: Timer?
@@ -151,6 +156,7 @@ class GameViewController: UIViewController {
     var lastRotPitch: Float = 0, lastRotRoll: Float = 0, lastRotYaw: Float = 0
     
     var seconds : Int =  60
+    var counterProgess:Int = 0
     var timer = Timer()
     var time_is_on = false
     var collectedStampArray = [Int](repeating: 0, count: 5)
@@ -173,7 +179,8 @@ class GameViewController: UIViewController {
     @IBOutlet weak var bombBGAnimated: AnimationView!
     @IBOutlet weak var hourGlassBGAnimated: AnimationView!
     @IBOutlet weak var netBGAnimated: AnimationView!
-    
+    // animation touch screen
+    @IBOutlet weak var touchAnimate: AnimationView!
     // animation timer circle
     let keypath = AnimationKeypath(keys: ["**", "Ellipse 1", "**", "Color"])
     let redColorProvider = ColorValueProvider(UIColor.red.lottieColorValue)
@@ -182,6 +189,12 @@ class GameViewController: UIViewController {
     private var headerViewController: GameViewHeaderController!
     private var alertViewController : GameViewSpecialController!
     private var lowerViewController: GameViewLowerController!
+    
+    //Container
+    @IBOutlet weak var headerContainer: UIView!
+    @IBOutlet weak var popupContainer: UIView!
+    @IBOutlet weak var lowerContainer: UIView!
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Game View Header
         if let vc = segue.destination as? GameViewHeaderController,
@@ -204,7 +217,7 @@ class GameViewController: UIViewController {
             weak var viewController = segue.destination as? HomeViewController
             viewController!.coreResultObject = self.coreResultObject
             viewController!.gameFinishResultObject = self.gameFinishResultObject
-            viewController!.catchStamp = self.catchStamp
+            viewController!.specialImgUrl = self.specialImgUrl
         }
     }
     
@@ -220,9 +233,10 @@ class GameViewController: UIViewController {
         self.bombBGAnimated.removeFromSuperview()
         self.hourGlassBGAnimated.removeFromSuperview()
         self.netBGAnimated.removeFromSuperview()
+        self.touchAnimate.removeFromSuperview()
+        //self.scene.rootNode.cleanup()
         dismiss(animated: false, completion: nil)
     }
-    
     override func viewDidAppear(_ animated: Bool) {
         // Check request Data
         if(self.resultGameStartDetail?.msg != nil){
@@ -231,24 +245,48 @@ class GameViewController: UIViewController {
         
         // Dismiss Wiat For Loading screen
         if(!game_is_start){
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: {
-                var counter = 0
-                let steps: Int = 1
-                let duration = 0.01
-                let rate = duration / Double(steps)
-                self.alertViewController.loadingText.font = UIFont(name: "DB HelvethaicaMon X", size: 43)
+            // Loading Progess
+            self.alertViewController.loadingText.font = UIFont(name: "DB HelvethaicaMon X", size: 43)
+            let steps: Int = 1
+            let duration = 0.01
+            let rate = duration / Double(steps)
+            var rand = Int.random(in: 10 ..< 40)
+            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                self.counterProgess = 0
                 DispatchQueue.global().async {
-                    for i in 0...100 {
+                    for i in 0...rand {
                         DispatchQueue.main.asyncAfter(deadline: .now() + rate * Double(i)) {
                             self.alertViewController.loadingText.text = "\(i)%"
-                            counter = i
+                            self.counterProgess = i
                         }
                     }
                 }
             })
             
+            let rand2 = Int.random(in: 50 ..< 80)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                DispatchQueue.global().async {
+                    for i in self.counterProgess...rand2 {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + rate * Double(i)) {
+                            self.alertViewController.loadingText.text = "\(i)%"
+                            self.counterProgess = i
+                        }
+                    }
+                }
+            })
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 13, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+                DispatchQueue.global().async {
+                    for i in self.counterProgess...100 {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + rate * Double(i)) {
+                            self.alertViewController.loadingText.text = "\(i)%"
+                            self.counterProgess = i
+                        }
+                    }
+                }
+            })
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 8, execute: {
                 self.alertViewController.loadingBG.isHidden = true
                 self.alertViewController.loadingImage.isHidden = true
                 self.alertViewController.loadingAnimated.isHidden = true
@@ -274,6 +312,11 @@ class GameViewController: UIViewController {
                 self.startAnimation.play{(finished) in
                     SoundController.shared.playBGMGameplay()
                     self.headerViewController.timer_animate.play()
+                    for stamp in self.stampList {
+                        if(stamp.special_stamp == 0){
+                            stamp.stampChildNode.isHidden = false
+                        }
+                    }
                     self.game_is_start = true
                     //MARK: Time on Game
                     self.seconds = 60
@@ -284,18 +327,37 @@ class GameViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        DispatchQueue.main.async {
+        super.viewWillDisappear(false)
+        /*DispatchQueue.main.async {
             self.scene = SCNScene()
-        }
-        /*for stamp in self.stampList{
-            stamp.cleanup()
-        }
+        }*/
+        
         self.scene.rootNode.enumerateChildNodes { (node, stop) in
             node.removeFromParentNode()
-        }*/
+        }
+        
+        for stamp in self.stampList{
+            stamp.stampChildNode.removeFromParentNode()
+            stamp.cleanup()
+        }
+        self.scene.rootNode.cleanup()
+        self.scene = nil
         let cache = LRUAnimationCache()
         cache.clearCache()
+        dismiss(animated: false, completion: nil)
     }
+    deinit {
+        self.scene.rootNode.cleanup()
+    }
+    /*deinit {
+        for stamp in self.stampList{
+            stamp.stampChildNode.removeFromParentNode()
+            stamp.cleanup()
+        }
+        self.scene.rootNode.cleanup()
+        let cache = LRUAnimationCache()
+        cache.clearCache()
+    }*/
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -316,96 +378,106 @@ class GameViewController: UIViewController {
         self.alertViewController.loadingBG.isHidden = false
         self.alertViewController.loadingImage.isHidden = false
         
+        let phoneModel = UIDevice.modelName
+        
         // MARK: Prepare Animation
-        //Time Up
+        // Touch Screen
+        if(!phoneModel.contains("iPhone 5") && !phoneModel.contains("iPhone 6")){
+            let str_touch =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Touch_Effect/data", ofType: "json")
+            self.touchAnimate.animation = Animation.filepath(str_touch!)
+        }
+
+        // Time Up
         let str_timeup =  self.alertViewController.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Time up/data", ofType: "json")
         let imageProvider_timeup = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Time up/images")
-        //self.alertViewController.timeup_animate.contentMode = UIView.ContentMode.scaleToFill
         self.alertViewController.timeup_animate.imageProvider = imageProvider_timeup
         self.alertViewController.timeup_animate.animation = Animation.filepath(str_timeup!)
-        //light time up
+        // light time up
+        if(!phoneModel.contains("iPhone 5") && !phoneModel.contains("iPhone 6")){
+            let str_lighttimeup =  self.alertViewController.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Effect Light/data", ofType: "json")
+            let imageProvider_lighttimeup = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Effect Light/images")
+            self.alertViewController.light_timeupAnimate.imageProvider = imageProvider_lighttimeup
+            self.alertViewController.light_timeupAnimate.animation = Animation.filepath(str_lighttimeup!)
+        }
         
-        let str_lighttimeup =  self.alertViewController.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Effect Light/data", ofType: "json")
-        let imageProvider_lighttimeup = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Effect Light/images")
-        //self.alertViewController.timeup_animate.contentMode = UIView.ContentMode.scaleToFill
-        self.alertViewController.light_timeupAnimate.imageProvider = imageProvider_lighttimeup
-        self.alertViewController.light_timeupAnimate.animation = Animation.filepath(str_lighttimeup!)
         
         
-        // MARK: Bomb Animation Not Working
-        let bombpath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/Bomb image/data", ofType: "json")
-        self.bombAnimated.animation = Animation.filepath(bombpath!)
+        // MARK: Bomb Animation
+        if(!phoneModel.contains("iPhone 5") && !phoneModel.contains("iPhone 6")){
+            let bombpath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/bomb effect/data", ofType: "json")
+             let imageProvider_bomb  = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/bomb effect/images")
+            self.bombAnimated.imageProvider = imageProvider_bomb
+            self.bombAnimated.animation = Animation.filepath(bombpath!)
+        }
+        
+        
         
         // BG Bomb
-        let bgBombPath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/BG Light/data", ofType: "json")
-        self.bombBGAnimated.contentMode = UIView.ContentMode.scaleToFill
-        self.bombBGAnimated.animation = Animation.filepath(bgBombPath!)
-        // Decease Time
-        let str_minus_five =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/data", ofType: "json")
-        let imageProvider_minus_five = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/images")
-        self.decreaseTimeAnimated.imageProvider = imageProvider_minus_five
-        self.decreaseTimeAnimated.animation = Animation.filepath(str_minus_five!)
-        //Decrease Time Effect
-        let str_timer_minus =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/data", ofType: "json")
-        let imageProvider_timer_minus = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/images")
-        self.headerViewController.timereffect_animate.imageProvider = imageProvider_minus_five
-        self.headerViewController.timereffect_animate.animation = Animation.filepath(str_timer_minus!)
-        // MARK: Net
-        self.NetAnimated.imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Net/Net Image/images")
-        self.NetAnimated.animation = Animation.filepath((ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Net/Net Image/data", ofType: "json"))!)
-        
-        // NET BG
-        let bgNetPath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Net/BG Light/data", ofType: "json")
-        self.netBGAnimated.contentMode = UIView.ContentMode.scaleToFill
-        self.netBGAnimated.animation = Animation.filepath(bgNetPath!)
-        
-        // Header Flash
-        let str_header_flash =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Net/Header Flash/data", ofType: "json")
-        let imageProvider_header_flash  = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Net/Header Flash/images")
-        self.headerViewController.netHeaderFlashAnimated.imageProvider = imageProvider_header_flash
-        self.headerViewController.netHeaderFlashAnimated.animation = Animation.filepath(str_header_flash!)
-        self.headerViewController.netHeaderFlashAnimated.loopMode = .loop
-        self.headerViewController.netHeaderFlashAnimated2.imageProvider = imageProvider_header_flash
-        self.headerViewController.netHeaderFlashAnimated2.animation = Animation.filepath(str_header_flash!)
-        self.headerViewController.netHeaderFlashAnimated2.loopMode = .loop
-        
-        // MARK: HourGlass
-        // HourGlass
-        var pathFile = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/HourGlass/hourGlass image/data", ofType: "json")
-        var pathImage = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/HourGlass/hourGlass image/images")
-        self.hourGlassAnimated.imageProvider = pathImage
-        self.hourGlassAnimated.animation = Animation.filepath(pathFile!)
-        // Incease Time
-        pathFile =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/HourGlass/plus five second/data", ofType: "json")
-        pathImage = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/HourGlass/plus five second/images")
-        self.increaseTimeAnimated.imageProvider = pathImage
-        //self.increaseTimeAnimated.contentMode = UIView.ContentMode.scaleAspectFit
-        self.increaseTimeAnimated.animation = Animation.filepath(pathFile!)
-        
-        pathFile = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/HourGlass/BG Light/data", ofType: "json")
-        self.hourGlassBGAnimated.animation = Animation.filepath(pathFile!)
-        
+        if(!phoneModel.contains("iPhone 5") && !phoneModel.contains("iPhone 6")){
+            let bgBombPath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/BG Light/data", ofType: "json")
+            self.bombBGAnimated.contentMode = UIView.ContentMode.scaleToFill
+            self.bombBGAnimated.animation = Animation.filepath(bgBombPath!)
+            // Decease Time
+            let str_minus_five =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/data", ofType: "json")
+            let imageProvider_minus_five = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/images")
+            self.decreaseTimeAnimated.imageProvider = imageProvider_minus_five
+            self.decreaseTimeAnimated.animation = Animation.filepath(str_minus_five!)
+            // Decrease Time Effect
+            let str_timer_minus =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/data", ofType: "json")
+            let imageProvider_timer_minus = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/images")
+            self.headerViewController.timereffect_animate.imageProvider = imageProvider_minus_five
+            self.headerViewController.timereffect_animate.animation = Animation.filepath(str_timer_minus!)
+            // MARK: Net
+            self.NetAnimated.imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Net/Net Image/images")
+            self.NetAnimated.animation = Animation.filepath((ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Net/Net Image/data", ofType: "json"))!)
+            
+            // NET BG
+            let bgNetPath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Net/BG Light/data", ofType: "json")
+            self.netBGAnimated.contentMode = UIView.ContentMode.scaleToFill
+            self.netBGAnimated.animation = Animation.filepath(bgNetPath!)
+            
+            // Header Flash
+            let str_header_flash =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Net/Header Flash/data", ofType: "json")
+            let imageProvider_header_flash  = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Net/Header Flash/images")
+            self.headerViewController.netHeaderFlashAnimated.imageProvider = imageProvider_header_flash
+            self.headerViewController.netHeaderFlashAnimated.animation = Animation.filepath(str_header_flash!)
+            self.headerViewController.netHeaderFlashAnimated.loopMode = .loop
+            self.headerViewController.netHeaderFlashAnimated2.imageProvider = imageProvider_header_flash
+            self.headerViewController.netHeaderFlashAnimated2.animation = Animation.filepath(str_header_flash!)
+            self.headerViewController.netHeaderFlashAnimated2.loopMode = .loop
+            
+            // MARK: HourGlass
+            // HourGlass
+            var pathFile = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/HourGlass/hourGlass image/data", ofType: "json")
+            var pathImage = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/HourGlass/hourGlass image/images")
+            self.hourGlassAnimated.imageProvider = pathImage
+            self.hourGlassAnimated.animation = Animation.filepath(pathFile!)
+            // Incease Time
+            pathFile =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/HourGlass/plus five second/data", ofType: "json")
+            pathImage = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/HourGlass/plus five second/images")
+            self.increaseTimeAnimated.imageProvider = pathImage
+            self.increaseTimeAnimated.animation = Animation.filepath(pathFile!)
+            
+            pathFile = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/HourGlass/BG Light/data", ofType: "json")
+            self.hourGlassBGAnimated.animation = Animation.filepath(pathFile!)
+        }
         // MARK: Basket
         let str_basket = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Basket Fly for loop/basketRecieve", ofType: "json")
         let imageProvider_basket = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Basket Fly for loop/images")
-        //basketAnimate.contentMode = UIView.ContentMode.scaleToFill
         basketAnimate.imageProvider = imageProvider_basket
         basketAnimate.animation = Animation.filepath(str_basket!)
         basketAnimate.currentFrame = 1
         
         // Timer_circle
         let str_timer = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/timer_circle_v3", ofType: "json")
-        //self.headerViewController.timer_animate.contentMode = UIView.ContentMode.scaleToFill
         self.headerViewController.timer_animate.animation = Animation.filepath(str_timer!)
         self.headerViewController.timer_animate.flipX()
-        //self.headerViewController.timer_animate.logHierarchyKeypaths()
         
         let str_spc =  self.alertViewController.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Alert Special Stamp Full/alert", ofType: "json")
         let imageProvider_spc = BundleImageProvider(bundle: ( self.alertViewController.ARGameBundle())!, searchPath: "Asset/AnimationLottie/Alert Special Stamp Full/images")
-        //self.alertViewController.specialAlertAnimate.contentMode = UIView.ContentMode.scaleToFill
         self.alertViewController.specialAlertAnimate.imageProvider = imageProvider_spc
         self.alertViewController.specialAlertAnimate.animation = Animation.filepath(str_spc!)
-        //self.alertViewController.specialAlertAnimate.loopMode = .loop
+        
         self.lowerViewController.left_btn.addTarget(self, action: #selector(previousAction), for: .touchUpInside)
         self.lowerViewController.right_btn.addTarget(self, action: #selector(nextAction), for: .touchUpInside)
         
@@ -505,14 +577,19 @@ class GameViewController: UIViewController {
     
     func finishGame(){
         var itemArray = [[String: Any]]()
+        var special_url:[String]
+        special_url = []
         for stamp in self.stampList{
-            if(stamp.is_catch && stamp.stamp_type == 0){
+            if(stamp.is_catch){
                 var stampItem: [String: Any] = [
                     "item_play_uuid": stamp.id,
                     "item_is_special":stamp.special_stamp == 1 ? true : false,
                     "time_received":NSDate().timeIntervalSince1970
                 ]
                 itemArray.append(stampItem)
+                if(stamp.special_stamp == 1){
+                    special_url.append(stamp.imgUrl)
+                }
             }
         }
         
@@ -520,10 +597,10 @@ class GameViewController: UIViewController {
             "round_uuid": self.resultGameStartDetail?.data?.round_uuid,
             "items":itemArray
         ]
-        self.catchStamp = jsonObject
+        self.specialImgUrl = special_url
         SoundController.shared.stopBGMSpeicalGameplay()
         if(self.gameDetail != nil){
-            let requestData = (try? JSONSerialization.data(withJSONObject: self.catchStamp))!
+            let requestData = (try? JSONSerialization.data(withJSONObject: jsonObject))!
             
             var strUrl = "game/" + (self.gameDetail?.data?.game?.game_uuid)! + "/finish"
             var requestType = "POST"
@@ -563,11 +640,11 @@ class GameViewController: UIViewController {
                 if let error = error {
                     //print("Error took place \(error)")
                     // move all statusCode != 200 to here
-                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.coreResultObject?.msg)!), animated: true, completion: nil)
-                    DispatchQueue.main.async(execute: { () -> Void in
-                        self.performSegue(withIdentifier: "timeup_to_home_segue", sender: nil)
-                    })
-                    return
+                    if let response = response as? HTTPURLResponse {
+                        print("Response HTTP Status code: \(response.statusCode)")
+                        self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
+                        return
+                    }
                 }
                 
                 let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
@@ -576,7 +653,7 @@ class GameViewController: UIViewController {
                 // data ready, call next method here
                 do{
                     self.gameFinishResultObject = try JSONDecoder().decode(responseGameFinishObject.self, from: data!)
-                }catch{
+                } catch {
                     self.alertViewController.loadingAnimated.isHidden = true
                     self.alertViewController.loadingBG.isHidden = true
                     self.alertViewController.loadingImage.isHidden = true
@@ -617,11 +694,11 @@ class GameViewController: UIViewController {
             return
         }
         // retrieve the SCNView
-        let scnView = self.view as! SCNView
+        //let scnView = self.view as! SCNView
         
         // check what nodes are tapped
-        let p = gestureRecognize.location(in: scnView)
-        let hitResults = scnView.hitTest(p, options: [:])
+        let p = gestureRecognize.location(in: self.scnView)
+        let hitResults = self.scnView.hitTest(p, options: [:])
         // check that we clicked on at least one object
         /*if hitResults.count > 0 {
          // retrieved the first clicked object
@@ -657,8 +734,13 @@ class GameViewController: UIViewController {
         // find hit node
         // MARK:  Touch Stamp Handle
         if gestureRecognize.state == .ended {
-            let location: CGPoint = gestureRecognize.location(in: scnView)
-            let hits = scnView.hitTest(location, options: nil)
+            let location: CGPoint = gestureRecognize.location(in: self.scnView)
+            self.touchAnimate.center = CGPoint(x: location.x, y: location.y);
+            let hits = self.scnView.hitTest(location, options: nil)
+            
+            //effect click
+            self.touchAnimate.stop()
+            self.touchAnimate.play()
             if let tappednode = hits.first?.node {
                 let hit_stamp = tappednode.parent?.parent
                 
@@ -691,6 +773,10 @@ class GameViewController: UIViewController {
                 } else if(tapedStamp.stamp_type == 1){
                     SoundController.shared.playTapBombStamp()
                     self.bombAnimated.play()
+                    self.timer_realtime =  Int(self.headerViewController.timer_animate.realtimeAnimationFrame)
+                    print(timer_realtime)
+                    self.headerViewController.timer_animate.currentFrame = AnimationFrameTime(timer_realtime+5)
+                    self.headerViewController.timer_animate.play()
                     self.bombBGAnimated.play{(finished) in
                         let str_timer_minus =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Reduce Time/data", ofType: "json")
                         let imageProvider_timer_minus = BundleImageProvider(bundle: (self.ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Reduce Time/images")
@@ -699,10 +785,15 @@ class GameViewController: UIViewController {
                         SoundController.shared.playTimeTick()
                         self.headerViewController.timereffect_animate.play()
                         self.decreaseTimeAnimated.play()
+                        //self.bombAnimated.play()
                     }
                 } else if(tapedStamp.stamp_type == 2){
                     SoundController.shared.playTapHourGlassStamp()
                     self.hourGlassAnimated.play()
+                    self.timer_realtime =  Int(self.headerViewController.timer_animate.realtimeAnimationFrame)
+                     print(timer_realtime)
+                    self.headerViewController.timer_animate.currentFrame = AnimationFrameTime(timer_realtime-5)
+                    self.headerViewController.timer_animate.play()
                     self.hourGlassBGAnimated.play{(finished) in
                         let str_timer_plus =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Increase Time/data", ofType: "json")
                         let imageProvider_timer_plus = BundleImageProvider(bundle: (self.ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Increase Time/images")
@@ -737,7 +828,7 @@ class GameViewController: UIViewController {
                 }
                 
                 // Check Hit Count
-                if(tapedStamp.stamp_type == 0 && tapedStamp.hitCount == tapedStamp.hp){
+                if(tapedStamp.stamp_type == 0 && tapedStamp.hitCount >= tapedStamp.hp){
                     tapedStamp.is_catch = true
                     //print("======= Catch stamp \(tapedStamp.stampName) =======")
                 } else if(tapedStamp.stamp_type != 0){
@@ -846,8 +937,12 @@ class GameViewController: UIViewController {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: {[weak self] (_) in guard let strongSelf = self else{ return}
             strongSelf.seconds -= 1
             self!.alertTime += self!.is_alert ? 1 : 0
-            self!.headerViewController.timer_label.text = "\(strongSelf.seconds)"
-            if(strongSelf.seconds == 0){
+            if(strongSelf.seconds >= 0){
+                self!.headerViewController.timer_label.text = "\(strongSelf.seconds)"
+            }else if(strongSelf.seconds < 0){
+                 self!.headerViewController.timer_label.text = "0"
+            }
+            if(strongSelf.seconds <= 0){
                 self?.timer.invalidate()
                 
                 /*let alertController = UIAlertController(title: "Time Over", message: "", preferredStyle: .alert)
@@ -889,10 +984,12 @@ class GameViewController: UIViewController {
     
     func setUpSceneView(){
         // retrieve the SCNView
-        let scnView = self.view as! SCNView
-        
+        //let scnView = self.view as! SCNView
+        self.scnView = SCNView()
         // set the scene to the view
-        scnView.scene = self.scene
+        self.scnView.scene = self.scene
+        self.scnView.frame = self.view.bounds
+        self.view.insertSubview(self.scnView, at: 1)
         // allows the user to manipulate the camera
         // ptoon: DONT ALLOW THIS
         //scnView.allowsCameraControl = true
@@ -902,17 +999,42 @@ class GameViewController: UIViewController {
         //scnView.debugOptions = [.showWireframe, .showBoundingBoxes]
         
         // configure the view
-        scnView.backgroundColor = UIColor.clear
+        self.scnView.backgroundColor = UIColor.clear
         
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        scnView.addGestureRecognizer(tapGesture)
+        self.view.addGestureRecognizer(tapGesture)
         
         // MARK: Turn On/Off Camera in game
-        DispatchQueue.main.async {
-             let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)!
-             self.scene.background.contents = captureDevice
-         }
+        #if targetEnvironment(simulator)
+            
+        #else
+        let captureSession = AVCaptureSession()
+        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+
+        let videoDevice = AVCaptureDevice.default(for: AVMediaType.video)
+        var err: NSError? = nil
+        var videoIn : AVCaptureDeviceInput?
+        do {
+            videoIn = try AVCaptureDeviceInput.init(device: videoDevice!)
+            if(err == nil){
+                if(captureSession.canAddInput(videoIn! as AVCaptureInput)){
+                    captureSession.addInput(videoIn! as AVCaptureDeviceInput)
+                }
+            }
+            captureSession.startRunning()
+            previewLayer.frame = self.view.bounds
+            //self.scene.background.contents = previewLayer
+            self.view.layer.insertSublayer(previewLayer, at: 0)
+            
+        } catch {
+            
+        }
+        /*DispatchQueue.main.async {
+            self.scene.background.contents = self.captureDevice
+        }*/
+        #endif
         scnView.delegate = self
     }
     
@@ -974,6 +1096,7 @@ class GameViewController: UIViewController {
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
         lightNode.light!.type = .omni
+        lightNode.light?.spotOuterAngle = 300
         lightNode.position = SCNVector3(x: 0, y: 0, z: 5)
         scene.rootNode.addChildNode(lightNode)
     }
@@ -983,7 +1106,7 @@ class GameViewController: UIViewController {
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
         ambientLightNode.light!.type = .ambient
-        ambientLightNode.light!.color = UIColor.darkGray
+        //ambientLightNode.light!.color = UIColor(red: 0.54, green: 0.43, blue: 0.22, alpha: 0.5)
         scene.rootNode.addChildNode(ambientLightNode)
     }
     
@@ -1021,7 +1144,7 @@ class GameViewController: UIViewController {
                     url_image  = stamp?.image_url ?? ""
                     let url:NSURL = NSURL(string: url_image)!
                     guard let data:NSData = NSData(contentsOf: url as URL) else {
-                        return
+                        continue
                     }
                     let stampImage = UIImage(data: data as Data)
                     
@@ -1070,22 +1193,22 @@ class GameViewController: UIViewController {
         
         // MockUp Item
         // Normal Stamp
-        /*stampList.append(Stamp(scene: scene, position: SCNVector3(x: 0, y: -10, z: -30), stampName: "stampNormal", stamp_type: 0, hp: 20, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 0, imgUrl: nil))
-        stampList.append(Stamp(scene: scene, position: SCNVector3(x: 5, y: -10, z: -30), stampName: "stampNormal", stamp_type: 0, hp: 30, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 0, imgUrl: nil))
-        stampList.append(Stamp(scene: scene, position: SCNVector3(x: 10, y: -10, z: -30), stampName: "stampNormal", stamp_type: 0, hp: 40, id: String(stampList.count), index:stampList.count,stampImage: nil, special_stamp: 0, imgUrl: nil))*/
+        /*stampList.append(Stamp(scene: scene, position: SCNVector3(x: 0, y: -10, z: -20), stampName: "stampNormal", stamp_type: 0, hp: 20, level: 5, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 0, imgUrl: nil))
+        stampList.append(Stamp(scene: scene, position: SCNVector3(x: 5, y: -10, z: -10), stampName: "stampNormal", stamp_type: 0, hp: 30, level: 5, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 0, imgUrl: nil))
+        stampList.append(Stamp(scene: scene, position: SCNVector3(x: 10, y: -10, z: -30), stampName: "stampNormal", stamp_type: 0, hp: 40, level: 5, id: String(stampList.count), index:stampList.count,stampImage: nil, special_stamp: 0, imgUrl: nil))*/
          // Special Stamp
-        stampList.append(Stamp(scene: scene, position: SCNVector3(x: 0, y: -5, z: -30), stampName: "Special", stamp_type: 0, hp: 1,level: 10, id: String(stampList.count), index:stampList.count,stampImage: nil, special_stamp: 1, imgUrl: nil))
+        /*stampList.append(Stamp(scene: scene, position: SCNVector3(x: 0, y: -5, z: -30), stampName: "Special", stamp_type: 0, hp: 1,level: 10, id: String(stampList.count), index:stampList.count,stampImage: nil, special_stamp: 1, imgUrl: nil))
         stampList.append(Stamp(scene: scene, position: SCNVector3(x: 5, y: -5, z: -30), stampName: "Special", stamp_type: 0, hp: 1,level: 10, id: String(stampList.count), index:stampList.count,stampImage: nil, special_stamp: 1, imgUrl: nil))
-        stampList.append(Stamp(scene: scene, position: SCNVector3(x: 10, y: -5, z: -30), stampName: "Special", stamp_type: 0, hp: 1,level: 10, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 1, imgUrl: nil))
+        stampList.append(Stamp(scene: scene, position: SCNVector3(x: 10, y: -5, z: -30), stampName: "Special", stamp_type: 0, hp: 1,level: 10, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 1, imgUrl: nil))*/
          // Item
-        stampList.append(Stamp(scene: scene, position: SCNVector3(x:0 ,y:-15 ,z:-30), stampName: "Bomb", stamp_type: 1, hp: 1,level: 10, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 0, imgUrl: nil))
+        /*stampList.append(Stamp(scene: scene, position: SCNVector3(x:0 ,y:-15 ,z:-30), stampName: "Bomb", stamp_type: 1, hp: 1,level: 10, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 0, imgUrl: nil))
         stampList.append(Stamp(scene: scene, position: SCNVector3(x:10 ,y:-15 ,z:-30), stampName: "HourGlass", stamp_type: 2, hp: 1,level: 10, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 0, imgUrl: nil))
-        stampList.append(Stamp(scene: scene, position: SCNVector3(x:5 ,y:-15 ,z:-30), stampName: "Net", stamp_type: 3, hp: 1,level: 10, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 0, imgUrl: nil))
+        stampList.append(Stamp(scene: scene, position: SCNVector3(x:5 ,y:-15 ,z:-30), stampName: "Net", stamp_type: 3, hp: 1,level: 10, id: String(stampList.count), index:stampList.count, stampImage: nil, special_stamp: 0, imgUrl: nil))*/
     }
     
     func clearNormalStamp(){
         for stamp in stampList{
-            if(stamp.active && stamp.special_stamp == 0 && stamp.stamp_type == 0){
+            if(stamp.active && stamp.special_stamp == 0){
                 stamp.stampChildNode.isHidden = true
             }
             if(stamp.active && stamp.special_stamp == 1){
@@ -1176,7 +1299,7 @@ extension GameViewController: SCNSceneRendererDelegate {
         if(gameRunning){
             DispatchQueue.main.async {
                 // MARK: Special TIME
-                if(!self.is_alert && self.seconds <= 10){
+                if(!self.is_alert && self.seconds <= 20){
                     
                     SoundController.shared.stopBGMGameplay()
                     SoundController.shared.playAlertSpecialStamp()
@@ -1191,13 +1314,15 @@ extension GameViewController: SCNSceneRendererDelegate {
                     self.alertViewController.view.isHidden = false
                     //self.alertViewController.bgAlpha.isHidden = true
                     self.alertViewController.specialAlertAnimate.isHidden = false
+                    self.headerViewController.timer_animate.currentFrame = 40
                     self.headerViewController.timer_animate.pause()
-                    self.alertViewController.specialAlertAnimate.play()
+                    self.clearNormalStamp()
+                    self.alertViewController.specialAlertAnimate.play{(finished) in
+                        self.seconds = 20
+                    }
                     //red
                     //self.changeTimerColor(change: self.changeColor)
-                    self.seconds = 14
                     // Change StampList to Special (Disney)
-                    self.clearNormalStamp()
                 }
                 if(self.alertTime == 4){
                     //self.is_alert = false
@@ -1349,7 +1474,8 @@ func StampAction(node: SCNNode,level:Int){
         let rand_y = Int.random(in: 50 ..< 70) * nums[Int.random(in: 0 ... 1)]
         let rand_z = Int.random(in: 50 ..< 70) * nums[Int.random(in: 0 ... 1)]
         let ramdPos = SCNVector3(x: Float(rand_x), y: Float(rand_y), z: Float(rand_z))
-        let speedPercent = Float(abs(10 - level)) / Float(100) * 10
+        //let speedPercent = Float(abs(10 - level)) / Float(100) * 10
+        let speedPercent = Float(abs(10 - level)) / 10.0
         let duration = Double(10 * speedPercent) + 4
         let action1 = SCNAction.move(to: ramdPos, duration: duration)
         actions.append(action1)

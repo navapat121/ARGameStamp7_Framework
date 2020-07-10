@@ -85,14 +85,14 @@ class SoundController {
     
     private init() {
         // Global
-        clickButton = preloadSoundEffect("buttonClick.mp3")
+        clickButton = preloadSoundEffect("clickSFX.mp3")
         
        // Gameplay
         bgmGameplayAR = preloadSoundEffect("BGM Gameplay AR.mp3")
         bgmSpecialStampGameplayAR = preloadSoundEffect("BGM Special Stamp Scene.mp3")
         recieveStampToBasket = preloadSoundEffect("recieveStampToBasket.mp3")
         stampMoveToBasket = preloadSoundEffect("stampMoveToBasket.mp3")
-
+        
         // Tap Stamp Sound
         popEffect = preloadSoundEffect("TouchSFX.mp3")
         popEffect2 = preloadSoundEffect("TouchSFX.mp3")
@@ -149,6 +149,7 @@ class SoundController {
     func playBGMGameplay() {
         if !sound_on {return}
         bgmGameplayAR?.currentTime = 0;
+        bgmGameplayAR?.numberOfLoops = .max;
         bgmGameplayAR?.play()
     }
     
@@ -161,7 +162,7 @@ class SoundController {
     
     func playBGMSpeicalGameplay(){
         if !sound_on {return}
-        bgmSpecialStampGameplayAR?.numberOfLoops = -1
+        bgmSpecialStampGameplayAR?.numberOfLoops = .max
         bgmSpecialStampGameplayAR?.play()
     }
     

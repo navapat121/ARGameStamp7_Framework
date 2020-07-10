@@ -31,7 +31,7 @@ class Stamp : SCNNode {
     var special_stamp: Int!
     init(scene: SCNScene,position: SCNVector3, stampName: String, stamp_type:Int,hp:Int,level:Int, id: String, index: Int,stampImage:UIImage?, special_stamp: Int, imgUrl:String?) {
         super.init()
-        let stamp = nodeFromResource(assetName: "Stamp/Stamp_Only", extensionName: "dae")
+        let stamp = nodeFromResource(assetName: "Stamp/Stamp_Only_notexture", extensionName: "obj")
         var matName = ""
         let randStamp = Int.random(in: 1 ... 4)
         switch stamp_type {
@@ -99,8 +99,11 @@ class Stamp : SCNNode {
         
         // use meterial name to call SCNMeterial
         //let getMeterial = matIndex["material_1"]
-        let getMeterial = matIndex["material"]
+        let getMeterial = matIndex["material_2"]
+        let getMeterial2 = matIndex["material_1"]
         
+        // Set blank PNG to mat make tranparent material
+        getMeterial2?.diffuse.contents = UIImage(named: "blank-png", in: frameworkBundle, compatibleWith: nil)
         // change Texture in diffuse content
         if(self.stampImg != nil){
             getMeterial?.diffuse.contents = self.stampImg
@@ -113,9 +116,10 @@ class Stamp : SCNNode {
         //stamp.geometry?.firstMaterial?.diffuse.contents = imageMaterial
         stamp.position = position
         scene.rootNode.addChildNode(stamp)
-        if(special_stamp == 1){
+        stamp.isHidden = true
+        /*if(special_stamp == 1){
             stamp.isHidden = true
-        }
+        }*/
         
         
         //stamp.rotation = SCNVector4Make(0, 1, 0, Float(45 * M_PI / 180.0))

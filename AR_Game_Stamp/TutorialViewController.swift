@@ -13,6 +13,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var pageView: UIScrollView!
+    @IBOutlet weak var skipBtn: UIButton!
     var gameDetail:responseGameDetailObject?
     var resultUpdateFirstTime:responseGameDetailObject?
     var firebase_id:String?
@@ -27,6 +28,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
         super.viewDidLoad()
         
         playButton.titleLabel?.font = UIFont(name: "DB HelvethaicaMon X", size: 30)
+        skipBtn.titleLabel?.font = UIFont(name: "DB HelvethaicaMon X", size: 30)
         pageView.delegate = self
         createSlides()
         setupSlideScrollView(slides: slides)
@@ -36,6 +38,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
         view.bringSubviewToFront(pageControl)
         
         self.playButton.addTarget(self, action: #selector(playFromTutorialButtonAction), for: .touchUpInside)
+        self.skipBtn.addTarget(self, action: #selector(skipTutorial), for: .touchUpInside)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -45,10 +48,24 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
 
     @objc
     func playFromTutorialButtonAction(sender:UIButton){
+        SoundController.shared.playClickButton()
         submitFirstTime()
     }
     
+    @objc
+    func skipTutorial(sender:UIButton){
+        SoundController.shared.playClickButton()
+        self.skipBtn.isHidden = true
+        let bottomOffset = CGPoint(x: pageView.contentSize.width - pageView.bounds.size.width, y: 0)
+        pageView.setContentOffset(bottomOffset, animated: true)
+    }
+    
     func submitFirstTime(){
+        if !isConnectedToNetwork() {
+            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            return
+        }
+        
         strUrl = "game/" + (self.gameDetail?.data?.game!.game_uuid)! + "/firsttime"
         requestType = "PUT"
         
@@ -90,8 +107,11 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
             if let error = error {
                 //print("Error took place \(error)")
                 // move all statusCode != 200 to here
-                self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.resultUpdateFirstTime?.msg)!), animated: true, completion: nil)
-                return
+                if let response = response as? HTTPURLResponse {
+                    print("Response HTTP Status code: \(response.statusCode)")
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
+                    return
+                }
             }
             
             if let response = response as? HTTPURLResponse {
@@ -103,13 +123,20 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
             print("Response data string:\n \(dataString)")
             // --------
             // data ready, call next method here
-            self.resultUpdateFirstTime = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
+            do{
+                self.resultUpdateFirstTime = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
+            } catch{
+                self.present(self.systemAlertMessage(title: "Request Eror", message: "Response upadate first time. Data wrong. " + dataString), animated: true, completion: nil)
+                return
+            }
+            
             
             
             DispatchQueue.main.async(execute: { () -> Void in
                 if ((self.resultUpdateFirstTime?.code)! == 0){
                     self.dismiss(animated: false, completion: nil)
                 } else {
+                    self.present(self.systemAlertMessage(title: "Request Eror", message: "Request data not Success: " + (self.resultUpdateFirstTime?.msg)!), animated: true, completion: nil)
                     self.performSegue(withIdentifier: "tutorial_to_home", sender: nil)
                 }
             })
@@ -142,7 +169,9 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
         
         if(Int(pageIndex) == 12){
             playButton.isHidden = false
+            self.skipBtn.isHidden = true
         } else {
+            self.skipBtn.isHidden = false
             playButton.isHidden = true
         }
         

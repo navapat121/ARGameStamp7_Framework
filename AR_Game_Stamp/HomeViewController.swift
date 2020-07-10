@@ -13,7 +13,15 @@ import CoreMotion
 import CoreLocation
 import Lottie
 
+// prepare to navigate to main App
+public protocol ARGameStampDelegate: class {
+  func deeplinkToMainApp(to scheme: String)
+}
+
 class HomeViewController : UIViewController, CLLocationManagerDelegate{
+    public var delegate: ARGameStampDelegate? // Link Main app
+    public var fid:String? // Link firebase_ID from Main app
+    
     @IBOutlet weak var vLoading: UIView!
     @IBOutlet weak var lottieLoading: AnimationView!
     
@@ -25,13 +33,15 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
     var coreResultObject:responseCoreObject?
     var WebRequestCore:WebRequestCore?
     var gameDetail:responseGameDetailObject?
-    var catchStamp:[String: Any]?
+    var specialImgUrl:[String]?
     var resultGameStartDetail:responseGameDetailObject?
     var resultGameUpdateFirstTime : responseGameUpdateFirstTimeObject?
     var gameFinishResultObject:responseGameFinishObject?
     var webType:Int?
+    var playgame:Bool = false
     var locationManager: CLLocationManager = CLLocationManager()
     // MARK: Unwind To Home (Core Function)
+    
     @IBAction func unwindToHome( _ seg: UIStoryboardSegue) {
         //dotAnimate.reloadImages()
         /*if(seg.identifier == "summary_exit_to_home"){
@@ -42,7 +52,9 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
          self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
          })
          }else*/
+        self.vLoading.isHidden = false
         if(seg.identifier == "timeup_to_home_segue"){
+            requestCore()
             // if user can't catch special stamp go to summary
             if let finishObject = gameFinishResultObject?.data?.coupons {
                 if(finishObject.count > 0){
@@ -62,7 +74,6 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                 self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
                 self.lottieLoading.stop()
-                self.vLoading.isHidden = true
             })
         } else if(seg.identifier == "continue_to_play_segue"){
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
@@ -97,9 +108,13 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
     }
     
     func requestCoreToken() {
+        if !isConnectedToNetwork() {
+            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            return
+        }
         
         // Request API Core User Detail
-        let firebaseString = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjdkNTU0ZjBjMTJjNjQ3MGZiMTg1MmY3OWRiZjY0ZjhjODQzYmIxZDciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc2V2ZW4tZWxldmVuLXN0YWdpbmciLCJhdWQiOiJzZXZlbi1lbGV2ZW4tc3RhZ2luZyIsImF1dGhfdGltZSI6MTU5MzE0ODE0MSwidXNlcl9pZCI6ImFEdTgxNVpSYVJaUjlhSGpKYWF2S0JBYnNQNzIiLCJzdWIiOiJhRHU4MTVaUmFSWlI5YUhqSmFhdktCQWJzUDcyIiwiaWF0IjoxNTkzNDg2Njk3LCJleHAiOjE1OTM0OTAyOTcsImVtYWlsIjoiYmlyZF9zdXJpbjU1NUBob3RtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImJpcmRfc3VyaW41NTVAaG90bWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.dGMa2lSKjKwGUk5ETGRZRDPq9A7lG96ZoDHAFLCnuy2qyH5JW44nw17pXIUbOa6EdIlf4k2Tg4zAPpkklymg4qd5BV-wDKjYIG404dV8ct-_0_nZm6BcMfwjk3LGv1U_whZ6EpkPnBKWQSXLg-abml5xAAap9h1PCSu43dOyvakaJs5sGPQItnRv1I3rgg-7jBxh0_H0jlEf0O3u4ypFPP4nD2GYtZd3rF8V1u8tmJ__JpTVau5G63hs2_qEpMpqjyqYCk6zkhLoxWPE2KXHxfxDcM2Myv3o1_c-nPJT6h3E8r0KzepwNTYEyuZwSdHj9V_0yYENsR1LKG3y9ARFFQ"
+        let firebaseString = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjdkNTU0ZjBjMTJjNjQ3MGZiMTg1MmY3OWRiZjY0ZjhjODQzYmIxZDciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc2V2ZW4tZWxldmVuLXN0YWdpbmciLCJhdWQiOiJzZXZlbi1lbGV2ZW4tc3RhZ2luZyIsImF1dGhfdGltZSI6MTU5MzY3NjQ3NSwidXNlcl9pZCI6IlM0Zm93VFFCaUNURURteXlBWDNCZ1VVNU9pZzEiLCJzdWIiOiJTNGZvd1RRQmlDVEVEbXl5QVgzQmdVVTVPaWcxIiwiaWF0IjoxNTkzNjc2NDc1LCJleHAiOjE1OTM2ODAwNzUsImVtYWlsIjoicHJlYXdfYWxvaGFoQGhvdG1haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicHJlYXdfYWxvaGFoQGhvdG1haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.lNp8iYu4QxBcaX5VmZNXxo51oM5xmps4kdO2xaX4zXCNs6TqAengVYKMY5x9nNHkw-5dMhxFRG0sb4jmq9XRJBXluHIJiied0Bovt1lsn6nefVOtjSbeXJJsQmop1UIpaB8L7Roq9bmQC2LAIigF5d4tBZoeJxhpS45uLoWoId_BZt3gn12sW8ouoDox_aaKPopwHbDKXEvaZnO26bIenULipuJLye9X7Z01zSDzaGDyUi3yiNSwERO1Ab7a2vnfzYK4pLMvUKIkPivDjli4kzgwCOYgyU7HO3uGpaBjkRgU7MDv-ZUfRmDEDM651aqdmVHAElZUlAMzE9pk71A7ng"
         // -----------------
         //MARK: Core Token
         var strUrl = "core/token"
@@ -185,9 +200,14 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
     // *** Core get game_uuid ***
     //==========================
     func requestCore() {
+        if !isConnectedToNetwork() {
+            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            self.vLoading.isHidden = true
+            return
+        }
         
         // -----------------
-        //MARK: Core Token
+        //MARK: Core
         var strUrl = "core"
         var requestType = "POST"
         
@@ -205,6 +225,11 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
         // Create URL Request
         var request = URLRequest(url: requestUrl)
         
+        var json: [String: Any] = ["is_accept": "",
+                                   "mstamp": ""]
+        // insert json data to the request
+        let jsonData = (try? JSONSerialization.data(withJSONObject: json))!
+        request.httpBody = jsonData
         // insert json data to the request
         /*
          if(requestData != nil && requestType == "POST"){
@@ -238,8 +263,13 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
             if let error = error {
                 //print("Error took place \(error)")
                 // move all statusCode != 200 to here
-                self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.coreResultObject?.msg)!), animated: true, completion: nil)
-                return
+                // Read HTTP Response Status code
+                if let response = response as? HTTPURLResponse {
+                    print("Response HTTP Status code: \(response.statusCode)")
+                    responseStatus = response.statusCode
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(responseStatus!)"), animated: true, completion: nil)
+                    return
+                }
             }
             
             let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
@@ -249,7 +279,9 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
             do{
                 self.coreResultObject = try JSONDecoder().decode(responseCoreObject.self, from: data!)
             } catch {
-                self.present(self.systemAlertMessage(title: "Request Eror", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
+                self.present(self.systemAlertMessage(title: "Request Eror", message: dataString), animated: true, completion: nil)
+                self.vLoading.isHidden = true
+                return
             }
             
             
@@ -258,6 +290,14 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
                     self.lowerController.coreResultObject = self.coreResultObject
                     self.headerController.coreResultObject = self.coreResultObject
                     self.headerController.your_stamp.text = "\((self.coreResultObject?.data?.mstamp)!)"
+                    if(self.playgame){
+                        self.requestGameDetail()
+                        self.playgame = false
+                    }
+                    if(self.coreResultObject?.data?.is_accept == false){
+                        self.webType = 11
+                        self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
+                    }
                 }else{
                     self.present(self.systemAlertMessage(title: "Request Eror", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
                     self.headerController.your_stamp.text = "\(0)"
@@ -271,9 +311,12 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
         //return (responseData,responseStatus)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //requestCore()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.headerController.backToMain_btn.addTarget(self, action: #selector(coreBackToMain), for: .touchUpInside)
         // Register Font To Framework
         do {
             try UIFont.register(path: "Asset/AR STAMP ASSET/font/", fileNameString: "DB HelvethaicaMon X Bd v3.2 4", type: ".ttf")
@@ -326,7 +369,14 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
         //=========================
         //*** Core Token ***
         //=========================
-        self.firebase_id = "aDu815ZRaRZR9aHjJaavKBAbsP72"
+        if((self.fid) != nil){
+            // use FID from main app
+            self.firebase_id = self.fid
+        } else {
+            // use default FID from JNZ UAT
+            self.firebase_id = "aDu815ZRaRZR9aHjJaavKBAbsP72"
+        }
+        
         self.lowerController.firebase_id = self.firebase_id
         self.headerController.firebase_id = self.firebase_id
         if(self.firebase_id == ""){
@@ -374,6 +424,8 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
          }
          */
         //preaw get total stamp from api show in core menu
+        
+        self.headerController.backToMain_btn.addTarget(self, action: #selector(coreBackToMain), for: .touchUpInside)
         self.lowerController.btn_play.addTarget(self, action: #selector(playButtonAction), for: .touchUpInside)
         self.headerController.checkin_btn.addTarget(self, action: #selector(checkInButtonAction), for: .touchUpInside)
     }
@@ -386,22 +438,42 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
     @objc
     func playButtonAction(sender:UIButton){
         SoundController.shared.playClickButton()
+        self.playgame = true
         self.vLoading.isHidden = false
         self.lottieLoading.play()
         // on api error
         // skip to gameplay for test
         if ((self.coreResultObject) == nil ){
-            self.performSegue(withIdentifier: "playGameSkipForTest", sender: nil)
-            //self.performSegue(withIdentifier: "useStamp", sender: nil)
-        }else{
-            // MARK: Game Detail
-            //==========================
-            //*** Game Detail ***
-            //==========================
-            self.requestGameDetail()
+            if !isConnectedToNetwork() {
+                self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+                self.vLoading.isHidden = true
+                self.lottieLoading.stop()
+                return
+            } else {
+                requestCore()
+                //playButtonAction(sender: self.headerController.checkin_btn)
+            }
+            //self.performSegue(withIdentifier: "playGameSkipForTest", sender: nil)
+        } else if((self.coreResultObject?.code) == 0){
+            if(self.coreResultObject?.data?.is_accept == false){ // not Accept T&C
+                self.webType = 11
+                self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
+                self.vLoading.isHidden = true
+            } else if((self.coreResultObject?.data?.mstamp) == 0){ // no mstamp
+                // requestCore to refresh mstamp
+                self.requestCore()
+            } else {
+                // MARK: Game Detail
+                //==========================
+                //*** Game Detail ***
+                //==========================
+                self.requestGameDetail()
+            }
+        } /*else{
+            
             
             // Request Game Detail
-            /* if let game_uuid = self.coreResultObject?.data?.game.game_uuid{
+             if let game_uuid = self.coreResultObject?.data?.game.game_uuid{
              let requestUrl = "game/" + game_uuid
              if let (data,statusCode) = sendHttpRequest(requestType:"GET", strUrl: requestUrl, requestData: nil, firebase_id: firebase_id!) {
              self.gameDetailResultObject = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
@@ -430,13 +502,17 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
              }
              } else {
              self.present(systemAlertMessage(title: "Request Error", message: (self.gameDetailResultObject?.msg)!), animated: true, completion: nil)
-             }*/
-        }
+             }
+        }*/
     }
     // MARK: CheckIn Button
     @objc func checkInButtonAction(sender: UIButton){
         SoundController.shared.playClickButton()
         self.webType = 3
+        if !isConnectedToNetwork() {
+            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            return
+        }
         self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
     }
     
@@ -457,6 +533,10 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
     @objc(CoreGotoWebViewSegue) class CoreGotoWebViewSegue: UIStoryboardSegue {
         override func perform() {
             SoundController.shared.playClickButton()
+            if !self.source.isConnectedToNetwork() {
+                self.source.present(self.source.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+                return
+            }
             let sourceViewController = self.source as! HomeViewController
             let destinationViewController = self.destination as! GameWebViewController
             
@@ -464,7 +544,7 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
             destinationViewController.coreResultObject = sourceViewController.coreResultObject
             destinationViewController.firebase_id = sourceViewController.firebase_id!
             destinationViewController.gameFinishObject = sourceViewController.gameFinishResultObject
-            destinationViewController.catchStamp = sourceViewController.catchStamp
+            destinationViewController.specialImgUrl = sourceViewController.specialImgUrl
             sourceViewController.present(destinationViewController, animated: false, completion: nil)
         }
     }
@@ -490,12 +570,18 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
     }
     
     func requestGameDetail(){
+        if !isConnectedToNetwork() {
+            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            self.vLoading.isHidden = true
+            return
+        }
+        
         // MARK: Game Detail
         //==========================
         // *** Game Detail ***
         //==========================
         // Request Game Detail
-        if let game_uuid = self.coreResultObject?.data?.game.game_uuid{
+        if let game_uuid = self.coreResultObject?.data?.game?.game_uuid{
             //let requestUrl = "game/" + game_uuid
             var strUrl = "game/" + game_uuid
             var requestType = "GET"
@@ -546,19 +632,35 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
                 if let error = error {
                     //print("Error took place \(error)")
                     // move all statusCode != 200 to here
-                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.coreResultObject?.msg)!), animated: true, completion: nil)
-                    return
+                    if let response = response as? HTTPURLResponse {
+                        print("Response HTTP Status code: \(response.statusCode)")
+                        self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
+                        return
+                    }
                 }
                 
                 let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
                 print("Response data string:\n \(dataString)")
                 // --------
                 // data ready, call next method here
-                self.gameDetailResultObject = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
+                do {
+                    self.gameDetailResultObject = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
+                } catch {
+                    self.present(self.systemAlertMessage(title: "Request Eror", message: "Response Game Detail. Data wrong" + dataString), animated: true, completion: nil)
+                    self.vLoading.isHidden = true
+                    return
+                }
+                
                 
                 DispatchQueue.main.async(execute: { () -> Void in
                     if((self.gameDetailResultObject?.code)! == 0){
+                        self.vLoading.isHidden = false
                         self.performSegue(withIdentifier: "useStamp", sender: nil)
+                    } else if((self.gameDetailResultObject?.code)! == 3){ // Mstamp not enough
+                        self.requestCore()
+                    } else {
+                        self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.gameDetailResultObject?.msg)!), animated: true, completion: nil)
+                        self.vLoading.isHidden = true
                     }
                 })
             }
@@ -594,9 +696,8 @@ class HomeViewController : UIViewController, CLLocationManagerDelegate{
              SoundController.shared.playClickButton()
              performSegue(withIdentifier: "useStampToHomeSegue", sender: self)
              }*/
-            self.present(systemAlertMessage(title: "Request Error", message: (self.gameDetailResultObject?.msg)!), animated: true, completion: nil)
-            
-            
+            //self.present(systemAlertMessage(title: "Request Error", message: (self.gameDetailResultObject?.msg)!), animated: true, completion: nil)
+            requestCore()
         }
     }
 }
@@ -609,6 +710,7 @@ class HomeBgController: UIViewController {
 class HeaderVIewController: UIViewController {
     @IBOutlet weak var widthIMainStamp: NSLayoutConstraint!
     var webType:Int?
+    var delegate: ARGameStampDelegate?
     @IBOutlet weak var backToMain_btn: UIButton!
     var firebase_id:String?
     //var coreTokenResultObject:responseCoreTokenObject?
@@ -622,11 +724,16 @@ class HeaderVIewController: UIViewController {
     }
     
     @objc func toMainAppUseStamp(sender: UIButton){
-        self.present(systemAlertMessage(title: "Link Main App", message: "SE034 Use Stamp all member here"), animated: true, completion: nil)
+        delegate?.deeplinkToMainApp(to: "/internal/navPage/SE034")
+        //self.present(systemAlertMessage(title: "Link Main App", message: "SE034 Use Stamp all member here"), animated: true, completion: nil)
     }
     
     @objc(HeaderGotoWebViewSegue) class HeaderGotoWebViewSegue: UIStoryboardSegue {
         override func perform() {
+            if !self.source.parent!.isConnectedToNetwork() {
+                self.source.parent!.present(self.source.parent!.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+                return
+            }
             SoundController.shared.playClickButton()
             let sourceViewController = self.source as! HeaderVIewController
             let destinationViewController = self.destination as! GameWebViewController
@@ -637,13 +744,32 @@ class HeaderVIewController: UIViewController {
            }
             // Checkin
            else if(self.identifier == "webview_checkin_segue"){
-              sourceViewController.webType = 3
+                let locManager = CLLocationManager()
+                locManager.requestWhenInUseAuthorization()
+                if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+                    CLLocationManager.authorizationStatus() == .authorizedAlways)
+                {
+                    if(locManager.location?.coordinate.latitude != nil && locManager.location?.coordinate.longitude != nil){
+                        destinationViewController.lat = (locManager.location?.coordinate.latitude)!
+                        destinationViewController.long = (locManager.location?.coordinate.longitude)!
+                        sourceViewController.webType = 3
+                    } else {
+                        sourceViewController.present(sourceViewController.systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
+                        //print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
+                        return
+                    }
+                } else {
+                    sourceViewController.present(sourceViewController.systemAlertMessage(title: "Unauthorize Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
+                    //print("Unauthorize Location: Cannot recieve Lat,Long from device. Using Default location")
+                    return
+                }
             }
             // Send parameter To UseStampViewController
+            
             destinationViewController.webType = sourceViewController.webType
             destinationViewController.firebase_id = sourceViewController.firebase_id ?? ""
-                destinationViewController.coreResultObject = sourceViewController.coreResultObject
-            sourceViewController.present(destinationViewController, animated: true, completion: nil)
+            destinationViewController.coreResultObject = sourceViewController.coreResultObject
+            sourceViewController.present(destinationViewController, animated: false, completion: nil)
         }
     }
 }
@@ -651,6 +777,7 @@ class LowerVIewController: UIViewController {
     @IBOutlet weak var btn_play: UIButton!
     var webType:Int?
     var firebase_id:String?
+    var delegate: ARGameStampDelegate?
     @IBOutlet weak var btnCoupon: UIButton!
     var coreResultObject:responseCoreObject?
     override func viewDidLoad() {
@@ -659,12 +786,17 @@ class LowerVIewController: UIViewController {
     }
     
     @objc func toMainAppCoupon(sender: UIButton){
-        self.present(systemAlertMessage(title: "Link Main App", message: "SE081 Coupon here"), animated: true, completion: nil)
+        //self.present(systemAlertMessage(title: "Link Main App", message: "SE081 Coupon here"), animated: true, completion: nil)
+        delegate?.deeplinkToMainApp(to: "/internal/navPage/SE081")
     }
     
     @objc(GotoWebViewSegue) class GotoWebViewSegue: UIStoryboardSegue {
         override func perform() {
             SoundController.shared.playClickButton()
+            if !self.source.parent!.isConnectedToNetwork() {
+                self.source.parent!.present(self.source.parent!.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+                return
+            }
             let sourceViewController = self.source as! LowerVIewController
             let destinationViewController = self.destination as! GameWebViewController
             
@@ -701,7 +833,7 @@ class LowerVIewController: UIViewController {
             destinationViewController.webType = sourceViewController.webType
             destinationViewController.firebase_id = sourceViewController.firebase_id!
             destinationViewController.coreResultObject = sourceViewController.coreResultObject
-            sourceViewController.present(destinationViewController, animated: true, completion: nil)
+            sourceViewController.present(destinationViewController, animated: false, completion: nil)
         }
     }
 }
@@ -767,10 +899,6 @@ class MickyController: UIViewController {
                 mickyAnimate.play()
             }
         }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        mickyAnimate.stop()
     }
     
     /*func start() {
