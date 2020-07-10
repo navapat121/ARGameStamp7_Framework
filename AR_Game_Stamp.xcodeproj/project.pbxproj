@@ -12,6 +12,7 @@
 		B6124EF724A9E82100FB849D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6124EF624A9E82100FB849D /* TutorialViewController.swift */; };
 		B623355F24A9ED9500E9AE24 /* SlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B623355E24A9ED9500E9AE24 /* SlideView.swift */; };
 		B623356124A9EDBB00E9AE24 /* Slide.xib in Resources */ = {isa = PBXBuildFile; fileRef = B623356024A9EDBB00E9AE24 /* Slide.xib */; };
+		B650FF6424B86C0100AADA08 /* BGM Special Stamp Scene.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B650FF6324B86C0000AADA08 /* BGM Special Stamp Scene.mp3 */; };
 		B66F121D249BC35C0027E623 /* bombStamp.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B66F11BA249BC35C0027E623 /* bombStamp.jpg */; };
 		B66F126F249BC3CF0027E623 /* DataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F126B249BC3CF0027E623 /* DataFactory.swift */; };
 		B66F1270249BC3CF0027E623 /* ARGameAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F126C249BC3CF0027E623 /* ARGameAppDelegate.swift */; };
@@ -45,7 +46,6 @@
 		B6B1701624AA80210025E71D /* DB HelvethaicaMon X Med Cond v3.2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6B1700824AA80210025E71D /* DB HelvethaicaMon X Med Cond v3.2.ttf */; };
 		B6B1701724AA80210025E71D /* DB HelvethaicaMon X Bd Cond It v3.2 2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6B1700924AA80210025E71D /* DB HelvethaicaMon X Bd Cond It v3.2 2.ttf */; };
 		B6B1701824AA80210025E71D /* DB HelvethaicaMon X It v3.2 copy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6B1700A24AA80210025E71D /* DB HelvethaicaMon X It v3.2 copy.ttf */; };
-		B6D17E9D24B0658700EDC87F /* BGM Special Stamp Scene.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6D17E9C24B0658700EDC87F /* BGM Special Stamp Scene.mp3 */; };
 		B6E7C7BB249F2CA100C6CE3C /* Start SFX.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6E7C7B9249F2CA100C6CE3C /* Start SFX.mp3 */; };
 		B6E7C7BC249F2CA100C6CE3C /* Countdown SFX.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6E7C7BA249F2CA100C6CE3C /* Countdown SFX.mp3 */; };
 		B6E7C7C1249F2D2B00C6CE3C /* Aleart Special Stamp.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6E7C7C0249F2D2B00C6CE3C /* Aleart Special Stamp.mp3 */; };
@@ -73,6 +73,7 @@
 		B6124EF624A9E82100FB849D /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		B623355E24A9ED9500E9AE24 /* SlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideView.swift; sourceTree = "<group>"; };
 		B623356024A9EDBB00E9AE24 /* Slide.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Slide.xib; sourceTree = "<group>"; };
+		B650FF6324B86C0000AADA08 /* BGM Special Stamp Scene.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "BGM Special Stamp Scene.mp3"; sourceTree = "<group>"; };
 		B66F0B64249BC28E0027E623 /* AR_Game_Stamp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AR_Game_Stamp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B66F11BA249BC35C0027E623 /* bombStamp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bombStamp.jpg; sourceTree = "<group>"; };
 		B66F126B249BC3CF0027E623 /* DataFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFactory.swift; sourceTree = "<group>"; };
@@ -105,8 +106,7 @@
 		B6B1700824AA80210025E71D /* DB HelvethaicaMon X Med Cond v3.2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DB HelvethaicaMon X Med Cond v3.2.ttf"; path = "AR_Game_Stamp/Asset/AR STAMP ASSET/font/DB HelvethaicaMon X Med Cond v3.2.ttf"; sourceTree = SOURCE_ROOT; };
 		B6B1700924AA80210025E71D /* DB HelvethaicaMon X Bd Cond It v3.2 2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DB HelvethaicaMon X Bd Cond It v3.2 2.ttf"; path = "AR_Game_Stamp/Asset/AR STAMP ASSET/font/DB HelvethaicaMon X Bd Cond It v3.2 2.ttf"; sourceTree = SOURCE_ROOT; };
 		B6B1700A24AA80210025E71D /* DB HelvethaicaMon X It v3.2 copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DB HelvethaicaMon X It v3.2 copy.ttf"; path = "AR_Game_Stamp/Asset/AR STAMP ASSET/font/DB HelvethaicaMon X It v3.2 copy.ttf"; sourceTree = SOURCE_ROOT; };
-		B6D17E9924B0651E00EDC87F /* BGM Gameplay AR.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "BGM Gameplay AR.mp3"; path = "../../BGM Gameplay AR.mp3"; sourceTree = "<group>"; };
-		B6D17E9C24B0658700EDC87F /* BGM Special Stamp Scene.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "BGM Special Stamp Scene.mp3"; path = "../BGM Special Stamp Scene.mp3"; sourceTree = "<group>"; };
+		B6D17E9B24B0652200EDC87F /* BGM Gameplay AR.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "BGM Gameplay AR.mp3"; sourceTree = "<group>"; };
 		B6E7C7B9249F2CA100C6CE3C /* Start SFX.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Start SFX.mp3"; sourceTree = "<group>"; };
 		B6E7C7BA249F2CA100C6CE3C /* Countdown SFX.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Countdown SFX.mp3"; sourceTree = "<group>"; };
 		B6E7C7C0249F2D2B00C6CE3C /* Aleart Special Stamp.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Aleart Special Stamp.mp3"; sourceTree = "<group>"; };
@@ -239,7 +239,8 @@
 				B6E7C7CA249F2E7100C6CE3C /* RewardSound */,
 				B6E7C7BF249F2D2000C6CE3C /* Alert */,
 				B6E7C7B8249F2C9300C6CE3C /* Start_Game */,
-				B6D17E9C24B0658700EDC87F /* BGM Special Stamp Scene.mp3 */,
+				B6D17E9B24B0652200EDC87F /* BGM Gameplay AR.mp3 */,
+				B650FF6324B86C0000AADA08 /* BGM Special Stamp Scene.mp3 */,
 				B6E7C7C2249F2D5A00C6CE3C /* recieveStampToBasket.mp3 */,
 				AA0EFE0324AF76D8004BF670 /* clickSFX.mp3 */,
 				B6E7C7C3249F2D5A00C6CE3C /* TouchSFX.mp3 */,
@@ -251,7 +252,6 @@
 		B6E7C7B8249F2C9300C6CE3C /* Start_Game */ = {
 			isa = PBXGroup;
 			children = (
-				B6D17E9924B0651E00EDC87F /* BGM Gameplay AR.mp3 */,
 				B6E7C7BA249F2CA100C6CE3C /* Countdown SFX.mp3 */,
 				B6E7C7B9249F2CA100C6CE3C /* Start SFX.mp3 */,
 			);
@@ -404,6 +404,7 @@
 				B6B1701224AA80210025E71D /* DB HelvethaicaMon X Blk It v3.2 3.ttf in Resources */,
 				B6E7C7C7249F2D5A00C6CE3C /* stampMoveToBasket.mp3 in Resources */,
 				B623356124A9EDBB00E9AE24 /* Slide.xib in Resources */,
+				B650FF6424B86C0100AADA08 /* BGM Special Stamp Scene.mp3 in Resources */,
 				B6E7C7BB249F2CA100C6CE3C /* Start SFX.mp3 in Resources */,
 				B66F128F249BC4360027E623 /* Assets.xcassets in Resources */,
 				B6B1700E24AA80210025E71D /* DB HelvethaicaMon X Bd v3.2 4.ttf in Resources */,
@@ -436,7 +437,6 @@
 				B6E7C7C6249F2D5A00C6CE3C /* TouchSFX.mp3 in Resources */,
 				B6E7C7C9249F2DA300C6CE3C /* TimeUp SFX.mp3 in Resources */,
 				B6E7C7E0249F32F800C6CE3C /* Power UP Sound.mp3 in Resources */,
-				B6D17E9D24B0658700EDC87F /* BGM Special Stamp Scene.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
