@@ -12,7 +12,6 @@
 		B6124EF724A9E82100FB849D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6124EF624A9E82100FB849D /* TutorialViewController.swift */; };
 		B623355F24A9ED9500E9AE24 /* SlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B623355E24A9ED9500E9AE24 /* SlideView.swift */; };
 		B623356124A9EDBB00E9AE24 /* Slide.xib in Resources */ = {isa = PBXBuildFile; fileRef = B623356024A9EDBB00E9AE24 /* Slide.xib */; };
-		B650FF5C24B8673500AADA08 /* BGM Gameplay AR.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6D17E9B24B0652200EDC87F /* BGM Gameplay AR.mp3 */; };
 		B66F121D249BC35C0027E623 /* bombStamp.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B66F11BA249BC35C0027E623 /* bombStamp.jpg */; };
 		B66F126F249BC3CF0027E623 /* DataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F126B249BC3CF0027E623 /* DataFactory.swift */; };
 		B66F1270249BC3CF0027E623 /* ARGameAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F126C249BC3CF0027E623 /* ARGameAppDelegate.swift */; };
@@ -106,8 +105,7 @@
 		B6B1700824AA80210025E71D /* DB HelvethaicaMon X Med Cond v3.2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DB HelvethaicaMon X Med Cond v3.2.ttf"; path = "AR_Game_Stamp/Asset/AR STAMP ASSET/font/DB HelvethaicaMon X Med Cond v3.2.ttf"; sourceTree = SOURCE_ROOT; };
 		B6B1700924AA80210025E71D /* DB HelvethaicaMon X Bd Cond It v3.2 2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DB HelvethaicaMon X Bd Cond It v3.2 2.ttf"; path = "AR_Game_Stamp/Asset/AR STAMP ASSET/font/DB HelvethaicaMon X Bd Cond It v3.2 2.ttf"; sourceTree = SOURCE_ROOT; };
 		B6B1700A24AA80210025E71D /* DB HelvethaicaMon X It v3.2 copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DB HelvethaicaMon X It v3.2 copy.ttf"; path = "AR_Game_Stamp/Asset/AR STAMP ASSET/font/DB HelvethaicaMon X It v3.2 copy.ttf"; sourceTree = SOURCE_ROOT; };
-		B6D17E9924B0651E00EDC87F /* BGM Gameplay AR.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "BGM Gameplay AR.mp3"; path = "../../../../../../../Downloads/BGM AR Game Low file for loop/BGM Gameplay AR.mp3"; sourceTree = "<group>"; };
-		B6D17E9B24B0652200EDC87F /* BGM Gameplay AR.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "BGM Gameplay AR.mp3"; path = "../BGM Gameplay AR.mp3"; sourceTree = "<group>"; };
+		B6D17E9924B0651E00EDC87F /* BGM Gameplay AR.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "BGM Gameplay AR.mp3"; path = "../../BGM Gameplay AR.mp3"; sourceTree = "<group>"; };
 		B6D17E9C24B0658700EDC87F /* BGM Special Stamp Scene.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "BGM Special Stamp Scene.mp3"; path = "../BGM Special Stamp Scene.mp3"; sourceTree = "<group>"; };
 		B6E7C7B9249F2CA100C6CE3C /* Start SFX.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Start SFX.mp3"; sourceTree = "<group>"; };
 		B6E7C7BA249F2CA100C6CE3C /* Countdown SFX.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Countdown SFX.mp3"; sourceTree = "<group>"; };
@@ -241,7 +239,6 @@
 				B6E7C7CA249F2E7100C6CE3C /* RewardSound */,
 				B6E7C7BF249F2D2000C6CE3C /* Alert */,
 				B6E7C7B8249F2C9300C6CE3C /* Start_Game */,
-				B6D17E9B24B0652200EDC87F /* BGM Gameplay AR.mp3 */,
 				B6D17E9C24B0658700EDC87F /* BGM Special Stamp Scene.mp3 */,
 				B6E7C7C2249F2D5A00C6CE3C /* recieveStampToBasket.mp3 */,
 				AA0EFE0324AF76D8004BF670 /* clickSFX.mp3 */,
@@ -431,7 +428,6 @@
 				B6B1701124AA80210025E71D /* DB HelvethaicaMon X Cond v3.2 4.ttf in Resources */,
 				B6E7C7C5249F2D5A00C6CE3C /* recieveStampToBasket.mp3 in Resources */,
 				B6E7C7E4249F33F500C6CE3C /* Increase Time.mp3 in Resources */,
-				B650FF5C24B8673500AADA08 /* BGM Gameplay AR.mp3 in Resources */,
 				B6E7C7DC249F32C100C6CE3C /* Reduce Time.mp3 in Resources */,
 				B66F121D249BC35C0027E623 /* bombStamp.jpg in Resources */,
 				B6B1700F24AA80210025E71D /* DB HelvethaicaMon X Med Cond It v3.2.ttf in Resources */,
