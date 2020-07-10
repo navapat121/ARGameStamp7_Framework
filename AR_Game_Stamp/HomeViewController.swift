@@ -18,7 +18,7 @@ public protocol ARGameStampDelegate: class {
   func deeplinkToMainApp(to scheme: String)
 }
 
-class HomeViewController : UIViewController, CLLocationManagerDelegate{
+public class HomeViewController : UIViewController, CLLocationManagerDelegate{
     public var delegate: ARGameStampDelegate? // Link Main app
     public var fid:String? // Link firebase_ID from Main app
     
