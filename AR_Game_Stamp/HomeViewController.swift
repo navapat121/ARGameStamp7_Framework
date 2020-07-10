@@ -92,11 +92,13 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? LowerVIewController,
             segue.identifier == "home_lower" {
+            vc.delegate = self.delegate
             self.lowerController = vc
         }
         //preaw declare uppercontroller to use
         if let upper = segue.destination as? HeaderVIewController,
             segue.identifier == "home_upper" {
+            upper.delegate = self.delegate
             self.headerController = upper
         }
     }
