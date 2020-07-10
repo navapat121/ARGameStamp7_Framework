@@ -89,7 +89,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
     }
     private var lowerController: LowerVIewController!
     private var headerController: HeaderVIewController!
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? LowerVIewController,
             segue.identifier == "home_lower" {
             self.lowerController = vc
@@ -100,7 +100,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
             self.headerController = upper
         }
     }
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         // Check request Data
         if(self.coreTokenResultObject?.msg != nil){
             //self.present(systemAlertMessage(title: "Request Error", message: (self.coreTokenResultObject?.msg)!), animated: true, completion: nil)
@@ -311,11 +311,11 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
         //return (responseData,responseStatus)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         //requestCore()
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         // Register Font To Framework
         do {
