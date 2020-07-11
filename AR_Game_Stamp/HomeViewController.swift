@@ -376,7 +376,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
             self.firebase_id = self.fid
         } else {
             // use default FID from JNZ UAT
-            self.firebase_id = "aDu815ZRaRZR9aHjJaavKBAbsP72"
+            self.firebase_id = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
         }
         
         self.lowerController.firebase_id = self.firebase_id

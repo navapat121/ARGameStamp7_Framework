@@ -14,6 +14,15 @@ import CoreLocation
 import Lottie
 
 class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
+    
+    // Appsync DEV
+    let mainUrl:String = "https://argame-dev.7eleven-game.com/"
+    let mainUrlBws = "https://argame-2-dev.7eleven-game.com/Views/"
+    // DEV
+    //let mainUrl:String = "https://argame-dev.7eleven-game.com"
+    //let mainUrlBws = "https://www.bluewindsolution.com/project/7eleven2020/sampleweb/Views/"
+    
+    
     //var coreTokenResultObject: responseCoreTokenObject?
     var coreResultObject: responseCoreObject?
     var gameFinishObject: responseGameFinishObject?
@@ -25,8 +34,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     var firebase_id:String = ""
     var mstamp: Int = 0
     var game_uuid:String? = ""
-    let mainUrl:String = "https://argame-dev.7eleven-game.com"
-    let mainUrlBws = "https://www.bluewindsolution.com/project/7eleven2020/sampleweb/Views/"
+    
     var jsonData:Data?
     var urlFull = ""
     var urlTemp = ""
@@ -158,32 +166,32 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
             break
         // checkin
         case 3:
-            urlTemp = "\(mainUrl)/checkin"
-            urlFull = "\(mainUrl)/checkin?firebase_id=\(firebase_id)&mstamp=\(mstamp)&lat=\(lat)&long=\(long)&game_uuid=\(game_uuid!)"
+            urlTemp = "\(mainUrl)checkin"
+            urlFull = "\(mainUrl)checkin?firebase_id=\(firebase_id)&mstamp=\(mstamp)&lat=\(lat)&long=\(long)&game_uuid=\(game_uuid!)"
             //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x1b754a)
             break
         // Promotion
         case 4:
-            urlTemp = "\(mainUrl)/promotion"
-            urlFull = "\(mainUrl)/promotion?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
+            urlTemp = "\(mainUrl)promotion"
+            urlFull = "\(mainUrl)promotion?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
             //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x1d70a4)
             break
         // Donate
         case 5:
-            urlTemp = "\(mainUrl)/donate"
-            urlFull = "\(mainUrl)/donate?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
+            urlTemp = "\(mainUrl)donate"
+            urlFull = "\(mainUrl)donate?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
             //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x00c6c1)
             break
         // Global-maps
         case 6	:
-            urlTemp = "\(mainUrl)/global-maps"
-            urlFull = "\(mainUrl)/global-maps?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
+            urlTemp = "\(mainUrl)global-maps"
+            urlFull = "\(mainUrl)global-maps?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
             //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x000000)

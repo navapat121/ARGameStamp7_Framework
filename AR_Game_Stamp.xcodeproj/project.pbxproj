@@ -13,6 +13,7 @@
 		B623355F24A9ED9500E9AE24 /* SlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B623355E24A9ED9500E9AE24 /* SlideView.swift */; };
 		B623356124A9EDBB00E9AE24 /* Slide.xib in Resources */ = {isa = PBXBuildFile; fileRef = B623356024A9EDBB00E9AE24 /* Slide.xib */; };
 		B650FF6424B86C0100AADA08 /* BGM Special Stamp Scene.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B650FF6324B86C0000AADA08 /* BGM Special Stamp Scene.mp3 */; };
+		B666B11824B9962B008FFAEA /* BGM Gameplay AR.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6D17E9B24B0652200EDC87F /* BGM Gameplay AR.mp3 */; };
 		B66F121D249BC35C0027E623 /* bombStamp.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B66F11BA249BC35C0027E623 /* bombStamp.jpg */; };
 		B66F126F249BC3CF0027E623 /* DataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F126B249BC3CF0027E623 /* DataFactory.swift */; };
 		B66F1270249BC3CF0027E623 /* ARGameAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66F126C249BC3CF0027E623 /* ARGameAppDelegate.swift */; };
@@ -400,6 +401,7 @@
 				B66F12D2249BCD220027E623 /* ARgamrInfo.plist in Resources */,
 				B66F12DC249BDAC70027E623 /* art.scnassets in Resources */,
 				B6B1701524AA80210025E71D /* DB HelvethaicaMon X Med It v3.2 4.ttf in Resources */,
+				B666B11824B9962B008FFAEA /* BGM Gameplay AR.mp3 in Resources */,
 				B6B1700C24AA80210025E71D /* DB HelvethaicaMon X Cond It v3.2 2 copy.ttf in Resources */,
 				B6B1701224AA80210025E71D /* DB HelvethaicaMon X Blk It v3.2 3.ttf in Resources */,
 				B6E7C7C7249F2D5A00C6CE3C /* stampMoveToBasket.mp3 in Resources */,
