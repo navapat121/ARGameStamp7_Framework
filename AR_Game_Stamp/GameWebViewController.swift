@@ -39,8 +39,8 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     var urlFull = ""
     var urlTemp = ""
     let isUseUrlTemp:Bool = false
-    var lat:Double = 0.0
-    var long:Double = 0.0
+    var lat:Double?
+    var long:Double?
     @IBOutlet weak var blockView: UIView!
     @IBOutlet weak var gameWebView: WKWebView!
     @IBOutlet weak var vLoading: UIView!
@@ -135,12 +135,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         
         if(webType == 3){
             // Request Lat, Long from Device
-            let locManager = CLLocationManager()
-            locManager.requestWhenInUseAuthorization()
-            if(locManager.location?.coordinate.latitude != nil && locManager.location?.coordinate.longitude != nil){
-                lat = (locManager.location?.coordinate.latitude)!
-                long = (locManager.location?.coordinate.longitude)!
-            } else {
+            if(self.lat == nil && self.long == nil){
                 lat = 13.756331
                 long = 100.501762
             }
@@ -167,7 +162,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         // checkin
         case 3:
             urlTemp = "\(mainUrl)checkin"
-            urlFull = "\(mainUrl)checkin?firebase_id=\(firebase_id)&mstamp=\(mstamp)&lat=\(lat)&long=\(long)&game_uuid=\(game_uuid!)"
+            urlFull = "\(mainUrl)checkin?firebase_id=\(firebase_id)&mstamp=\(mstamp)&lat=\(self.lat!)&long=\(self.long!)&game_uuid=\(game_uuid!)"
             //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x1b754a)

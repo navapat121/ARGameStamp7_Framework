@@ -39,7 +39,10 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
     var gameFinishResultObject:responseGameFinishObject?
     var webType:Int?
     var playgame:Bool = false
+    var lat:Double?
+    var long:Double?
     var locationManager: CLLocationManager = CLLocationManager()
+    
     // MARK: Unwind To Home (Core Function)
     
     @IBAction func unwindToHome( _ seg: UIStoryboardSegue) {
@@ -333,6 +336,24 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
             try UIFont.register(path: "Asset/AR STAMP ASSET/font/", fileNameString: "DB HelvethaicaMon X Bd v3.2 4", type: ".ttf")
         } catch  {
             print("Fail to register font")
+        }
+        
+        // Request Lat, Long from Device
+        let locManager = CLLocationManager()
+        locManager.requestWhenInUseAuthorization()
+        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == .authorizedAlways)
+        {
+            if(locManager.location?.coordinate.latitude != nil && locManager.location?.coordinate.longitude != nil){
+                self.lat = locManager.location?.coordinate.latitude
+                self.long = locManager.location?.coordinate.longitude
+            } else {
+                //self.present(systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
+                print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
+            }
+        } else {
+            //self.present(systemAlertMessage(title: "Unauthorize Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
+            print("Unauthorize Location: Cannot recieve Lat,Long from device. Using Default location")
         }
         
         /*UIFont.familyNames.forEach { (font) in
@@ -755,23 +776,14 @@ class HeaderVIewController: UIViewController {
            }
             // Checkin
            else if(self.identifier == "webview_checkin_segue"){
-                let locManager = CLLocationManager()
-                locManager.requestWhenInUseAuthorization()
-                if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
-                    CLLocationManager.authorizationStatus() == .authorizedAlways)
-                {
-                    if(locManager.location?.coordinate.latitude != nil && locManager.location?.coordinate.longitude != nil){
-                        destinationViewController.lat = (locManager.location?.coordinate.latitude)!
-                        destinationViewController.long = (locManager.location?.coordinate.longitude)!
-                        sourceViewController.webType = 3
-                    } else {
-                        sourceViewController.present(sourceViewController.systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-                        //print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
-                        return
-                    }
+            let homeview = self.source.parent! as! HomeViewController
+                if(homeview.lat != nil && homeview.long != nil){
+                    destinationViewController.lat = homeview.lat!
+                    destinationViewController.long = homeview.long!
+                    sourceViewController.webType = 3
                 } else {
-                    sourceViewController.present(sourceViewController.systemAlertMessage(title: "Unauthorize Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-                    //print("Unauthorize Location: Cannot recieve Lat,Long from device. Using Default location")
+                    sourceViewController.present(sourceViewController.systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
+                    //print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
                     return
                 }
             }

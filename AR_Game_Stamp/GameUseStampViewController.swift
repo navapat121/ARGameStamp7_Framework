@@ -30,6 +30,8 @@ class GameUseStampViewController: UIViewController {
     var responseData:Data?
     var responseStatus:Int?
     var is_tutorial:Int? = 0
+    var lat:Double?
+    var long:Double?
     
 
     @IBOutlet weak var tutorialBtn: UIButton!
@@ -45,12 +47,39 @@ class GameUseStampViewController: UIViewController {
         let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
         let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
         //loading_ani.contentMode = UIView.ContentMode.scaleToFill
+        
+        // Request Lat, Long from Device
+        let locManager = CLLocationManager()
+        locManager.requestWhenInUseAuthorization()
+        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == .authorizedAlways)
+        {
+            if(locManager.location?.coordinate.latitude != nil && locManager.location?.coordinate.longitude != nil){
+                self.lat = locManager.location?.coordinate.latitude
+                self.long = locManager.location?.coordinate.longitude
+            } else {
+                //self.present(systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
+                print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
+            }
+        } else {
+            //self.present(systemAlertMessage(title: "Unauthorize Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
+            print("Unauthorize Location: Cannot recieve Lat,Long from device. Using Default location")
+        }
+        
         loading_ani.imageProvider = imageProvider
         loading_ani.animation = Animation.filepath(str!)
         loading_ani.play()
         loading_ani.loopMode = .loop
         counterLabel()
-        self.requestGameDetail()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            if(self.lat == nil || self.long == nil){
+                self.lat = 13.756331
+                self.long = 100.501762
+                self.requestGameDetail()
+            } else {
+                self.requestGameDetail()
+            }
+        })
         tutorialBtn.addTarget(self, action: #selector(goToTutorialAction), for: .touchUpInside)
         confirm_btn.addTarget(self, action: #selector(confirmButtonAction), for: .touchUpInside)
         cancel_btn.addTarget(self, action: #selector(buttonBack), for: .touchUpInside)
@@ -292,29 +321,9 @@ class GameUseStampViewController: UIViewController {
         // request Game detail
         //print(self.gameDetailResultObject!)
         //
-        var json: [String: Any] = ["lat": 13.756331,
-                                   "long": 100.501762]
-        // Request Lat, Long from Device
-        let locManager = CLLocationManager()
-        locManager.requestWhenInUseAuthorization()
-        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
-            CLLocationManager.authorizationStatus() == .authorizedAlways)
-        {
-            if(locManager.location?.coordinate.latitude != nil && locManager.location?.coordinate.longitude != nil){
-                json = ["lat": ((locManager.location?.coordinate.latitude)!),
-                    "long": ((locManager.location?.coordinate.longitude)!)]
-            } else {
-                //self.present(systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-                print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
-                json = ["lat": 13.756331, "long": 100.501762]
-            }
-        } else {
-            //self.present(systemAlertMessage(title: "Unauthorize Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-            print("Unauthorize Location: Cannot recieve Lat,Long from device. Using Default location")
-            json = ["lat": 13.756331, "long": 100.501762]
-        }
+        let json: [String: Any] = ["lat": self.lat as Any,
+                                   "long": self.long as Any]
         
-       
         strUrl = "game/" + (self.gameDetailResultObject?.data?.game?.game_uuid)! + "/start"
         requestType = "POST"
         
@@ -423,7 +432,8 @@ class GameUseStampViewController: UIViewController {
         // Request Game Detail
         if let game_uuid = self.coreResultObject?.data?.game?.game_uuid{
             //let requestUrl = "game/" + game_uuid
-            strUrl = "game/" + game_uuid
+            
+            strUrl = "game/" + game_uuid + "?lat=\(self.lat!)&long=\(self.long!)"
             requestType = "GET"
             
             let apiOriginal = "\(DataFactory.apiUrlMain)\(strUrl)"
