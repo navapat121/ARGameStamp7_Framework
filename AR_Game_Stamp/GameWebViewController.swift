@@ -499,7 +499,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
             do{
                 self.coreResultObject = try JSONDecoder().decode(responseCoreObject.self, from: data!)
             } catch {
-                self.present(self.systemAlertMessage(title: "Request Eror", message: dataString), animated: true, completion: nil)
+                self.present(self.systemAlertMessage(title: "Request Error", message: dataString), animated: true, completion: nil)
                 self.vLoading.isHidden = true
                 return
             }
@@ -509,7 +509,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                     // Success
                     self.dismiss(animated: false, completion: nil)
                 }else{
-                    self.present(self.systemAlertMessage(title: "Request Eror", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
+                    self.present(self.systemAlertMessage(title: "Request Error", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
                 }
             })
         }

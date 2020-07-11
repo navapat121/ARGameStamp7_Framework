@@ -189,7 +189,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
                     self.requestCore()
                 }else{
                     self.vLoading.isHidden = true
-                    self.present(self.systemAlertMessage(title: "Request Eror", message: (self.coreTokenResultObject?.msg)!), animated: true, completion: nil)
+                    self.present(self.systemAlertMessage(title: "Request Error", message: (self.coreTokenResultObject?.msg)!), animated: true, completion: nil)
                 }
             })
         }
@@ -281,7 +281,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
             do{
                 self.coreResultObject = try JSONDecoder().decode(responseCoreObject.self, from: data!)
             } catch {
-                self.present(self.systemAlertMessage(title: "Request Eror", message: dataString), animated: true, completion: nil)
+                self.present(self.systemAlertMessage(title: "Request Error", message: dataString), animated: true, completion: nil)
                 self.vLoading.isHidden = true
                 return
             }
@@ -301,7 +301,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
                         self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
                     }
                 }else{
-                    self.present(self.systemAlertMessage(title: "Request Eror", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
+                    self.present(self.systemAlertMessage(title: "Request Error", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
                     self.headerController.your_stamp.text = "\(0)"
                 }
                 // hide stich here
@@ -376,7 +376,8 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
             self.firebase_id = self.fid
         } else {
             // use default FID from JNZ UAT
-            self.firebase_id = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
+            // self.firebase_id = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
+            self.present(self.systemAlertMessage(title: "Alert", message: "Firebase ID Not Found"), animated: true, completion: nil)
         }
         
         self.lowerController.firebase_id = self.firebase_id
@@ -472,8 +473,6 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
                 self.requestGameDetail()
             }
         } /*else{
-            
-            
             // Request Game Detail
              if let game_uuid = self.coreResultObject?.data?.game.game_uuid{
              let requestUrl = "game/" + game_uuid
@@ -648,7 +647,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
                 do {
                     self.gameDetailResultObject = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
                 } catch {
-                    self.present(self.systemAlertMessage(title: "Request Eror", message: "Response Game Detail. Data wrong" + dataString), animated: true, completion: nil)
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "Response Game Detail. Data wrong" + dataString), animated: true, completion: nil)
                     self.vLoading.isHidden = true
                     return
                 }

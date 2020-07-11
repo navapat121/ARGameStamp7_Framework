@@ -16,6 +16,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
     @IBOutlet weak var skipBtn: UIButton!
     var gameDetail:responseGameDetailObject?
     var resultUpdateFirstTime:responseGameDetailObject?
+    var is_tutorial:Int? = 0
     var firebase_id:String?
     var strUrl:String = ""
     var requestType:String = ""
@@ -126,7 +127,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
             do{
                 self.resultUpdateFirstTime = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
             } catch{
-                self.present(self.systemAlertMessage(title: "Request Eror", message: "Response upadate first time. Data wrong. " + dataString), animated: true, completion: nil)
+                self.present(self.systemAlertMessage(title: "Request Error", message: "Response upadate first time. Data wrong. " + dataString), animated: true, completion: nil)
                 return
             }
             
@@ -136,7 +137,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
                 if ((self.resultUpdateFirstTime?.code)! == 0){
                     self.dismiss(animated: false, completion: nil)
                 } else {
-                    self.present(self.systemAlertMessage(title: "Request Eror", message: "Request data not Success: " + (self.resultUpdateFirstTime?.msg)!), animated: true, completion: nil)
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.resultUpdateFirstTime?.msg)!), animated: true, completion: nil)
                     self.performSegue(withIdentifier: "tutorial_to_home", sender: nil)
                 }
             })
@@ -145,10 +146,20 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
     }
     
     func createSlides(){
-        for i in 1...13 {
-            let oneSlide:SlideView = ARGameBundle()!.loadNibNamed("Slide", owner: self, options: nil)?.first as! SlideView
-            oneSlide.page1.image = UIImage(named: "in game tutorial-\(i)", in: ARGameBundle(), compatibleWith: nil)
-            slides.append(oneSlide)
+        // Image not in first time tutorial 2, 3, 6, 7, 8, 9, 10, 11
+        if(self.is_tutorial == 1){
+            let array = [1,4,5,12]
+            for i in array{
+                let oneSlide:SlideView = ARGameBundle()!.loadNibNamed("Slide", owner: self, options: nil)?.first as! SlideView
+                oneSlide.page1.image = UIImage(named: "tutorial_in_game_tutorial_\(i)", in: ARGameBundle(), compatibleWith: nil)
+                slides.append(oneSlide)
+            }
+        } else {
+            for i in 1...12 {
+                let oneSlide:SlideView = ARGameBundle()!.loadNibNamed("Slide", owner: self, options: nil)?.first as! SlideView
+                oneSlide.page1.image = UIImage(named: "tutorial_in_game_tutorial_\(i)", in: ARGameBundle(), compatibleWith: nil)
+                slides.append(oneSlide)
+            }
         }
     }
     
@@ -167,7 +178,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
         let pageIndex = round(scrollView.contentOffset.x/view.frame.width)
         pageControl.currentPage = Int(pageIndex)
         
-        if(Int(pageIndex) == 12){
+        if(Int(pageIndex) == (slides.count - 1)){
             playButton.isHidden = false
             self.skipBtn.isHidden = true
         } else {

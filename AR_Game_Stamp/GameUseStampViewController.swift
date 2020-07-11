@@ -29,6 +29,7 @@ class GameUseStampViewController: UIViewController {
     var url:URL?
     var responseData:Data?
     var responseStatus:Int?
+    var is_tutorial:Int? = 0
     
 
     @IBOutlet weak var tutorialBtn: UIButton!
@@ -129,6 +130,7 @@ class GameUseStampViewController: UIViewController {
             
             // Send parameter To GamePlay
             //print(sourceViewController.gameDetailResultObject)
+            destinationViewController.is_tutorial = sourceViewController.is_tutorial
             destinationViewController.firebase_id = sourceViewController.firebase_id
             destinationViewController.gameDetail = sourceViewController.gameDetailResultObject
             sourceViewController.present(destinationViewController, animated: false, completion: nil)
@@ -501,6 +503,7 @@ class GameUseStampViewController: UIViewController {
                             self.loadingImage.isHidden = true
                             self.loading_ani.isHidden = true
                             self.loading_ani.stop()
+                            self.is_tutorial = 1
                             self.performSegue(withIdentifier: "tutorialFirstTime", sender: nil)
                         } else {
                             self.performSegue(withIdentifier: "useStamp_to_webView", sender: self)
