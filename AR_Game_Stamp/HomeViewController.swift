@@ -107,6 +107,15 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
         if(self.coreTokenResultObject?.msg != nil){
             //self.present(systemAlertMessage(title: "Request Error", message: (self.coreTokenResultObject?.msg)!), animated: true, completion: nil)
         }
+        if((self.fid) != nil){
+            // use FID from main app
+            self.firebase_id = self.fid
+        } else {
+            // use default FID from JNZ UAT
+            // self.firebase_id = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
+            self.vLoading.isHidden = true
+            self.present(self.systemAlertMessage(title: "Alert", message: "Firebase ID Not Found"), animated: true, completion: nil)
+        }
     }
     
     func requestCoreToken() {
@@ -371,19 +380,20 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
         //=========================
         //*** Core Token ***
         //=========================
+        //self.fid = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
         if((self.fid) != nil){
             // use FID from main app
             self.firebase_id = self.fid
         } else {
             // use default FID from JNZ UAT
             // self.firebase_id = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
-            self.present(self.systemAlertMessage(title: "Alert", message: "Firebase ID Not Found"), animated: true, completion: nil)
+            self.vLoading.isHidden = true
         }
         
         self.lowerController.firebase_id = self.firebase_id
         self.headerController.firebase_id = self.firebase_id
         if(self.firebase_id == ""){
-            requestCoreToken()
+            //requestCoreToken()
         } else {
             requestCore()
         }
