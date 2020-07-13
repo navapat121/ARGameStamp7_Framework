@@ -334,7 +334,14 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
                 if((self.coreResultObject?.code)! == 0){
                     self.lowerController.coreResultObject = self.coreResultObject
                     self.headerController.coreResultObject = self.coreResultObject
-                    self.headerController.your_stamp.text = "\((self.coreResultObject?.data?.mstamp)!)"
+                    
+                    let currencyFormatter = NumberFormatter()
+                    currencyFormatter.usesGroupingSeparator = true
+                    currencyFormatter.numberStyle = .decimal
+                    currencyFormatter.locale = Locale.current
+
+                    let priceString = currencyFormatter.string(from: NSNumber(value: (self.coreResultObject?.data?.mstamp)!))!
+                    self.headerController.your_stamp.text = "\(priceString)"
                     if(self.playgame){
                         self.requestGameDetail()
                         self.playgame = false
@@ -368,31 +375,13 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
         } catch  {
             print("Fail to register font")
         }
-        
-        // Request Lat, Long from Device
-        let locManager = CLLocationManager()
-        locManager.requestWhenInUseAuthorization()
-        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
-            CLLocationManager.authorizationStatus() == .authorizedAlways)
-        {
-            if(locManager.location?.coordinate.latitude != nil && locManager.location?.coordinate.longitude != nil){
-                self.lat = locManager.location?.coordinate.latitude
-                self.long = locManager.location?.coordinate.longitude
-            } else {
-                //self.present(systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-                print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
-            }
-        } else {
-            //self.present(systemAlertMessage(title: "Unauthorize Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-            print("Unauthorize Location: Cannot recieve Lat,Long from device. Using Default location")
-        }
-        
         /*UIFont.familyNames.forEach { (font) in
             print("Family Name: \(font)")
             UIFont.fontNames(forFamilyName: font).forEach({name in
                 print("--Font Name: \(name)")
             })
         }*/
+        
         ARGameEnv.shared.updateEnv(newEnv: sevenEnv)
         if UIDevice().userInterfaceIdiom == .phone {
         switch UIScreen.main.nativeBounds.height {
@@ -430,6 +419,23 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
         lottieLoading.play()
         
         setupLocationManager()
+        // Request Lat, Long from Device
+        let locManager = CLLocationManager()
+        locManager.requestWhenInUseAuthorization()
+        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == .authorizedAlways)
+        {
+            if(locManager.location?.coordinate.latitude != nil && locManager.location?.coordinate.longitude != nil){
+                self.lat = locManager.location?.coordinate.latitude
+                self.long = locManager.location?.coordinate.longitude
+            } else {
+                //self.present(systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
+                print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
+            }
+        } else {
+            //self.present(systemAlertMessage(title: "Unauthorize Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
+            print("Unauthorize Location: Cannot recieve Lat,Long from device. Using Default location")
+        }
         //=========================
         //*** Core Token ***
         //=========================

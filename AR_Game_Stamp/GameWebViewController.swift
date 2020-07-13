@@ -75,9 +75,9 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         gameWebView.navigationDelegate = self
         
         // Disabled Cache
-        //let websiteDataTypes = NSSet(array: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache])
-        //let date = Date(timeIntervalSince1970: 0)
-        //WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set<String>, modifiedSince: date, completionHandler:{ })
+        let websiteDataTypes = NSSet(array: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache])
+        let date = Date(timeIntervalSince1970: 0)
+        WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set<String>, modifiedSince: date, completionHandler:{ })
         //gameWebView = wkWebView_display
         self.automaticallyAdjustsScrollViewInsets = false
     }
@@ -143,6 +143,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
             }
         }
         
+        let timetick = NSDate().timeIntervalSince1970
         switch webType {
         // Stamp book
         case 1:
@@ -155,7 +156,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         // Mission Gallery
         case 2:
             urlTemp = "\(mainUrlBws)Mission/Select_Mission.php?firebase_id=1234&game_uuid=1234"
-            urlFull = "\(mainUrlBws)Mission/Select_Mission.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
+            urlFull = "\(mainUrlBws)Mission/Select_Mission.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)&mstamp=\(mstamp)&timetrick=\(timetick)"
             //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x204651)
@@ -351,7 +352,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 // Close from WebView
             else if (webView.url?.absoluteString.contains("close"))! {
                 // webView now use "closeWebView" as signal
-                SoundController.shared.playClickButton()
+                //SoundController.shared.playClickButton()
                 self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
             }else if (webView.url?.absoluteString.contains("nextpage"))! {
                 SoundController.shared.playClickButton()
