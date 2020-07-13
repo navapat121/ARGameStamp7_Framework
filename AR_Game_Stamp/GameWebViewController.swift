@@ -179,9 +179,12 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
             break
         // Donate
         case 5:
-            urlTemp = "\(mainUrl)donate"
-            urlFull = "\(mainUrl)donate?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
-            //url = URL(string:urlFull)!
+            // Donate stil not use
+            //urlTemp = "\(mainUrl)donate"
+            //urlFull = "\(mainUrl)donate?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
+            //global-maps/all-premium?mstamp=20000&game_uuid=c97dd402-b900-11ea-bf1c-24359e7a8738&firebase_id=V98MW1GtsMPjMiZjoICCTOPnDXu2"
+            urlTemp = "\(mainUrl)global-maps/all-premium"
+            urlFull = "\(mainUrl)global-maps/all-premium?game_uuid=\(game_uuid!)&firebase_id=\(firebase_id)"
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x00c6c1)
             break

@@ -271,11 +271,10 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
         // Create URL Request
         var request = URLRequest(url: requestUrl)
         
-        var json: [String: Any] = ["is_accept": "",
-                                   "mstamp": ""]
+        //var json: [String: Any] = ["is_accept": false,"mstamp": ""]
         // insert json data to the request
-        let jsonData = (try? JSONSerialization.data(withJSONObject: json))!
-        request.httpBody = jsonData
+        //let jsonData = (try? JSONSerialization.data(withJSONObject: json))!
+        //request.httpBody = jsonData
         // insert json data to the request
         /*
          if(requestData != nil && requestType == "POST"){

@@ -601,8 +601,8 @@
                                                     <segue destination="me2-CU-xT0" kind="custom" identifier="webview_stamp_Heavily_segue" customClass="GotoWebViewSegue" id="rVN-TT-rVL"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAa-0T-cxb">
-                                                <rect key="frame" x="226.66666666666669" y="0.0" width="55.333333333333314" height="66.333333333333329"/>
+                                            <button opaque="NO" contentMode="scaleAspectFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAa-0T-cxb">
+                                                <rect key="frame" x="226.66666666666666" y="0.0" width="56.333333333333329" height="66.333333333333329"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="iAa-0T-cxb" secondAttribute="height" multiplier="107:128" id="rUI-P0-J1p"/>
                                                 </constraints>
@@ -1291,7 +1291,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="6eC-zz-M8J"/>
+        <segue reference="KB3-fm-rdN"/>
         <segue reference="dFs-p4-Ecy"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -1309,7 +1309,7 @@
         <image name="border_time" width="231" height="251"/>
         <image name="btn_collection" width="215" height="257"/>
         <image name="btn_coupon" width="214" height="257"/>
-        <image name="btn_donate" width="215" height="257"/>
+        <image name="btn_donate" width="216" height="200"/>
         <image name="btn_heavystamp" width="181" height="217"/>
         <image name="btn_mission" width="215" height="257"/>
         <image name="btn_play" width="243" height="312"/>
@@ -1317,7 +1317,7 @@
         <image name="fill_progress_bar" width="611" height="48"/>
         <image name="green button no shadow" width="449" height="214"/>
         <image name="left arrow" width="76" height="107"/>
-        <image name="logo_premium" width="217" height="259"/>
+        <image name="logo_premium" width="218" height="201"/>
         <image name="red button example" width="449" height="227"/>
         <image name="right arrow" width="75" height="107"/>
         <image name="skip_button" width="242" height="117"/>
