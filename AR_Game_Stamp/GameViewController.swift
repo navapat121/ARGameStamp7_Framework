@@ -250,7 +250,7 @@ class GameViewController: UIViewController {
             let steps: Int = 1
             let duration = 0.01
             let rate = duration / Double(steps)
-            var rand = Int.random(in: 10 ..< 40)
+            let rand = Int.random(in: 10 ..< 40)
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                 self.counterProgess = 0
                 DispatchQueue.global().async {
@@ -424,7 +424,7 @@ class GameViewController: UIViewController {
             self.decreaseTimeAnimated.animation = Animation.filepath(str_minus_five!)
             // Decrease Time Effect
             let str_timer_minus =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/data", ofType: "json")
-            let imageProvider_timer_minus = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/images")
+            //let imageProvider_timer_minus = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/images")
             self.headerViewController.timereffect_animate.imageProvider = imageProvider_minus_five
             self.headerViewController.timereffect_animate.animation = Animation.filepath(str_timer_minus!)
             // MARK: Net
@@ -581,8 +581,8 @@ class GameViewController: UIViewController {
         special_url = []
         for stamp in self.stampList{
             if(stamp.is_catch){
-                var stampItem: [String: Any] = [
-                    "item_play_uuid": stamp.id,
+                let stampItem: [String: Any] = [
+                    "item_play_uuid": stamp.id as Any,
                     "item_is_special":stamp.special_stamp == 1 ? true : false,
                     "time_received":NSDate().timeIntervalSince1970
                 ]
@@ -594,7 +594,7 @@ class GameViewController: UIViewController {
         }
         
         let jsonObject: [String: Any] = [
-            "round_uuid": self.resultGameStartDetail?.data?.round_uuid,
+            "round_uuid": self.resultGameStartDetail?.data?.round_uuid as Any,
             "items":itemArray
         ]
         self.specialImgUrl = special_url
@@ -602,12 +602,12 @@ class GameViewController: UIViewController {
         if(self.gameDetail != nil){
             let requestData = (try? JSONSerialization.data(withJSONObject: jsonObject))!
             
-            var strUrl = "game/" + (self.gameDetail?.data?.game?.game_uuid)! + "/finish"
-            var requestType = "POST"
+            let strUrl = "game/" + (self.gameDetail?.data?.game?.game_uuid)! + "/finish"
+            let requestType = "POST"
             
             var url:URL? = URL(string: "")
-            var responseData:Data?
-            var responseStatus:Int? = nil
+            //var responseData:Data?
+            //var responseStatus:Int? = nil
             let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
             if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
                 let myURL = URL(string: encoded) {
@@ -634,7 +634,7 @@ class GameViewController: UIViewController {
             request.setValue((self.firebase_id)!, forHTTPHeaderField:"x-ar-signature" )
             
             // Send HTTP Request
-            var task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 
                 // Check if Error took place
                 if let error = error {
@@ -698,7 +698,7 @@ class GameViewController: UIViewController {
         
         // check what nodes are tapped
         let p = gestureRecognize.location(in: self.scnView)
-        let hitResults = self.scnView.hitTest(p, options: [:])
+        //let hitResults = self.scnView.hitTest(p, options: [:])
         // check that we clicked on at least one object
         /*if hitResults.count > 0 {
          // retrieved the first clicked object
@@ -1223,7 +1223,7 @@ class GameViewController: UIViewController {
         let imageList:[UIImageView] = [lowerView.img_1, lowerView.img_2, lowerView.img_3,lowerView.img_4,lowerView.img_5]
         var stampCatchList: [UIImage] = []
         var j = 0
-        for (i,stamp) in stampList.enumerated(){
+        for (stamp) in stampList{
             if(stamp.is_catch && stamp.stamp_type == 0){
                 j += 1
                 if(j > self.start_index_preview){

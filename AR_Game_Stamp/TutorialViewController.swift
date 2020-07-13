@@ -186,15 +186,15 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
             playButton.isHidden = true
         }
         
-        let maximumHorizontalOffset: CGFloat = scrollView.contentSize.width - scrollView.frame.width
-        let currentHorizontalOffset: CGFloat = scrollView.contentOffset.x
+        //let maximumHorizontalOffset: CGFloat = scrollView.contentSize.width - scrollView.frame.width
+        //let currentHorizontalOffset: CGFloat = scrollView.contentOffset.x
         
         // vertical
-        let maximumVerticalOffset: CGFloat = scrollView.contentSize.height - scrollView.frame.height
-        let currentVerticalOffset: CGFloat = scrollView.contentOffset.y
+        //let maximumVerticalOffset: CGFloat = scrollView.contentSize.height - scrollView.frame.height
+        //let currentVerticalOffset: CGFloat = scrollView.contentOffset.y
         
-        let percentageHorizontalOffset: CGFloat = currentHorizontalOffset / maximumHorizontalOffset
-        let percentageVerticalOffset: CGFloat = currentVerticalOffset / maximumVerticalOffset
+        //let percentageHorizontalOffset: CGFloat = currentHorizontalOffset / maximumHorizontalOffset
+        //let percentageVerticalOffset: CGFloat = currentVerticalOffset / maximumVerticalOffset
         
         
         /*
@@ -206,7 +206,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
         /*
          * below code scales the imageview on paging the scrollview
          */
-        let percentOffset: CGPoint = CGPoint(x: percentageHorizontalOffset, y: percentageVerticalOffset)
+        //let percentOffset: CGPoint = CGPoint(x: percentageHorizontalOffset, y: percentageVerticalOffset)
         
         /*if(percentOffset.x > 0 && percentOffset.x <= 0.25) {
          

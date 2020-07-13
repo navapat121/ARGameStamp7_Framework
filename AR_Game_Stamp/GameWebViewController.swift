@@ -47,7 +47,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     @IBOutlet weak var animationLoading: AnimationView!
     override func loadView() {
         super.loadView()
-        let webConfiguration = WKWebViewConfiguration()
+        //let webConfiguration = WKWebViewConfiguration()
         let source: String = "var meta = document.createElement('meta');" +
         "meta.name = 'viewport';" +
         "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
@@ -255,7 +255,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                         // coupon to object
                         
                         var m_stampArrayRewardData:[couponRewardData] = []
-                        var m_stampOpenOpenOneData:[couponRewardData] = []
+                        var _:[couponRewardData] = []
                         //let couponRewardDataArray: [couponRewardData] = [couponRewardData]
                         // create array for SendDataToOpenReward
                         
@@ -266,7 +266,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                         encodeData.data.mstamps = []
                         encodeData.data.mstamps_open = m_stampArrayRewardData
                     }else{
-                        let emptyArGameDataArray: [couponRewardData?] = []
+                        //let emptyArGameDataArray: [couponRewardData?] = []
                         encodeData.data.mstamps = []
                         encodeData.data.mstamps_open = []
                     }
@@ -294,9 +294,9 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 // Encode
                 //let catchStampData = (try? JSONSerialization.data(withJSONObject: self.catchStamp))!
                 //let jsonCatchStamp = try! JSON(data: catchStampData)
-                var encodeData:SendDataToOpenReward?
+                //var encodeData:SendDataToOpenReward?
                 var json:String?
-                var jsonToSend:Data?
+                //var jsonToSend:Data?
                 if(self.gameFinishObject?.data?.ar_game != nil){
                     
                     var encodeData:SendDataToSummary = SendDataToSummary(data: [])
@@ -304,7 +304,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                     
                     if let dataLoop = self.gameFinishObject?.data?.ar_game{
                         for items in dataLoop{
-                            var summaryData:summaryWebViewData = summaryWebViewData(uuid: (items?.item_uuid!)!, image_url: (items?.image_url!)!, quality: (items?.receive!)!)
+                            let summaryData:summaryWebViewData = summaryWebViewData(uuid: (items?.item_uuid!)!, image_url: (items?.image_url!)!, quality: (items?.receive!)!)
                             summaryArray.append(summaryData)
                         }
                         encodeData.data.append(contentsOf: summaryArray)
@@ -324,7 +324,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 var request = URLRequest(url: url)
                 request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
                 request.httpMethod = "POST"
-                let encodeData:SendDataToGameDetail = SendDataToGameDetail(data:self.gameDetailObject!)
+                //let encodeData:SendDataToGameDetail = SendDataToGameDetail(data:self.gameDetailObject!)
                 let jsonEncoder = JSONEncoder()
                 let jsonData = try! jsonEncoder.encode(self.gameDetailObject!)
                 let json = String(data: jsonData, encoding: String.Encoding.utf8)
@@ -339,7 +339,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         // Add observation.
         urlObservation = gameWebView.observe(\.url, changeHandler: { (webView, change) in
             //self.vLoading.isHidden = false
-            print(webView.url?.absoluteString)
+            //print(webView.url?.absoluteString!)
             if(webView.url?.absoluteString == "https://argame-dev.7eleven-game.com/"){
                 //SoundController.shared.playClickButton()
                 self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
@@ -367,7 +367,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                     // Encode
                     //let catchStampData = (try? JSONSerialization.data(withJSONObject: self.catchStamp))!
                     //let jsonCatchStamp = try! JSON(data: catchStampData)
-                    var encodeData:SendDataToOpenReward?
+                    //var encodeData:SendDataToOpenReward?
                     var json:String?
                     if(self.gameFinishObject?.data?.ar_game != nil){
                         
@@ -376,7 +376,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                         
                         if let dataLoop = self.gameFinishObject?.data?.ar_game{
                             for items in dataLoop{
-                                var summaryData:summaryWebViewData = summaryWebViewData(uuid: (items?.item_uuid!)!, image_url: (items?.image_url!)!, quality: (items?.receive!)!)
+                                let summaryData:summaryWebViewData = summaryWebViewData(uuid: (items?.item_uuid!)!, image_url: (items?.image_url!)!, quality: (items?.receive!)!)
                                 summaryArray.append(summaryData)
                             }
                             encodeData.data.append(contentsOf: summaryArray)
@@ -401,7 +401,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 }
                 
             }else if (webView.url?.absoluteString.contains("share"))! {
-                print(webView.url?.query)
+                //print(webView.url?.query)
                 let urlString = webView.url?.query?.split(separator: "=")
                 let resultString = (urlString![1])
                 
@@ -436,11 +436,11 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         
         // -----------------
         //MARK: Core
-        var strUrl = "core"
-        var requestType = "POST"
+        let strUrl = "core"
+        let requestType = "POST"
         
         var url:URL? = URL(string: "")
-        var responseData:Data?
+        //var responseData:Data?
         var responseStatus:Int? = nil
         let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
@@ -452,7 +452,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         
         // Create URL Request
         var request = URLRequest(url: requestUrl)
-        var json: [String: Any] = ["is_accept": true,
+        let json: [String: Any] = ["is_accept": true,
                                    "mstamp": self.mstamp]
         // insert json data to the request
         let jsonData = (try? JSONSerialization.data(withJSONObject: json))!
@@ -478,10 +478,10 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         
         //let semaphore = DispatchSemaphore(value: 0)
         // Send HTTP Request
-        var task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
             // Check if Error took place
-            if let error = error {
+            if error != nil {
                 //print("Error took place \(error)")
                 // move all statusCode != 200 to here
                 // Read HTTP Response Status code

@@ -44,7 +44,6 @@ class GameUseStampViewController: UIViewController {
     @IBOutlet weak var loadinfText: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        let arEnv = ARGameEnv.shared.env
         let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
         let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
         //loading_ani.contentMode = UIView.ContentMode.scaleToFill
@@ -233,7 +232,7 @@ class GameUseStampViewController: UIViewController {
             
             //let semaphore = DispatchSemaphore(value: 0)
             // Send HTTP Request
-            var task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 
                 // Check if Error took place
                 if let error = error {
@@ -365,7 +364,7 @@ class GameUseStampViewController: UIViewController {
         
         //let semaphore = DispatchSemaphore(value: 0)
         // Send HTTP Request
-        var task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
             // Check if Error took place
             if let error = error {
@@ -474,7 +473,7 @@ class GameUseStampViewController: UIViewController {
             
             //let semaphore = DispatchSemaphore(value: 0)
             // Send HTTP Request
-            var task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 
                 // Check if Error took place
                 if let error = error {
