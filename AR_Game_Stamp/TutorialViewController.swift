@@ -71,7 +71,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
         requestType = "PUT"
         
         url = URL(string: "")
-        let apiOriginal = "\(DataFactory.apiUrlMain)\(strUrl)"
+        let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let myURL = URL(string: encoded) {
             url = myURL

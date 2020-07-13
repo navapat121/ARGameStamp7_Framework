@@ -44,6 +44,7 @@ class GameUseStampViewController: UIViewController {
     @IBOutlet weak var loadinfText: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
+        let arEnv = ARGameEnv.shared.env
         let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
         let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
         //loading_ani.contentMode = UIView.ContentMode.scaleToFill
@@ -193,9 +194,8 @@ class GameUseStampViewController: UIViewController {
         if let game_uuid = self.coreResultObject?.data?.game?.game_uuid {
             strUrl = "game/" + game_uuid + "/use-mstamp"
             requestType = "POST"
-            
             url = URL(string: "")
-            let apiOriginal = "\(DataFactory.apiUrlMain)\(strUrl)"
+            let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
             if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
                 let myURL = URL(string: encoded) {
                 url = myURL
@@ -326,8 +326,7 @@ class GameUseStampViewController: UIViewController {
         
         strUrl = "game/" + (self.gameDetailResultObject?.data?.game?.game_uuid)! + "/start"
         requestType = "POST"
-        
-        let apiOriginal = "\(DataFactory.apiUrlMain)\(strUrl)"
+        let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let myURL = URL(string: encoded) {
             url = myURL
@@ -435,8 +434,7 @@ class GameUseStampViewController: UIViewController {
             
             strUrl = "game/" + game_uuid + "?lat=\(self.lat!)&long=\(self.long!)"
             requestType = "GET"
-            
-            let apiOriginal = "\(DataFactory.apiUrlMain)\(strUrl)"
+            let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
             if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
                 let myURL = URL(string: encoded) {
                 url = myURL
