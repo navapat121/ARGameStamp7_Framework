@@ -350,7 +350,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
             }*/
                 // Close from WebView
-            else if (webView.url?.absoluteString.contains("close"))! {
+            else if ((webView.url?.absoluteString.contains("close"))! || (webView.url?.absoluteString.contains("back"))!) {
                 // webView now use "closeWebView" as signal
                 //SoundController.shared.playClickButton()
                 self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
