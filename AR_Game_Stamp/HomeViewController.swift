@@ -434,7 +434,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
         //=========================
         //*** Core Token ***
         //=========================
-        self.fid = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
+        //self.fid = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
         if((self.fid) != nil){
             // use FID from main app
             self.firebase_id = self.fid
