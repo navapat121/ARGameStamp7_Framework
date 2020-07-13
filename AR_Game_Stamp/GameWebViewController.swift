@@ -341,7 +341,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
             //self.vLoading.isHidden = false
             print(webView.url?.absoluteString)
             if(webView.url?.absoluteString == "https://argame-dev.7eleven-game.com/"){
-                SoundController.shared.playClickButton()
+                //SoundController.shared.playClickButton()
                 self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
             }
                 // back from WebView
