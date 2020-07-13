@@ -11,7 +11,7 @@ DESC
   spec.platform     = :ios, "10.0"
   #spec.source       = { :http => 'file:' + __dir__ + "/" }
   spec.source       = { :git => "https://github.com/navapat121/ARGameStamp7_Framework.git", :tag => "1.0.0" }
-  spec.source_files = "AR_Game_Stamp"
+  spec.source_files = "AR_Game_Stamp/*.swift"
   spec.resource = ['AR_Game_Stamp/**/ARgame.storyboard' , 
     'AR_Game_Stamp/**/Assets.xcassets', 
     'AR_Game_Stamp/Asset', 
