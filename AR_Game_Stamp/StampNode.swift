@@ -8,7 +8,7 @@
 
 import SceneKit
 
-class Stamp : SCNNode {
+class ARStampObject : SCNNode {
     let frameworkBundle = Bundle(identifier: "org.cocoapods.ARGameStamp7-11")
     var id: String!
     var stampName: String!

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SlideView: UIView {
+class GameTutorialSlideView: UIView {
 
     @IBOutlet weak var page1: UIImageView!
     /*

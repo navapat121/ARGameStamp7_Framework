@@ -38,6 +38,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     var jsonData:Data?
     var urlFull = ""
     var urlTemp = ""
+    var previousUrl = ""
     let isUseUrlTemp:Bool = false
     var lat:Double?
     var long:Double?
@@ -355,7 +356,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 //SoundController.shared.playClickButton()
                 self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
             }else if (webView.url?.absoluteString.contains("nextpage"))! {
-                SoundController.shared.playClickButton()
+                ARGameSoundController.shared.playClickButton()
                 // MARK:Stamp Summary
                 //self.urlTemp = "\(self.mainUrlBws)/postTest.php"
                 self.urlTemp = "\(self.mainUrlBws)StampSummary/Stamp_Summary.php?firebase_id=\(self.firebase_id)&game_uuid=\(self.game_uuid!)"
@@ -419,6 +420,8 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                     // User completed activity
                 }
                 self.present(activityVC, animated: false, completion: nil)
+            }else if (webView.url?.absoluteString.contains("sharecomplete"))! {
+                self.gameWebView.goBack()
             }else if (webView.url?.absoluteString.contains("agreement_success"))! {
                 self.requestCore()
             }

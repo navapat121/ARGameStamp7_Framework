@@ -23,7 +23,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
     var url:URL?
     var responseData:Data?
     var responseStatus:Int?
-    var slides:[SlideView] = [];
+    var slides:[GameTutorialSlideView] = [];
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,13 +49,13 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
 
     @objc
     func playFromTutorialButtonAction(sender:UIButton){
-        SoundController.shared.playClickButton()
+        ARGameSoundController.shared.playClickButton()
         submitFirstTime()
     }
     
     @objc
     func skipTutorial(sender:UIButton){
-        SoundController.shared.playClickButton()
+        ARGameSoundController.shared.playClickButton()
         self.skipBtn.isHidden = true
         let bottomOffset = CGPoint(x: pageView.contentSize.width - pageView.bounds.size.width, y: 0)
         pageView.setContentOffset(bottomOffset, animated: true)
@@ -150,20 +150,20 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
         if(self.is_tutorial == 1){
             let array = [1,4,5,12]
             for i in array{
-                let oneSlide:SlideView = ARGameBundle()!.loadNibNamed("Slide", owner: self, options: nil)?.first as! SlideView
+                let oneSlide:GameTutorialSlideView = ARGameBundle()!.loadNibNamed("GameTutorialSlide", owner: self, options: nil)?.first as! GameTutorialSlideView
                 oneSlide.page1.image = UIImage(named: "tutorial_in_game_tutorial_\(i)", in: ARGameBundle(), compatibleWith: nil)
                 slides.append(oneSlide)
             }
         } else {
             for i in 1...12 {
-                let oneSlide:SlideView = ARGameBundle()!.loadNibNamed("Slide", owner: self, options: nil)?.first as! SlideView
+                let oneSlide:GameTutorialSlideView = ARGameBundle()!.loadNibNamed("GameTutorialSlide", owner: self, options: nil)?.first as! GameTutorialSlideView
                 oneSlide.page1.image = UIImage(named: "tutorial_in_game_tutorial_\(i)", in: ARGameBundle(), compatibleWith: nil)
                 slides.append(oneSlide)
             }
         }
     }
     
-    func setupSlideScrollView(slides : [SlideView]) {
+    func setupSlideScrollView(slides : [GameTutorialSlideView]) {
         pageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
         pageView.contentSize = CGSize(width: view.frame.width * CGFloat(slides.count), height: view.frame.height)
         pageView.isPagingEnabled = true

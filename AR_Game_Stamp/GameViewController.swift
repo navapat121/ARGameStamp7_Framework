@@ -133,7 +133,7 @@ class GameViewController: UIViewController {
     var frameworkBundle:Bundle?
     // #####################
     
-    var stampList :[Stamp] = []
+    var stampList :[ARStampObject] = []
     // On game running
     var gameRunning:Bool = true
     var target_stamp_index = 0
@@ -214,7 +214,7 @@ class GameViewController: UIViewController {
         
         if (segue.identifier == "timeup_to_home_segue") {
             // pass data to next view
-            weak var viewController = segue.destination as? HomeViewController
+            weak var viewController = segue.destination as? ARGameHomeViewController
             viewController!.coreResultObject = self.coreResultObject
             viewController!.gameFinishResultObject = self.gameFinishResultObject
             viewController!.specialImgUrl = self.specialImgUrl
@@ -296,21 +296,21 @@ class GameViewController: UIViewController {
                 
                 let str = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Countdown/data", ofType: "json")
                 let imageProvider = BundleImageProvider(bundle: (self.ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Countdown/images")
-                SoundController.shared.playCountDownSFX()
+                ARGameSoundController.shared.playCountDownSFX()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                    SoundController.shared.playCountDownSFX()
+                    ARGameSoundController.shared.playCountDownSFX()
                 })
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                    SoundController.shared.playCountDownSFX()
+                    ARGameSoundController.shared.playCountDownSFX()
                 })
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                    SoundController.shared.playStartSFX()
+                    ARGameSoundController.shared.playStartSFX()
                 })
                 //self.startAnimation.contentMode = UIView.ContentMode.scaleToFill
                 self.startAnimation.imageProvider = imageProvider
                 self.startAnimation.animation = Animation.filepath(str!)
                 self.startAnimation.play{(finished) in
-                    SoundController.shared.playBGMGameplay()
+                    ARGameSoundController.shared.playBGMGameplay()
                     self.headerViewController.timer_animate.play()
                     for stamp in self.stampList {
                         if(stamp.special_stamp == 0){
@@ -526,17 +526,17 @@ class GameViewController: UIViewController {
          }*/
     }
     @objc func muteAction(sender:UIButton){
-        SoundController.shared.sound_on = !SoundController.shared.sound_on
-        if(SoundController.shared.sound_on){
+        ARGameSoundController.shared.sound_on = !ARGameSoundController.shared.sound_on
+        if(ARGameSoundController.shared.sound_on){
             self.headerViewController.muteBtn.setImage(UIImage(named: "sound on", in: ARGameBundle(), compatibleWith: nil), for: UIControl.State.normal)
             if(self.seconds > 10){
-                SoundController.shared.playBGMGameplay()
+                ARGameSoundController.shared.playBGMGameplay()
             } else {
-                SoundController.shared.playBGMSpeicalGameplay()
+                ARGameSoundController.shared.playBGMSpeicalGameplay()
             }
         } else {
             self.headerViewController.muteBtn.setImage(UIImage(named: "sound off", in: ARGameBundle(), compatibleWith: nil), for: UIControl.State.normal)
-            SoundController.shared.stopBackgroundSound()
+            ARGameSoundController.shared.stopBackgroundSound()
         }
     }
     @objc func previousAction(sender: UIButton!) {
@@ -553,7 +553,7 @@ class GameViewController: UIViewController {
         override func perform() {
 
             let sourceViewController = self.source as! GameViewController
-            let destinationViewController = self.destination as! HomeViewController
+            let destinationViewController = self.destination as! ARGameHomeViewController
             
             /*var stampSumList:[stampSummary] = []
              for stamp in sourceViewController.stampList{
@@ -598,7 +598,7 @@ class GameViewController: UIViewController {
             "items":itemArray
         ]
         self.specialImgUrl = special_url
-        SoundController.shared.stopBGMSpeicalGameplay()
+        ARGameSoundController.shared.stopBGMSpeicalGameplay()
         if(self.gameDetail != nil){
             let requestData = (try? JSONSerialization.data(withJSONObject: jsonObject))!
             
@@ -752,7 +752,7 @@ class GameViewController: UIViewController {
                 let tapedStamp = stampList[index!]
                 tapedStamp.hitCount += self.state_power_up ? 2 : 1
                 if(tapedStamp.stamp_type == 0){
-                    SoundController.shared.playPopEffect()
+                    ARGameSoundController.shared.playPopEffect()
                     
                     // Update HP bar
                     var hit_percent = Float(tapedStamp.hitCount)/Float(tapedStamp.hp)
@@ -771,7 +771,7 @@ class GameViewController: UIViewController {
                     self.headerViewController.preview_small_stamp.image = tapedStamp.stampImg
                     self.headerViewController.hp_label.text = "\(tapedStamp.hitCount!)/\(tapedStamp.hp!)"
                 } else if(tapedStamp.stamp_type == 1){
-                    SoundController.shared.playTapBombStamp()
+                    ARGameSoundController.shared.playTapBombStamp()
                     self.bombAnimated.play()
                     self.timer_realtime =  Int(self.headerViewController.timer_animate.realtimeAnimationFrame)
                     print(timer_realtime)
@@ -782,13 +782,13 @@ class GameViewController: UIViewController {
                         let imageProvider_timer_minus = BundleImageProvider(bundle: (self.ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Reduce Time/images")
                         self.headerViewController.timereffect_animate.imageProvider = imageProvider_timer_minus
                         self.headerViewController.timereffect_animate.animation = Animation.filepath(str_timer_minus!)
-                        SoundController.shared.playTimeTick()
+                        ARGameSoundController.shared.playTimeTick()
                         self.headerViewController.timereffect_animate.play()
                         self.decreaseTimeAnimated.play()
                         //self.bombAnimated.play()
                     }
                 } else if(tapedStamp.stamp_type == 2){
-                    SoundController.shared.playTapHourGlassStamp()
+                    ARGameSoundController.shared.playTapHourGlassStamp()
                     self.hourGlassAnimated.play()
                     self.timer_realtime =  Int(self.headerViewController.timer_animate.realtimeAnimationFrame)
                      print(timer_realtime)
@@ -801,14 +801,14 @@ class GameViewController: UIViewController {
                         self.headerViewController.timereffect_animate.animation = Animation.filepath(str_timer_plus!)
                         
                         
-                        SoundController.shared.playIncreaseTime()
-                        SoundController.shared.playTimeTick()
+                        ARGameSoundController.shared.playIncreaseTime()
+                        ARGameSoundController.shared.playTimeTick()
                         self.headerViewController.timereffect_animate.play()
                         self.increaseTimeAnimated.play()
                     }
                 } else if(tapedStamp.stamp_type == 3){
-                    SoundController.shared.playTapNetStamp()
-                    SoundController.shared.playPowerUp()
+                    ARGameSoundController.shared.playTapNetStamp()
+                    ARGameSoundController.shared.playPowerUp()
                     self.NetAnimated.play()
                     //self.netBGAnimated.loopMode = .loop
                     self.netBGAnimated.play()
@@ -1123,11 +1123,11 @@ class GameViewController: UIViewController {
                 //normal
                 if(i < 9){
                     normal_stamp_amount += 1
-                    stampList.append(Stamp(scene: scene, position: ramdPos, stampName: "stamp_\(i)", stamp_type: 0,hp: 10,level:5, id: String(i+1), index:i, stampImage: nil, special_stamp: 0, imgUrl: nil))
+                    stampList.append(ARStampObject(scene: scene, position: ramdPos, stampName: "stamp_\(i)", stamp_type: 0,hp: 10,level:5, id: String(i+1), index:i, stampImage: nil, special_stamp: 0, imgUrl: nil))
                 }
                     //special stamp
                 else {
-                    stampList.append(Stamp(scene: scene, position: ramdPos, stampName: "stamp_\(i)", stamp_type: 0,hp: 10,level: 10, id: String(i+1), index:i, stampImage: nil, special_stamp: 1, imgUrl: nil))
+                    stampList.append(ARStampObject(scene: scene, position: ramdPos, stampName: "stamp_\(i)", stamp_type: 0,hp: 10,level: 10, id: String(i+1), index:i, stampImage: nil, special_stamp: 1, imgUrl: nil))
                 }
             }
         } else { // CREATE STAMP FROM REQUEST
@@ -1176,7 +1176,7 @@ class GameViewController: UIViewController {
                             break
                         }
                         
-                        stampList.append(Stamp(scene: scene, position: ramdPos,
+                        stampList.append(ARStampObject(scene: scene, position: ramdPos,
                                                stampName: "\(stamp?.name!)",
                             stamp_type: stamp_type,
                             hp:(stamp?.hp)!,
@@ -1301,8 +1301,8 @@ extension GameViewController: SCNSceneRendererDelegate {
                 // MARK: Special TIME
                 if(!self.is_alert && self.seconds <= 20){
                     
-                    SoundController.shared.stopBGMGameplay()
-                    SoundController.shared.playAlertSpecialStamp()
+                    ARGameSoundController.shared.stopBGMGameplay()
+                    ARGameSoundController.shared.playAlertSpecialStamp()
                     let str_basket = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Basket Fly for loop/basketFly", ofType: "json")
                     self.basketAnimate.animation = Animation.filepath(str_basket!)
                     self.basketAnimate.loopMode = .loop
@@ -1331,7 +1331,7 @@ extension GameViewController: SCNSceneRendererDelegate {
                     self.alertViewController.specialAlertAnimate.isHidden = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                         self.headerViewController.timer_animate.play()
-                        SoundController.shared.playBGMSpeicalGameplay()
+                        ARGameSoundController.shared.playBGMSpeicalGameplay()
                     })
                 }
                 if(self.seconds <= 0 && !self.is_timeup){
@@ -1339,10 +1339,10 @@ extension GameViewController: SCNSceneRendererDelegate {
                     // Stop All Animation
                     self.headerViewController.netHeaderFlashAnimated.stop()
                     self.headerViewController.netHeaderFlashAnimated2.stop()
-                    SoundController.shared.stopPowerUp()
+                    ARGameSoundController.shared.stopPowerUp()
                     self.state_power_up = false
                     self.netBGAnimated.stop()
-                    SoundController.shared.stopBackgroundSound()
+                    ARGameSoundController.shared.stopBackgroundSound()
                     self.is_timeup = true
                     DispatchQueue.main.async {
                         self.alertViewController.view.isHidden = false
@@ -1352,7 +1352,7 @@ extension GameViewController: SCNSceneRendererDelegate {
                         self.alertViewController.light_timeupAnimate.isHidden = false
                         self.alertViewController.specialAlertAnimate.isHidden = true
                          self.alertViewController.bgAlpha.isHidden = false
-                        SoundController.shared.playTimeUpSFX()
+                        ARGameSoundController.shared.playTimeUpSFX()
                         self.alertViewController.light_timeupAnimate.play()
                         self.alertViewController.timeup_animate.play{(finished) in
                             //self.alertViewController.light_timeupAnimate.stop()
@@ -1402,7 +1402,7 @@ extension GameViewController: SCNSceneRendererDelegate {
                             //print(toPos)
                             UIView.animate(withDuration: 0.5, delay: 0.3, options: [], animations: {
                                 //let float:CGFloat
-                                SoundController.shared.playStampMoveToBasket()
+                                ARGameSoundController.shared.playStampMoveToBasket()
                                 self.stampPreview.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
                                 self.stampPreview.center.y = origin
                                 if(self.seconds > 10){
@@ -1413,7 +1413,7 @@ extension GameViewController: SCNSceneRendererDelegate {
                             }, completion: {(_ finished: Bool) -> Void in
                                 self.stampPreview?.transform = CGAffineTransform(scaleX: 1, y: 1)
                                 self.stampPreview.isHidden = true
-                                SoundController.shared.playRecieveStampToBasket()
+                                ARGameSoundController.shared.playRecieveStampToBasket()
                             })
                         }
                     }
@@ -1428,7 +1428,7 @@ extension GameViewController: SCNSceneRendererDelegate {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
                             self.headerViewController.netHeaderFlashAnimated.stop()
                             self.headerViewController.netHeaderFlashAnimated2.stop()
-                            SoundController.shared.stopPowerUp()
+                            ARGameSoundController.shared.stopPowerUp()
                             self.state_power_up = false
                             self.netBGAnimated.stop()
                         })

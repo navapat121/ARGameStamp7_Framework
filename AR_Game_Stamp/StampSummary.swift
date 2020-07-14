@@ -8,7 +8,7 @@
 
 import Foundation
 
-class stampSummary {
+class ARGameStampSummary {
     var item_uuid:String?
     var imageUrl:String?
     var quantity:Int?

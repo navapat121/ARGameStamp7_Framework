@@ -48,7 +48,7 @@ public protocol ARGameStampDelegate: class {
   func deeplinkToMainApp(to scheme: String)
 }
 
-public class HomeViewController : UIViewController, CLLocationManagerDelegate{
+public class ARGameHomeViewController : UIViewController, CLLocationManagerDelegate{
     public var sevenEnv: SevenEnvironment = .prod
     public var delegate: ARGameStampDelegate? // Link Main app
     public var fid:String? // Link firebase_ID from Main app
@@ -140,6 +140,8 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
         // Check request Data
         if(self.coreTokenResultObject?.msg != nil){
             //self.present(systemAlertMessage(title: "Request Error", message: (self.coreTokenResultObject?.msg)!), animated: true, completion: nil)
+        } else if(self.coreTokenResultObject?.code == 0){
+            requestCore()
         }
         if((self.fid) != nil){
             // use FID from main app
@@ -503,13 +505,13 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
     }
     @objc
        func coreBackToMain(sender:UIButton){
-        SoundController.shared.playClickButton()
+        ARGameSoundController.shared.playClickButton()
         self.dismiss(animated: true, completion: nil)
     }
     
     @objc
     func playButtonAction(sender:UIButton){
-        SoundController.shared.playClickButton()
+        ARGameSoundController.shared.playClickButton()
         self.playgame = true
         self.vLoading.isHidden = false
         self.lottieLoading.play()
@@ -577,7 +579,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
     }
     // MARK: CheckIn Button
     @objc func checkInButtonAction(sender: UIButton){
-        SoundController.shared.playClickButton()
+        ARGameSoundController.shared.playClickButton()
         self.webType = 3
         if !isConnectedToNetwork() {
             self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
@@ -589,7 +591,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
     
     @objc(GameViewForTestSegue) class GameViewForTestSegue: UIStoryboardSegue {
         override func perform() {
-            let sourceViewController = self.source as! HomeViewController
+            let sourceViewController = self.source as! ARGameHomeViewController
             let destinationViewController = self.destination as! GameViewController
             
             // Send parameter To GamePlay
@@ -602,12 +604,12 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
     // MARK: Core Function To WebView
     @objc(CoreGotoWebViewSegue) class CoreGotoWebViewSegue: UIStoryboardSegue {
         override func perform() {
-            SoundController.shared.playClickButton()
+            ARGameSoundController.shared.playClickButton()
             if !self.source.isConnectedToNetwork() {
                 self.source.present(self.source.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
                 return
             }
-            let sourceViewController = self.source as! HomeViewController
+            let sourceViewController = self.source as! ARGameHomeViewController
             let destinationViewController = self.destination as! GameWebViewController
             
             destinationViewController.webType = sourceViewController.webType
@@ -621,7 +623,7 @@ public class HomeViewController : UIViewController, CLLocationManagerDelegate{
     
     @objc(StampNoAnimationSegue) class StampNoAnimationSegue: UIStoryboardSegue {
         override func perform() {
-            let sourceViewController = self.source as! HomeViewController
+            let sourceViewController = self.source as! ARGameHomeViewController
             let destinationViewController = self.destination as! GameUseStampViewController
             
             // Send parameter To UseStampViewController
@@ -804,7 +806,7 @@ class HeaderVIewController: UIViewController {
                 self.source.parent!.present(self.source.parent!.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
                 return
             }
-            SoundController.shared.playClickButton()
+            ARGameSoundController.shared.playClickButton()
             let sourceViewController = self.source as! HeaderVIewController
             let destinationViewController = self.destination as! GameWebViewController
             
@@ -814,7 +816,7 @@ class HeaderVIewController: UIViewController {
            }
             // Checkin
            else if(self.identifier == "webview_checkin_segue"){
-            let homeview = self.source.parent! as! HomeViewController
+            let homeview = self.source.parent! as! ARGameHomeViewController
                 if(homeview.lat != nil && homeview.long != nil){
                     destinationViewController.lat = homeview.lat!
                     destinationViewController.long = homeview.long!
@@ -853,7 +855,7 @@ class LowerVIewController: UIViewController {
     
     @objc(GotoWebViewSegue) class GotoWebViewSegue: UIStoryboardSegue {
         override func perform() {
-            SoundController.shared.playClickButton()
+            ARGameSoundController.shared.playClickButton()
             if !self.source.parent!.isConnectedToNetwork() {
                 self.source.parent!.present(self.source.parent!.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
                 return

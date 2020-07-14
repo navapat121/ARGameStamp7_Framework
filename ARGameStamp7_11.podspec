@@ -26,6 +26,5 @@ DESC
   #  'Resource' => ['AR_Game_Stamp']
   #}
   spec.dependency 'lottie-ios', '~> 3.1.8'
-  spec.dependency 'SwiftyJSON', '~> 4.0'
   spec.swift_version = "5.0"
 end

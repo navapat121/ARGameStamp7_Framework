@@ -96,11 +96,11 @@ class GameUseStampViewController: UIViewController {
          })*/
     }
     @objc func goToTutorialAction(sender:UIButton) {
-        SoundController.shared.playClickButton()
+        ARGameSoundController.shared.playClickButton()
         self.performSegue(withIdentifier: "tutorialFirstTime", sender: nil)
     }
     @objc func buttonBack(sender:UIButton) {
-        SoundController.shared.playClickButton()
+        ARGameSoundController.shared.playClickButton()
         self.loadingBG.isHidden = false
         self.loadingImage.isHidden = false
         self.loading_ani.isHidden = false
@@ -108,7 +108,7 @@ class GameUseStampViewController: UIViewController {
         performSegue(withIdentifier: "useStampToHomeSegue", sender: self)
     }
     @objc func confirmButtonAction(sender:UIButton){
-        SoundController.shared.playClickButton()
+        ARGameSoundController.shared.playClickButton()
         self.loadingBG.isHidden = false
         self.loadingImage.isHidden = false
         self.loading_ani.isHidden = false
@@ -552,7 +552,7 @@ class GameUseStampViewController: UIViewController {
              }*/
         } else {
             if(!DataFactory.is_production){
-                SoundController.shared.playClickButton()
+                ARGameSoundController.shared.playClickButton()
                 self.present(systemAlertMessage(title: "Testing Mode", message: "Will GoToHome in 3 Seconds"), animated: true, completion: nil)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                         self.performSegue(withIdentifier: "useStampToHomeSegue", sender: self)

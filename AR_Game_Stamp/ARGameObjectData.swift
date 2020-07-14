@@ -7,28 +7,6 @@
 //
 
 import Foundation
-
-struct DefaultsKey<ValueType> {
-  private let key: String
-  private let defaultValue: ValueType
-
-  public init(_ key: String, defaultValue: ValueType) {
-    self.key = key
-    self.defaultValue = defaultValue
-  }
-
-  var value: ValueType {
-    get {
-      let value = UserDefaults.standard.object(forKey: key)
-      return value as? ValueType ?? defaultValue
-    }
-    set {
-      UserDefaults.standard.setValue(newValue, forKey: key)
-      UserDefaults.standard.synchronize()
-    }
-  }
-}
-
 //--------------------------------------//
 //       Core Object Response Data      //
 //--------------------------------------//

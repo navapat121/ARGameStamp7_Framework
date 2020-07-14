@@ -22,9 +22,9 @@
 
 import AVFoundation
 
-class SoundController {
+class ARGameSoundController {
     let frameworkBundle = Bundle(identifier: "org.cocoapods.ARGameStamp7-11")
-    static let shared = SoundController()
+    static let shared = ARGameSoundController()
     var sound_on = true
     var backgroundMusicPlayer: AVAudioPlayer?
     
