@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5502967724BF8A6C00564D4F /* Firebase.h in Headers */ = {isa = PBXBuildFile; fileRef = 5502967624BF8A6C00564D4F /* Firebase.h */; };
+		5502967924BF8A8D00564D4F /* FirebaseAnalytics in Resources */ = {isa = PBXBuildFile; fileRef = 5502967824BF8A8D00564D4F /* FirebaseAnalytics */; };
 		AA0EFE0424AF76D8004BF670 /* clickSFX.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AA0EFE0324AF76D8004BF670 /* clickSFX.mp3 */; };
 		AA7967BF249F2A0F0085B9FC /* GameWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7967BE249F2A0F0085B9FC /* GameWebViewController.swift */; };
+		AA7FE56324BF47A8005608B8 /* IntegradeFirebase.h in Headers */ = {isa = PBXBuildFile; fileRef = AA7FE56224BF47A8005608B8 /* IntegradeFirebase.h */; };
 		B6124EF724A9E82100FB849D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6124EF624A9E82100FB849D /* TutorialViewController.swift */; };
 		B623355F24A9ED9500E9AE24 /* GameTutorialSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B623355E24A9ED9500E9AE24 /* GameTutorialSlideView.swift */; };
 		B623356124A9EDBB00E9AE24 /* GameTutorialSlide.xib in Resources */ = {isa = PBXBuildFile; fileRef = B623356024A9EDBB00E9AE24 /* GameTutorialSlide.xib */; };
@@ -53,8 +56,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5502967624BF8A6C00564D4F /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		5502967824BF8A8D00564D4F /* FirebaseAnalytics */ = {isa = PBXFileReference; lastKnownFileType = folder; path = FirebaseAnalytics; sourceTree = "<group>"; };
 		AA0EFE0324AF76D8004BF670 /* clickSFX.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clickSFX.mp3; sourceTree = "<group>"; };
 		AA7967BE249F2A0F0085B9FC /* GameWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebViewController.swift; sourceTree = "<group>"; };
+		AA7FE56224BF47A8005608B8 /* IntegradeFirebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntegradeFirebase.h; sourceTree = "<group>"; };
 		B6124EF624A9E82100FB849D /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		B623355E24A9ED9500E9AE24 /* GameTutorialSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTutorialSlideView.swift; sourceTree = "<group>"; };
 		B623356024A9EDBB00E9AE24 /* GameTutorialSlide.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameTutorialSlide.xib; sourceTree = "<group>"; };
@@ -113,6 +119,7 @@
 		B66F0B5A249BC28E0027E623 = {
 			isa = PBXGroup;
 			children = (
+				5502967824BF8A8D00564D4F /* FirebaseAnalytics */,
 				B66F0B66249BC28E0027E623 /* AR_Game_Stamp */,
 				B66F0B65249BC28E0027E623 /* Products */,
 			);
@@ -133,6 +140,8 @@
 				B66F1273249BC3E30027E623 /* Asset */,
 				B66F1275249BC3FF0027E623 /* art.scnassets */,
 				B66F11AE249BC35C0027E623 /* Content */,
+				5502967624BF8A6C00564D4F /* Firebase.h */,
+				AA7FE56224BF47A8005608B8 /* IntegradeFirebase.h */,
 				B66F126C249BC3CF0027E623 /* ARGameAppDelegate.swift */,
 				B66F126B249BC3CF0027E623 /* ARGameDataFactory.swift */,
 				B66F126D249BC3CF0027E623 /* ARGameObjectData.swift */,
@@ -262,6 +271,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA7FE56324BF47A8005608B8 /* IntegradeFirebase.h in Headers */,
+				5502967724BF8A6C00564D4F /* Firebase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +349,7 @@
 				B6E7C7C7249F2D5A00C6CE3C /* stampMoveToBasket.mp3 in Resources */,
 				B623356124A9EDBB00E9AE24 /* GameTutorialSlide.xib in Resources */,
 				B650FF6424B86C0100AADA08 /* BGM Special Stamp Scene.mp3 in Resources */,
+				5502967924BF8A8D00564D4F /* FirebaseAnalytics in Resources */,
 				B6E7C7BB249F2CA100C6CE3C /* Start SFX.mp3 in Resources */,
 				B66F128F249BC4360027E623 /* Assets.xcassets in Resources */,
 				B66F12D5249BCF1D0027E623 /* ARgame.storyboard in Resources */,
@@ -462,6 +474,10 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-ObjC",
+				);
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -518,6 +534,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-ObjC",
+				);
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -537,6 +557,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FirebaseAnalytics",
+					"$(PROJECT_DIR)/Firebase",
+				);
 				INFOPLIST_FILE = AR_Game_Stamp/ARgamrInfo.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -565,6 +590,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FirebaseAnalytics",
+					"$(PROJECT_DIR)/Firebase",
+				);
 				INFOPLIST_FILE = AR_Game_Stamp/ARgamrInfo.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

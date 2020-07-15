@@ -344,90 +344,95 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         urlObservation = gameWebView.observe(\.url, changeHandler: { (webView, change) in
             //self.vLoading.isHidden = false
             //print(webView.url?.absoluteString!)
-            if(webView.url?.absoluteString == self.mainUrlReact){
-                //SoundController.shared.playClickButton()
-                self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
-            }
-                // back from WebView
-            /*else if (webView.url?.absoluteString.contains("back"))! {
-                SoundController.shared.playClickButton()
-                self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
-            }*/
-                // Close from WebView
-            else if ((webView.url?.absoluteString.contains("close"))! || (webView.url?.absoluteString.contains("back"))!) {
-                // webView now use "closeWebView" as signal
-                //SoundController.shared.playClickButton()
-                self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
-            }else if (webView.url?.absoluteString.contains("nextpage"))! {
-                ARGameSoundController.shared.playClickButton()
-                // MARK:Stamp Summary
-                //self.urlTemp = "\(self.mainUrlBws)/postTest.php"
-                self.urlTemp = "\(self.mainUrlPHP)StampSummary/Stamp_Summary.php?firebase_id=\(self.firebase_id)&game_uuid=\(self.game_uuid!)"
-                self.urlFull = "\(self.mainUrlPHP)StampSummary/Stamp_Summary.php?firebase_id=\(self.firebase_id)&game_uuid=\(self.game_uuid!)"
-                if let url = URL(string:(self.isUseUrlTemp ? self.urlTemp : self.urlFull)){
-                    var request = URLRequest(url: url)
-                    request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
-                    request.httpMethod = "POST"
-                    // Encode
-                    //let catchStampData = (try? JSONSerialization.data(withJSONObject: self.catchStamp))!
-                    //let jsonCatchStamp = try! JSON(data: catchStampData)
-                    //var encodeData:SendDataToOpenReward?
-                    var json:String?
-                    if(self.gameFinishObject?.data?.ar_game != nil){
-                        
-                        var encodeData:SendDataToSummary = SendDataToSummary(data: [])
-                        var summaryArray:[summaryWebViewData] = []
-                        
-                        if let dataLoop = self.gameFinishObject?.data?.ar_game{
-                            for items in dataLoop{
-                                let summaryData:summaryWebViewData = summaryWebViewData(uuid: (items?.item_uuid!)!, image_url: (items?.image_url!)!, quality: (items?.receive!)!)
-                                summaryArray.append(summaryData)
+            if let checkUrlString = webView.url?.absoluteString {
+                if(checkUrlString == self.mainUrlReact){
+                    //SoundController.shared.playClickButton()
+                    self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
+                }
+                    // back from WebView
+                /*else if (webView.url?.absoluteString.contains("back"))! {
+                    SoundController.shared.playClickButton()
+                    self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
+                }*/
+                    // Close from WebView
+                else if ((checkUrlString.contains("close")) || (checkUrlString.contains("back"))) {
+                    // webView now use "closeWebView" as signal
+                    //SoundController.shared.playClickButton()
+                    self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
+                }else if (checkUrlString.contains("nextpage")) {
+                    ARGameSoundController.shared.playClickButton()
+                    // MARK:Stamp Summary
+                    //self.urlTemp = "\(self.mainUrlBws)/postTest.php"
+                    self.urlTemp = "\(self.mainUrlPHP)StampSummary/Stamp_Summary.php?firebase_id=\(self.firebase_id)&game_uuid=\(self.game_uuid!)"
+                    self.urlFull = "\(self.mainUrlPHP)StampSummary/Stamp_Summary.php?firebase_id=\(self.firebase_id)&game_uuid=\(self.game_uuid!)"
+                    if let url = URL(string:(self.isUseUrlTemp ? self.urlTemp : self.urlFull)){
+                        var request = URLRequest(url: url)
+                        request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
+                        request.httpMethod = "POST"
+                        // Encode
+                        //let catchStampData = (try? JSONSerialization.data(withJSONObject: self.catchStamp))!
+                        //let jsonCatchStamp = try! JSON(data: catchStampData)
+                        //var encodeData:SendDataToOpenReward?
+                        var json:String?
+                        if(self.gameFinishObject?.data?.ar_game != nil){
+                            
+                            var encodeData:SendDataToSummary = SendDataToSummary(data: [])
+                            var summaryArray:[summaryWebViewData] = []
+                            
+                            if let dataLoop = self.gameFinishObject?.data?.ar_game{
+                                for items in dataLoop{
+                                    let summaryData:summaryWebViewData = summaryWebViewData(uuid: (items?.item_uuid!)!, image_url: (items?.image_url!)!, quality: (items?.receive!)!)
+                                    summaryArray.append(summaryData)
+                                }
+                                encodeData.data.append(contentsOf: summaryArray)
+                                 //var jsonFromloop:[String:Any] = ["data":"\(dataArray)"]
+                                //jsonToSend = (try? JSONSerialization.data(withJSONObject: jsonFromloop))!
+                                //encodeData = encodeData
                             }
-                            encodeData.data.append(contentsOf: summaryArray)
-                             //var jsonFromloop:[String:Any] = ["data":"\(dataArray)"]
-                            //jsonToSend = (try? JSONSerialization.data(withJSONObject: jsonFromloop))!
-                            //encodeData = encodeData
+                            let jsonEncoder = JSONEncoder()
+                            let jsonData = try! jsonEncoder.encode(encodeData)
+                            json = String(data: jsonData, encoding: String.Encoding.utf8)
+                            json = self.recheckData(json!)
+                            let postData = "data=\(json!)"
+                            request.httpBody = postData.data(using: .utf8, allowLossyConversion: false)
                         }
-                        let jsonEncoder = JSONEncoder()
-                        let jsonData = try! jsonEncoder.encode(encodeData)
-                        json = String(data: jsonData, encoding: String.Encoding.utf8)
-                        json = self.recheckData(json!)
-                        let postData = "data=\(json!)"
-                        request.httpBody = postData.data(using: .utf8, allowLossyConversion: false)
+                        //request.httpBody = "data=\(postData)"
+                        self.gameWebView.load(request)
                     }
-                    //request.httpBody = "data=\(postData)"
-                    self.gameWebView.load(request)
-                }
-            }else if(webView.url?.absoluteString.contains("play"))! {
-                if(self.webType == 12){
-                    self.dismiss(animated: false, completion: nil)
-                } else {
-                    self.performSegue(withIdentifier: "continue_to_play_segue", sender: nil)
-                }
-                
-            }else if (webView.url?.absoluteString.contains("share"))! {
-                //print(webView.url?.query)
-                let urlString = webView.url?.query?.split(separator: "=")
-                let resultString = (urlString![1])
-                
-                let objectsToShare:URL = URL(string: "\(resultString)")!
-                // Implement code wherein you take snapshot of the screen if needed. For illustration purposes, assumed an image stored as asset.
-                //let image: UIImage = UIImage(named: "", in: ARGameBundle(), with: nil)
-                // Button Action. Create a button in your application for "Share" action. Link it to your Controller and add these 3 lines.
-                let activityVC = UIActivityViewController(activityItems: [objectsToShare], applicationActivities: nil)
-                activityVC.popoverPresentationController?.sourceView = self.view
-                activityVC.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
-                    if !completed {
-                        activityVC.dismiss(animated: false, completion: nil)
-                        //return
+                }else if(checkUrlString.contains("play")) {
+                    if(self.webType == 12){
+                        self.dismiss(animated: false, completion: nil)
+                    } else {
+                        self.performSegue(withIdentifier: "continue_to_play_segue", sender: nil)
                     }
-                    // User completed activity
                 }
-                self.present(activityVC, animated: false, completion: nil)
-            }else if (webView.url?.absoluteString.contains("sharecomplete"))! {
-                self.gameWebView.goBack()
-            }else if (webView.url?.absoluteString.contains("agreement_success"))! {
-                self.requestCore()
+                else if (checkUrlString.contains("sharecomplete")) {
+                    self.gameWebView.goBack()
+                }
+                else if (checkUrlString.contains("share")) {
+                    //print(webView.url?.query)
+                    let urlString = webView.url?.query?.split(separator: "=")
+                    let resultString = (urlString![1])
+                    
+                    let objectsToShare:URL = URL(string: "\(resultString)")!
+                    // Implement code wherein you take snapshot of the screen if needed. For illustration purposes, assumed an image stored as asset.
+                    //let image: UIImage = UIImage(named: "", in: ARGameBundle(), with: nil)
+                    // Button Action. Create a button in your application for "Share" action. Link it to your Controller and add these 3 lines.
+                    let activityVC = UIActivityViewController(activityItems: [objectsToShare], applicationActivities: nil)
+                    activityVC.popoverPresentationController?.sourceView = self.view
+                    activityVC.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
+                        if !completed {
+                            activityVC.dismiss(animated: false, completion: nil)
+                            //return
+                        } else {
+                            self.gameWebView.goBack()
+                        }
+                        // User completed activity
+                    }
+                    self.present(activityVC, animated: false, completion: nil)
+                }else if (checkUrlString.contains("agreement_success")) {
+                    self.requestCore()
+                }
             }
         })
     }

@@ -345,17 +345,19 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
                     if(self.playgame){
                         self.requestGameDetail()
                         self.playgame = false
+                    } else {
+                        self.vLoading.isHidden = true
                     }
                     if(self.coreResultObject?.data?.is_accept == false){
                         self.webType = 11
                         self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
                     }
                 }else{
+                    // hide stich here
+                    self.vLoading.isHidden = true
                     self.present(self.systemAlertMessage(title: "Request Error", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
                     self.headerController.your_stamp.text = "\(0)"
                 }
-                // hide stich here
-                self.vLoading.isHidden = true
             })
         }
         task.resume()
@@ -369,6 +371,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Register Font To Framework
         do {
             try UIFont.register(path: "Asset/AR STAMP ASSET/font/", fileNameString: "DB HelvethaicaMon X Bd v3.2 4", type: ".ttf")
@@ -445,7 +448,10 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             self.firebase_id = self.fid
         } else {
             // use default FID from JNZ UAT
-            // self.firebase_id = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
+            // .dev
+            //self.firebase_id = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
+            // .staging
+            //self.firebase_id = "aDu815ZRaRZR9aHjJaavKBAbsP72"
             self.vLoading.isHidden = true
         }
         
@@ -727,7 +733,9 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
                         self.vLoading.isHidden = false
                         self.performSegue(withIdentifier: "useStamp", sender: nil)
                     } else if((self.gameDetailResultObject?.code)! == 3){ // Mstamp not enough
-                        self.requestCore()
+                        self.vLoading.isHidden = false
+                        self.performSegue(withIdentifier: "useStamp", sender: nil)
+                        //self.requestCore()
                     } else {
                         self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.gameDetailResultObject?.msg)!), animated: true, completion: nil)
                         self.vLoading.isHidden = true

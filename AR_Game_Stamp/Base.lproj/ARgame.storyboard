@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0iE-lM-obv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0iE-lM-obv">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment version="4352" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,6 +21,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="m-stamp_notError" translatesAutoresizingMaskIntoConstraints="NO" id="Hjo-Eg-W6A">
+                                <rect key="frame" x="57.666666666666657" y="263.66666666666669" width="299" height="369.00000000000006"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="299" id="F3a-Hz-Tm0"/>
+                                    <constraint firstAttribute="width" secondItem="Hjo-Eg-W6A" secondAttribute="height" multiplier="299:369" id="J0u-2d-fVC"/>
+                                </constraints>
+                            </imageView>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yLW-aU-Js0">
+                                <rect key="frame" x="346.66666666666669" y="219" width="50" height="54.666666666666686"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="AGc-J5-1g0"/>
+                                    <constraint firstAttribute="width" secondItem="yLW-aU-Js0" secondAttribute="height" multiplier="126:137" id="IdN-1R-lNw"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="extstdialog_exit_icon"/>
+                            </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cut_stamp_POP_UP" translatesAutoresizingMaskIntoConstraints="NO" id="IRj-Uv-NU5">
                                 <rect key="frame" x="57.666666666666657" y="268.66666666666669" width="299" height="369.00000000000006"/>
                                 <constraints>
@@ -91,9 +106,11 @@
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
+                            <constraint firstItem="Hjo-Eg-W6A" firstAttribute="centerY" secondItem="Oqe-GY-IoY" secondAttribute="centerY" id="119-rs-5fM"/>
                             <constraint firstItem="yWm-Zo-1M0" firstAttribute="centerY" secondItem="mp6-5G-xrZ" secondAttribute="centerY" multiplier="0.9" id="1Ty-VP-aeq"/>
                             <constraint firstItem="Gz5-5C-zci" firstAttribute="height" secondItem="mp6-5G-xrZ" secondAttribute="height" multiplier="0.0745721" id="1m6-Qz-kKS"/>
                             <constraint firstItem="XQq-mT-8mn" firstAttribute="trailing" secondItem="mp6-5G-xrZ" secondAttribute="trailing" id="6WI-cB-xcS"/>
+                            <constraint firstItem="yLW-aU-Js0" firstAttribute="leading" secondItem="Hjo-Eg-W6A" secondAttribute="trailing" constant="-10" id="6iW-Ps-LhH"/>
                             <constraint firstItem="jxZ-mB-8Iy" firstAttribute="centerX" secondItem="IRj-Uv-NU5" secondAttribute="centerX" id="7Rg-c3-Y72"/>
                             <constraint firstItem="XQq-mT-8mn" firstAttribute="leading" secondItem="mp6-5G-xrZ" secondAttribute="leading" id="8NP-Ii-wX5"/>
                             <constraint firstItem="IRj-Uv-NU5" firstAttribute="centerY" secondItem="mp6-5G-xrZ" secondAttribute="centerY" id="90J-b6-HOZ"/>
@@ -103,6 +120,7 @@
                             <constraint firstItem="Gz5-5C-zci" firstAttribute="width" secondItem="mp6-5G-xrZ" secondAttribute="width" multiplier="0.256039" id="QSm-mN-99h"/>
                             <constraint firstItem="yWm-Zo-1M0" firstAttribute="centerX" secondItem="mp6-5G-xrZ" secondAttribute="centerX" id="QrM-y0-sZZ"/>
                             <constraint firstItem="XQq-mT-8mn" firstAttribute="bottom" secondItem="mp6-5G-xrZ" secondAttribute="bottom" id="VnF-Sb-eVl"/>
+                            <constraint firstItem="Hjo-Eg-W6A" firstAttribute="centerX" secondItem="Oqe-GY-IoY" secondAttribute="centerX" id="cxG-hD-mmb"/>
                             <constraint firstItem="r6c-zA-SEY" firstAttribute="centerX" secondItem="IRj-Uv-NU5" secondAttribute="centerX" id="fBS-lR-zBa"/>
                             <constraint firstItem="Gz5-5C-zci" firstAttribute="centerY" secondItem="mp6-5G-xrZ" secondAttribute="centerY" multiplier="1.3" id="iS1-Ve-gFa"/>
                             <constraint firstItem="r6c-zA-SEY" firstAttribute="leading" secondItem="mp6-5G-xrZ" secondAttribute="leading" constant="50" id="jgQ-TT-tSv"/>
@@ -110,18 +128,22 @@
                             <constraint firstItem="XQq-mT-8mn" firstAttribute="top" secondItem="mp6-5G-xrZ" secondAttribute="top" id="r5x-l7-oHR"/>
                             <constraint firstItem="r6c-zA-SEY" firstAttribute="top" secondItem="IRj-Uv-NU5" secondAttribute="bottom" multiplier="0.93" id="r8B-M6-IBu"/>
                             <constraint firstItem="IRj-Uv-NU5" firstAttribute="height" secondItem="Oqe-GY-IoY" secondAttribute="height" multiplier="0.41183" id="tUt-rh-n21"/>
+                            <constraint firstItem="Hjo-Eg-W6A" firstAttribute="top" secondItem="yLW-aU-Js0" secondAttribute="bottom" constant="-10" id="taO-bb-jBb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="mp6-5G-xrZ"/>
                     </view>
                     <connections>
+                        <outlet property="bNoMStampOK" destination="yLW-aU-Js0" id="1AN-YC-keI"/>
                         <outlet property="cancel_btn" destination="zJ8-Sk-TKl" id="erU-3B-AmG"/>
                         <outlet property="confirm_btn" destination="EFa-wd-h2d" id="sHA-At-2Ku"/>
+                        <outlet property="ivNoMStampPopup" destination="Hjo-Eg-W6A" id="gX7-KK-qqw"/>
                         <outlet property="loadinfText" destination="Gz5-5C-zci" id="Ac3-EY-VlI"/>
                         <outlet property="loadingBG" destination="Rga-tT-Xwe" id="vg7-Yi-CVa"/>
                         <outlet property="loadingImage" destination="yWm-Zo-1M0" id="cQY-Rp-1Oi"/>
                         <outlet property="loading_ani" destination="XQq-mT-8mn" id="K4M-n7-1oE"/>
                         <outlet property="popUpImage" destination="IRj-Uv-NU5" id="uLD-YY-wwr"/>
                         <outlet property="tutorialBtn" destination="jxZ-mB-8Iy" id="sXq-li-Y1l"/>
+                        <outlet property="vPopUpUseMStamp" destination="r6c-zA-SEY" id="znw-bE-yrS"/>
                         <segue destination="hwK-c1-YN1" kind="custom" identifier="playGame" customClass="SEPushNoAnimationSegue" id="CHo-q5-JJS"/>
                         <segue destination="4sJ-iM-LA0" kind="unwind" identifier="useStampToHomeSegue" unwindAction="unwindToHome:" id="Ni9-ni-p4c"/>
                         <segue destination="IM1-5A-zdV" kind="custom" identifier="tutorialFirstTime" customClass="UseMstampToTutorial" id="b03-3Z-yUJ"/>
@@ -869,7 +891,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="152"/>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="bg-header" translatesAutoresizingMaskIntoConstraints="NO" id="lb3-EO-MUD">
-                                <rect key="frame" x="0.0" y="44" width="414" height="147"/>
+                                <rect key="frame" x="0.0" y="44" width="414.00000000000023" height="147"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="lb3-EO-MUD" secondAttribute="height" multiplier="138:49" id="Tae-j3-Cyh"/>
                                 </constraints>
@@ -1051,40 +1073,40 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Sa-sN-T8D">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="634"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                             <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Yha-1x-sCF" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="634"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </view>
                             <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lat-2e-vi1" userLabel="BGLoading">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="634"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" red="0.77066326139999997" green="0.80539077520000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                             <view userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="pHn-d0-8PA" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="0.0" y="44" width="600" height="556"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stichOnLoading" translatesAutoresizingMaskIntoConstraints="NO" id="6DB-dG-4ec" userLabel="ImageLoading">
-                                <rect key="frame" x="250" y="210.66666666666663" width="100" height="149.33333333333337"/>
+                                <rect key="frame" x="157" y="328.33333333333331" width="100" height="149.66666666666669"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="6DB-dG-4ec" secondAttribute="height" multiplier="489:731" id="9Nk-7R-4r5"/>
                                     <constraint firstAttribute="width" constant="100" id="9cN-6J-GdK"/>
                                 </constraints>
                             </imageView>
                             <view hidden="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="fuH-gN-R6B" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="0.0" y="44" width="600" height="556"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rQc-GL-kMP" userLabel="LoadingText">
-                                <rect key="frame" x="192" y="412.66666666666669" width="216" height="44"/>
+                                <rect key="frame" x="132.33333333333331" y="579" width="149.33333333333331" height="65"/>
                                 <fontDescription key="fontDescription" name="DBHelvethaicaMonX-75Bd" family="DB HelvethaicaMon X" pointSize="50"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wJs-3c-Tks" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="0.0" y="44" width="600" height="590"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                             </view>
                         </subviews>
                         <constraints>
@@ -1290,10 +1312,6 @@
             <point key="canvasLocation" x="305.79710144927537" y="-1203.3482142857142"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="oPj-8z-sGk"/>
-        <segue reference="dFs-p4-Ecy"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="BG core function.png" width="1244" height="2688"/>
         <image name="BG_progress_bar" width="636" height="73"/>
@@ -1314,10 +1332,12 @@
         <image name="btn_mission" width="215" height="257"/>
         <image name="btn_play" width="243" height="312"/>
         <image name="cut_stamp_POP_UP" width="992" height="1198"/>
+        <image name="extstdialog_exit_icon" width="126" height="137"/>
         <image name="fill_progress_bar" width="611" height="48"/>
         <image name="green button no shadow" width="449" height="214"/>
         <image name="left arrow" width="76" height="107"/>
         <image name="logo_premium" width="217" height="260"/>
+        <image name="m-stamp_notError" width="993" height="1198"/>
         <image name="red button example" width="449" height="227"/>
         <image name="right arrow" width="75" height="107"/>
         <image name="skip_button" width="242" height="117"/>
@@ -1326,4 +1346,8 @@
         <image name="stichOnLoading" width="489" height="731"/>
         <image name="tutorial_button" width="342" height="160"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="LwQ-Fn-f49"/>
+        <segue reference="CHo-q5-JJS"/>
+    </inferredMetricsTieBreakers>
 </document>

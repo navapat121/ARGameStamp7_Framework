@@ -34,8 +34,12 @@ class GameUseStampViewController: UIViewController {
     var long:Double?
     
 
+    @IBOutlet weak var ivNoMStampPopup: UIImageView!
+    @IBOutlet weak var bNoMStampOK: UIButton!
+    
     @IBOutlet weak var tutorialBtn: UIButton!
     @IBOutlet weak var popUpImage: UIImageView!
+    @IBOutlet weak var vPopUpUseMStamp: UIView!
     @IBOutlet weak var loading_ani: AnimationView!
     @IBOutlet weak var confirm_btn: UIButton!
     @IBOutlet weak var loadingImage: UIImageView!
@@ -71,6 +75,12 @@ class GameUseStampViewController: UIViewController {
         loading_ani.play()
         loading_ani.loopMode = .loop
         counterLabel()
+        tutorialBtn.addTarget(self, action: #selector(goToTutorialAction), for: .touchUpInside)
+        confirm_btn.addTarget(self, action: #selector(confirmButtonAction), for: .touchUpInside)
+        cancel_btn.addTarget(self, action: #selector(buttonBack), for: .touchUpInside)
+        
+        bNoMStampOK.addTarget(self, action: #selector(buttonBack), for: .touchUpInside)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             if(self.lat == nil || self.long == nil){
                 self.lat = 13.756331
@@ -80,9 +90,6 @@ class GameUseStampViewController: UIViewController {
                 self.requestGameDetail()
             }
         })
-        tutorialBtn.addTarget(self, action: #selector(goToTutorialAction), for: .touchUpInside)
-        confirm_btn.addTarget(self, action: #selector(confirmButtonAction), for: .touchUpInside)
-        cancel_btn.addTarget(self, action: #selector(buttonBack), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -247,11 +254,30 @@ class GameUseStampViewController: UIViewController {
                 
                 let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
                 print("Response data string:\n \(dataString)")
+                
+                if (dataString.contains("\"code\":3")) {
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        self.loadingBG.isHidden = true
+                        self.loadingImage.isHidden = true
+                        self.loading_ani.isHidden = true
+                        self.loading_ani.stop()
+                        
+                        self.popUpImage.isHidden = true
+                        self.vPopUpUseMStamp.isHidden = true
+                        self.tutorialBtn.isHidden = true
+                        
+                        self.ivNoMStampPopup.isHidden = false
+                        self.bNoMStampOK.isHidden = false
+                    })
+                    return
+                }
+                
                 // --------
                 // data ready, call next method here
                 do{
                     self.gameUseStampResultObject = try! JSONDecoder().decode(responseGameUseStampObject.self, from: data!)
-                } catch {
+                }
+                catch {
                     self.present(self.systemAlertMessage(title: "Request Error", message: "Response data. Game useStamp. Data Wrong"), animated: true, completion: nil)
                     self.loadingBG.isHidden = true
                     self.loadingImage.isHidden = true
@@ -259,14 +285,13 @@ class GameUseStampViewController: UIViewController {
                     self.loading_ani.stop()
                 }
                 
-                
-                
                 DispatchQueue.main.async(execute: { () -> Void in
                     if ((self.gameUseStampResultObject?.code)! == 0){
                         self.performSegue(withIdentifier: "playGame", sender: nil)
                     } else {
                         //self.present(self.systemAlertMessage(title: "Request Error", message: (self.gameUseStampResultObject?.msg)!), animated: true, completion: nil)
                         self.popUpImage.image = UIImage(named: "m-stamp_notError", in: self.ARGameBundle(), compatibleWith: nil)
+                        self.confirm_btn.removeTarget(self, action: #selector(self.confirmButtonAction), for: .touchUpInside)
                         self.confirm_btn.addTarget(self, action: #selector(self.buttonBack), for: .touchUpInside)
                         self.loadingBG.isHidden = true
                         self.loadingImage.isHidden = true
@@ -521,6 +546,14 @@ class GameUseStampViewController: UIViewController {
                                 self.loading_ani.stop()
                             })
                         }
+                    } else if((self.gameDetailResultObject?.code)! == 3){
+                        self.loadingBG.isHidden = true
+                        self.loadingImage.isHidden = true
+                        self.loading_ani.isHidden = true
+                        self.loading_ani.stop()
+                        self.popUpImage.image = UIImage(named: "m-stamp_notError", in: self.ARGameBundle(), compatibleWith: nil)
+                        self.confirm_btn.removeTarget(self, action: #selector(self.confirmButtonAction), for: .touchUpInside)
+                        self.confirm_btn.addTarget(self, action: #selector(self.buttonBack), for: .touchUpInside)
                     }
                 })
             }
