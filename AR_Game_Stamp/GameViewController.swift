@@ -608,7 +608,7 @@ class GameViewController: UIViewController {
             var url:URL? = URL(string: "")
             //var responseData:Data?
             //var responseStatus:Int? = nil
-            let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
+            let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
             if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
                 let myURL = URL(string: encoded) {
                 url = myURL
@@ -750,7 +750,11 @@ class GameViewController: UIViewController {
                 }
                 
                 let tapedStamp = stampList[index!]
-                tapedStamp.hitCount += self.state_power_up ? 2 : 1
+                #if targetEnvironment(simulator)
+                    tapedStamp.hitCount += self.state_power_up ? 2 : 10
+                #else
+                    tapedStamp.hitCount += self.state_power_up ? 2 : 1
+                #endif
                 if(tapedStamp.stamp_type == 0){
                     ARGameSoundController.shared.playPopEffect()
                     

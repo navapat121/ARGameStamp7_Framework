@@ -13,21 +13,22 @@ import CoreMotion
 import CoreLocation
 import Lottie
 
-struct ARGameEnv {
-    static var env:SevenEnvironment = .dev
-    static var url:String = ""
-    static var urlPHP:String = ""
-    static var urlReact:String = ""
-    static func updateEnv() {
-        if(env == .dev){//dev
+class ARGameEnv {
+    static let shared = ARGameEnv()
+    var env:SevenEnvironment = .prod
+    var url:String = ""
+    var urlPHP:String = ""
+    var urlReact:String = ""
+    func updateEnv(newEnv:SevenEnvironment) {
+        if(newEnv == .dev){//dev
             url = "https://argame-api-dev.7eleven-game.com/api/v1/"
             urlReact = "https://argame-dev.7eleven-game.com/"
             urlPHP = "https://argame-2-dev.7eleven-game.com/"
-        }else if(env == .prod){//production
+        }else if(newEnv == .prod){//production
             url = "https://argame-api.7eleven-game.com/api/v1/"
             urlReact = "https://argame.7eleven-game.com/"
             urlPHP = "https://argame-2.7eleven-game.com/"
-        }else if(env == .staging){//uat
+        }else if(newEnv == .staging){//uat
             url = "https://argame-api-staging.7eleven-game.com/api/v1/"
             urlReact = "https://argame-staging.7eleven-game.com/"
             urlPHP = "https://argame-2-staging.7eleven-game.com/"
@@ -47,7 +48,7 @@ public protocol ARGameStampDelegate: class {
 }
 
 public class ARGameHomeViewController : UIViewController, CLLocationManagerDelegate{
-    public var sevenEnv: SevenEnvironment = .dev
+    public var sevenEnv: SevenEnvironment = .prod
     public var delegate: ARGameStampDelegate? // Link Main app
     public var fid:String? // Link firebase_ID from Main app
     
@@ -171,7 +172,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         var url:URL? = URL(string: "")
         //var responseData:Data?
         //var responseStatus:Int? = nil
-        let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
+        let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let myURL = URL(string: encoded) {
             url = myURL
@@ -259,7 +260,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         var url:URL? = URL(string: "")
         //var responseData:Data?
         var responseStatus:Int? = nil
-        let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
+        let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let myURL = URL(string: encoded) {
             url = myURL
@@ -381,7 +382,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             })
         }*/
         
-        ARGameEnv.updateEnv()
+        ARGameEnv.shared.updateEnv(newEnv: sevenEnv)
         if UIDevice().userInterfaceIdiom == .phone {
         switch UIScreen.main.nativeBounds.height {
             case 1136:
@@ -655,7 +656,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             let strUrl = "game/" + game_uuid
             let requestType = "GET"
             var url = URL(string:"")
-            let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
+            let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
             if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
                 let myURL = URL(string: encoded) {
                 url = myURL

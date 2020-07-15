@@ -14,8 +14,8 @@ import Lottie
 
 class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     
-    var mainUrlReact = ARGameEnv.urlReact
-    var mainUrlPHP = ARGameEnv.urlPHP
+    var mainUrlReact = ARGameEnv.shared.urlReact
+    var mainUrlPHP = ARGameEnv.shared.urlPHP
     // Appsync DEV
     //var mainUrlReact:String = "https://argame-dev.7eleven-game.com/"
     //var mainUrlPHP = "https://argame-2-dev.7eleven-game.com/Views/"
@@ -112,8 +112,8 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.mainUrlReact = ARGameEnv.urlReact
-        self.mainUrlPHP = ARGameEnv.urlPHP+"Views/"
+        self.mainUrlReact = ARGameEnv.shared.urlReact
+        self.mainUrlPHP = ARGameEnv.shared.urlPHP+"Views/"
         
         let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
         let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
@@ -449,7 +449,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         var url:URL? = URL(string: "")
         //var responseData:Data?
         var responseStatus:Int? = nil
-        let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
+        let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let myURL = URL(string: encoded) {
             url = myURL
