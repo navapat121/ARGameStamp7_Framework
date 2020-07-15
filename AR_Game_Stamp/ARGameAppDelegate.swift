@@ -8,13 +8,23 @@
 
 import UIKit
 import SystemConfiguration
+import FirebaseCore
 
 //@UIApplicationMain
-class ARGameAppDelegate  {
+class ARGameAppDelegate: UIResponder, UIApplicationDelegate  {
     var window: UIWindow?
     let session = URLSession.shared
     
     //let firebase_token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImMzZjI3NjU0MmJmZmU0NWU5OGMyMGQ2MDNlYmUyYmExMTc2ZWRhMzMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc2V2ZW4tZWxldmVuLXN0YWdpbmciLCJhdWQiOiJzZXZlbi1lbGV2ZW4tc3RhZ2luZyIsImF1dGhfdGltZSI6MTU5MTc4NjgzMCwidXNlcl9pZCI6ImFEdTgxNVpSYVJaUjlhSGpKYWF2S0JBYnNQNzIiLCJzdWIiOiJhRHU4MTVaUmFSWlI5YUhqSmFhdktCQWJzUDcyIiwiaWF0IjoxNTkyNTQzMDU5LCJleHAiOjE1OTI1NDY2NTksImVtYWlsIjoiYmlyZF9zdXJpbjU1NUBob3RtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImJpcmRfc3VyaW41NTVAaG90bWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.LWULkOtZxjih65ZO6bFX9A0ZkNKc2jgVKP1PA0j7kMxdtdYlmUsFVCpasWHkqf2E_kpKL24b3vrfNR2hoNj0hxj9MBTCznOinCgpBz3CCuHwYsGjaKwnAvYgPMxKlvffdzFpA9R6lhO4DqbxqeuK9rATX8F3DqGbm7zJ9d1X5vf9anlVD_CbY98UyD-2xy6nreUrxUWrowmx7EZrNvJkUVGsji6WbHN8d-hMaDMma5QQ2HjCYFO77ryCQO8SdNb6zdtcPrTihMx5ExcTZEK-TwMzNs-hXWCB_v5F4gThWVbOsxKMPSh-V4jGGagecZ30ghRl2DkD_iCape9ukSyBEA"
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        // Use Firebase library to configure APIs
+        FirebaseApp.configure()
+        
+        return true
+    }
+
 }
 
 extension UIViewController {
@@ -64,52 +74,6 @@ extension UIViewController {
         let apiUrl = api.contains("http") ? api : BASE_URL + api
         return URL(string: apiUrl)
     }
-    
-    /*func sendGetHttpRequest(url: String, requestData: Data?)-> Data?{
-        let url = getUrl(from: url)
-        guard let requestUrl = url else { fatalError() }
-        var responseData:Data?
-        // Create URL Request
-        var request = URLRequest(url: requestUrl)
-        
-        // Specify HTTP Method to use
-        request.httpMethod = "GET"
-        // Set HTTP Request Header
-        //application/json
-        //request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("7ar-game", forHTTPHeaderField: "x-api-key")
-        request.setValue(firebase_token, forHTTPHeaderField:"x-ar-signature" )
-        
-        // insert json data to the request
-        if(requestData != nil){
-            request.httpBody = requestData
-        }
-        let semaphore = DispatchSemaphore(value: 0)
-        // Send HTTP Request
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
-            // Check if Error took place
-            if let error = error {
-                print("Error took place \(error)")
-                return
-            }
-            
-            // Read HTTP Response Status code
-            if let response = response as? HTTPURLResponse {
-                print("Response HTTP Status code: \(response.statusCode)")
-            }
-            
-            // Convert HTTP Response Data to a simple String
-            if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                //self.jsonResult = dataString
-                responseData = data
-                print("Response data string:\n \(dataString)")
-                semaphore.signal()
-            }
-        }.resume()
-        semaphore.wait()
-        return responseData
-    }*/
     
     func sendHttpRequest(requestType:String,  strUrl: String, requestData: Data?,firebase_id: String) -> (Data?,Int?)?{
         /*let firebase_token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImMzZjI3NjU0MmJmZmU0NWU5OGMyMGQ2MDNlYmUyYmExMTc2ZWRhMzMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc2V2ZW4tZWxldmVuLXN0YWdpbmciLCJhdWQiOiJzZXZlbi1lbGV2ZW4tc3RhZ2luZyIsImF1dGhfdGltZSI6MTU5MTc4NjgzMCwidXNlcl9pZCI6ImFEdTgxNVpSYVJaUjlhSGpKYWF2S0JBYnNQNzIiLCJzdWIiOiJhRHU4MTVaUmFSWlI5YUhqSmFhdktCQWJzUDcyIiwiaWF0IjoxNTkyNjI5ODAwLCJleHAiOjE1OTI2MzM0MDAsImVtYWlsIjoiYmlyZF9zdXJpbjU1NUBob3RtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImJpcmRfc3VyaW41NTVAaG90bWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.qeZe9J45aqDGaISud0daVvx1dMtXe9vKfRnrokwMZcTc24v9XtxB1C6HPIkdxMvs6xXEsmvTQULv0yV4PCD3xDJ0spNzqvXFx9J-wHzOIyOu9TlEBcbg70E6PdONLgwOsTKaQ5R5mn0zmmZKtrMtdCIK5lrU0m4tsqRd7dq0Cdd0PsICe_9hCMTxZ82U9k40_UQJDNxAJ2Vgdg00LJ1zodohCpKhu9jgs_cUod9WVDOtmkYzSIMpt7K6OOd0BddBXqpYDLed1LEpEKbKHKqq8MXcTGXjoldS07TmO3IIIO-cfYSf_WUcVBv6quQLjZ2CL_sgXBTs9pWADuf9mxDKiQ"*/

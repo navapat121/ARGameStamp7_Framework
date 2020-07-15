@@ -15,8 +15,7 @@ import WebKit
 import Darwin
 import CoreLocation
 import Lottie
-
-
+import FirebaseAnalytics
 
 class GameViewHeaderController: UIViewController {
     
@@ -41,23 +40,29 @@ class GameViewHeaderController: UIViewController {
         
         //self.bgUpperSafearea.
     }
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         self.timer_animate.removeFromSuperview()
         self.timereffect_animate.removeFromSuperview()
         self.netHeaderFlashAnimated.removeFromSuperview()
         self.netHeaderFlashAnimated2.removeFromSuperview()
-        self.timer_label.removeFromSuperview()
+        
+        self.timer_animate = nil
+        self.timereffect_animate = nil
+        self.netHeaderFlashAnimated = nil
+        self.netHeaderFlashAnimated2 = nil
+        
         dismiss(animated: false, completion: nil)
     }
 }
 
 class GameViewSpecialController: UIViewController{
     @IBOutlet weak var loadingText: UILabel!
-    @IBOutlet weak var specialAlertAnimate: AnimationView!
-    @IBOutlet weak var timeup_animate: AnimationView!
     @IBOutlet weak var loadingBG: UIImageView!
     @IBOutlet weak var loadingImage: UIImageView!
+    @IBOutlet weak var specialAlertAnimate: AnimationView!
+    @IBOutlet weak var timeup_animate: AnimationView!
     @IBOutlet weak var loadingAnimated: AnimationView!
     @IBOutlet weak var light_timeupAnimate: AnimationView!
     @IBOutlet weak var bgAlpha: UIImageView!
@@ -79,12 +84,19 @@ class GameViewSpecialController: UIViewController{
          specialAlertAnimate.loopMode = .loop
          specialAlertAnimate.play()*/
     }
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         self.specialAlertAnimate.removeFromSuperview()
         self.timeup_animate.removeFromSuperview()
         self.loadingAnimated.removeFromSuperview()
         self.light_timeupAnimate.removeFromSuperview()
+        
+        self.specialAlertAnimate = nil
+        self.timeup_animate = nil
+        self.loadingAnimated = nil
+        self.light_timeupAnimate = nil
+        
         dismiss(animated: false, completion: nil)
     }
 }
@@ -221,22 +233,6 @@ class GameViewController: UIViewController {
         }
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.startAnimation.removeFromSuperview()
-        self.basketAnimate.removeFromSuperview()
-        self.NetAnimated.removeFromSuperview()
-        self.hourGlassAnimated.removeFromSuperview()
-        self.increaseTimeAnimated.removeFromSuperview()
-        self.decreaseTimeAnimated.removeFromSuperview()
-        self.bombAnimated.removeFromSuperview()
-        self.bombBGAnimated.removeFromSuperview()
-        self.hourGlassBGAnimated.removeFromSuperview()
-        self.netBGAnimated.removeFromSuperview()
-        self.touchAnimate.removeFromSuperview()
-        //self.scene.rootNode.cleanup()
-        dismiss(animated: false, completion: nil)
-    }
     override func viewDidAppear(_ animated: Bool) {
         // Check request Data
         if(self.resultGameStartDetail?.msg != nil){
@@ -326,11 +322,36 @@ class GameViewController: UIViewController {
         }
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(false)
-        /*DispatchQueue.main.async {
-            self.scene = SCNScene()
-        }*/
+        super.viewWillDisappear(animated)
+        
+        self.startAnimation.removeFromSuperview()
+        self.basketAnimate.removeFromSuperview()
+        self.NetAnimated.removeFromSuperview()
+        self.hourGlassAnimated.removeFromSuperview()
+        self.increaseTimeAnimated.removeFromSuperview()
+        self.decreaseTimeAnimated.removeFromSuperview()
+        self.bombAnimated.removeFromSuperview()
+        self.bombBGAnimated.removeFromSuperview()
+        self.hourGlassBGAnimated.removeFromSuperview()
+        self.netBGAnimated.removeFromSuperview()
+        self.touchAnimate.removeFromSuperview()
+        
+        self.startAnimation = nil
+        self.basketAnimate = nil
+        self.NetAnimated = nil
+        self.hourGlassAnimated = nil
+        self.increaseTimeAnimated = nil
+        self.decreaseTimeAnimated = nil
+        self.bombAnimated = nil
+        self.bombBGAnimated = nil
+        self.hourGlassBGAnimated = nil
+        self.netBGAnimated = nil
+        self.touchAnimate = nil
         
         self.scene.rootNode.enumerateChildNodes { (node, stop) in
             node.removeFromParentNode()
@@ -340,29 +361,36 @@ class GameViewController: UIViewController {
             stamp.stampChildNode.removeFromParentNode()
             stamp.cleanup()
         }
+        self.scnView.delegate = nil
+        self.scnView.removeFromSuperview()
+        
         self.scene.rootNode.cleanup()
         self.scene = nil
         let cache = LRUAnimationCache()
         cache.clearCache()
+        
+        self.view.removeFromSuperview()
+        
+        self.motionManager.stopDeviceMotionUpdates()
+        
+        if self.motionTimer != nil {
+        self.motionTimer?.invalidate()
+        self.motionTimer = nil
+        }
+        
+        //self.scene.rootNode.cleanup()
         dismiss(animated: false, completion: nil)
     }
-    deinit {
-        self.scene.rootNode.cleanup()
-    }
-    /*deinit {
-        for stamp in self.stampList{
-            stamp.stampChildNode.removeFromParentNode()
-            stamp.cleanup()
-        }
-        self.scene.rootNode.cleanup()
-        let cache = LRUAnimationCache()
-        cache.clearCache()
-    }*/
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.frameworkBundle = ARGameBundle()
         //self.requestGameItem()
+
+        // ----------------------------
+        // FIREBASE GOOGLE ANALYTICS
+        Analytics.logEvent("M18_GamePage", parameters: nil)
         
         DispatchQueue.main.async {
             let str = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")

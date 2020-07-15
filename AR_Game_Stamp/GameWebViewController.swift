@@ -348,6 +348,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 if(checkUrlString == self.mainUrlReact){
                     //SoundController.shared.playClickButton()
                     self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
+                    self.dismiss(animated: false, completion: nil)
                 }
                     // back from WebView
                 /*else if (webView.url?.absoluteString.contains("back"))! {
@@ -359,7 +360,9 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                     // webView now use "closeWebView" as signal
                     //SoundController.shared.playClickButton()
                     self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
-                }else if (checkUrlString.contains("nextpage")) {
+                    self.dismiss(animated: false, completion: nil)
+                }
+                else if (checkUrlString.contains("nextpage")) {
                     ARGameSoundController.shared.playClickButton()
                     // MARK:Stamp Summary
                     //self.urlTemp = "\(self.mainUrlBws)/postTest.php"
@@ -404,6 +407,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                         self.dismiss(animated: false, completion: nil)
                     } else {
                         self.performSegue(withIdentifier: "continue_to_play_segue", sender: nil)
+                        self.dismiss(animated: false, completion: nil)
                     }
                 }
                 else if (checkUrlString.contains("sharecomplete")) {
@@ -537,5 +541,18 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         .replacingOccurrences(of: "%", with: "%25")
         .replacingOccurrences(of: "&", with: "%26")
         .replacingOccurrences(of: "+", with: "%2B")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        animationLoading.removeFromSuperview()
+        animationLoading = nil
+        
+        gameWebView.uiDelegate = nil
+        gameWebView.navigationDelegate = nil
+        gameWebView.loadHTMLString("", baseURL: nil)
+        gameWebView.removeFromSuperview()
+        gameWebView = nil
     }
 }

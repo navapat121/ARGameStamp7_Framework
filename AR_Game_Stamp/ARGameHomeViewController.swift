@@ -12,6 +12,7 @@ import AVFoundation
 import CoreMotion
 import CoreLocation
 import Lottie
+import FirebaseAnalytics
 
 class ARGameEnv {
     static let shared = ARGameEnv()
@@ -152,6 +153,19 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             self.present(self.systemAlertMessage(title: "Alert", message: "Firebase ID Not Found"), animated: true, completion: nil)
         }
     }
+    
+    override public func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        //dismiss(animated: false, completion: nil)
+    }
+    
+    deinit {
+        
+        lottieLoading.removeFromSuperview()
+        lottieLoading = nil
+    }
+    
     
     func requestCoreToken() {
         if !isConnectedToNetwork() {
@@ -385,6 +399,10 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             })
         }*/
         
+        // ----------------------------
+        // FIREBASE GOOGLE ANALYTICS
+        Analytics.logEvent("M18_Page", parameters: nil)
+        
         ARGameEnv.shared.updateEnv(newEnv: sevenEnv)
         if UIDevice().userInterfaceIdiom == .phone {
         switch UIScreen.main.nativeBounds.height {
@@ -589,6 +607,11 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
             return
         }
+        
+        // ----------------------------
+        // FIREBASE GOOGLE ANALYTICS
+        Analytics.logEvent("m19_theme_selected", parameters: nil)
+        
         self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
     }
     
@@ -802,6 +825,11 @@ class HeaderVIewController: UIViewController {
     }
     
     @objc func toMainAppUseStamp(sender: UIButton){
+        
+        // ----------------------------
+        // FIREBASE GOOGLE ANALYTICS
+        Analytics.logEvent("m18_ir_open_content", parameters: nil)
+        
         delegate?.deeplinkToMainApp(to: "/internal/navPage/SE034")
         //self.present(systemAlertMessage(title: "Link Main App", message: "SE034 Use Stamp all member here"), animated: true, completion: nil)
     }
@@ -872,14 +900,29 @@ class LowerVIewController: UIViewController {
             // 7 back to core function
             // 1 stmapbook
             if(self.identifier == "webview_stampbook_segue"){
+
+                // ----------------------------
+                // FIREBASE GOOGLE ANALYTICS
+                Analytics.logEvent("M18_StampBookPage", parameters: nil)
+                
                 sourceViewController.webType = 1
             }
                 // 2 Mission
             else if(self.identifier == "webview_mission_segue"){
+
+                // ----------------------------
+                // FIREBASE GOOGLE ANALYTICS
+                Analytics.logEvent("M18_TransferMStampPage", parameters: nil)
+                
                 sourceViewController.webType = 2
             }
                 // 4 Promotion
             else if(self.identifier == "webview_stamp_Heavily_segue"){
+                
+                // ----------------------------
+                // FIREBASE GOOGLE ANALYTICS
+                Analytics.logEvent("m18_ir_match", parameters: nil)
+                
                 sourceViewController.webType = 4
             }
             /*    // 4 Promotion
@@ -888,10 +931,20 @@ class LowerVIewController: UIViewController {
             }*/
             // 5 Donate
             else if(self.identifier == "webview_donate_segue"){
+                
+                // ----------------------------
+                // FIREBASE GOOGLE ANALYTICS
+                Analytics.logEvent("M18_DonatePage", parameters: nil)
+                
                 sourceViewController.webType = 5
             }
                 // 6 GlobalMaps
             else if(self.identifier == "webview_premiem_products_segue"){
+                
+                // ----------------------------
+                // FIREBASE GOOGLE ANALYTICS
+                Analytics.logEvent("M18_PremiumPage", parameters: nil)
+                
                 sourceViewController.webType = 6
             }
                 // 10 info
@@ -945,6 +998,17 @@ class  HeaderEffectController: UIViewController{
         dotAnimate.loopMode = .loop
         dotAnimate.play()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        //dismiss(animated: false, completion: nil)
+    }
+    
+    deinit {
+        dotAnimate.removeFromSuperview()
+        dotAnimate = nil
+    }
 }
 
 
@@ -970,47 +1034,15 @@ class MickyController: UIViewController {
         }
     }
     
-    /*func start() {
-     Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-     //print(count)
-     if(self.count == 0){
-     self.renderEffect(imageList: self.imgListArray! , duration: 6)
-     self.changeBg(type: 1)
-     }else if(self.count == 6){
-     self.renderEffect(imageList: self.imgListArray2! , duration: 5)
-     self.changeBg(type: 2)
-     }else if(self.count == 11){
-     self.renderEffect(imageList: self.imgListArray3! , duration: 6)
-     self.changeBg(type: 3)
-     }else if(self.count == 17){
-     self.renderEffect(imageList: self.imgListArray4! , duration: 0.5)
-     
-     self.changeBg(type: 1)
-     }
-     if self.count == 17 {
-     self.count = -1
-     }
-     self.count += 1
-     }
-     }
-     func renderEffect(imageList: [UIImage], duration:Float){
-     self.objectEffect.stopAnimating()
-     self.objectEffect.animationImages = imageList as? [UIImage];
-     self.objectEffect.animationDuration = TimeInterval(duration)
-     self.objectEffect.startAnimating()
-     }
-     func changeBg(type: Int){
-     print("\(type)")
-     if(type == 1){
-     objMicky.image = UIImage(named: "mickey")
-     objBgmicky.image = UIImage(named: "mickeyBG")
-     }else if(type == 2){
-     objMicky.image = UIImage(named: "minnie")
-     objBgmicky.image = UIImage(named: "minnieBG")
-     }else if(type == 3){
-     objMicky.image = UIImage(named: "duck")
-     objBgmicky
-     .image = UIImage(named: "duckBG")
-     }
-     }*/
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        //dismiss(animated: false, completion: nil)
+    }
+    
+    deinit {
+        mickyAnimate.removeFromSuperview()
+        mickyAnimate = nil
+    }
+    
 }

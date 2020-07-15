@@ -546,7 +546,10 @@ class GameUseStampViewController: UIViewController {
                                 self.loading_ani.stop()
                             })
                         }
-                    } else if((self.gameDetailResultObject?.code)! == 3){
+                    }
+                        // ptoon: พี่ว่าไม่ใช่นะ แล้วอีกอย่าง มันไม่มีทางเข้า เพราะ code=3 มันก็เข้าอันบนไปแล้ว
+                        /*
+                    else if((self.gameDetailResultObject?.code)! == 3){
                         self.loadingBG.isHidden = true
                         self.loadingImage.isHidden = true
                         self.loading_ani.isHidden = true
@@ -555,6 +558,13 @@ class GameUseStampViewController: UIViewController {
                         self.confirm_btn.removeTarget(self, action: #selector(self.confirmButtonAction), for: .touchUpInside)
                         self.confirm_btn.addTarget(self, action: #selector(self.buttonBack), for: .touchUpInside)
                     }
+                     */
+                     else {
+                         self.loadingBG.isHidden = true
+                         self.loadingImage.isHidden = true
+                         self.loading_ani.isHidden = true
+                         self.loading_ani.stop()
+                     }
                 })
             }
             task.resume()
