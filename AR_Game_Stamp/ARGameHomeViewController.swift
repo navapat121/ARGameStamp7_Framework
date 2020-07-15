@@ -13,23 +13,21 @@ import CoreMotion
 import CoreLocation
 import Lottie
 
-class ARGameEnv {
-    static let shared = ARGameEnv()
-    var env:SevenEnvironment = .dev
-    var url:String = ""
-     var urlPHP:String = ""
-    var urlReact:String = ""
-    func updateEnv(newEnv:SevenEnvironment) {
-        env = newEnv
-        if(newEnv == .dev){//dev
+struct ARGameEnv {
+    static var env:SevenEnvironment = .dev
+    static var url:String = ""
+    static var urlPHP:String = ""
+    static var urlReact:String = ""
+    static func updateEnv() {
+        if(env == .dev){//dev
             url = "https://argame-api-dev.7eleven-game.com/api/v1/"
             urlReact = "https://argame-dev.7eleven-game.com/"
             urlPHP = "https://argame-2-dev.7eleven-game.com/"
-        }else if(newEnv == .prod){//production
+        }else if(env == .prod){//production
             url = "https://argame-api.7eleven-game.com/api/v1/"
             urlReact = "https://argame.7eleven-game.com/"
             urlPHP = "https://argame-2.7eleven-game.com/"
-        }else if(newEnv == .staging){//uat
+        }else if(env == .staging){//uat
             url = "https://argame-api-staging.7eleven-game.com/api/v1/"
             urlReact = "https://argame-staging.7eleven-game.com/"
             urlPHP = "https://argame-2-staging.7eleven-game.com/"
@@ -49,7 +47,7 @@ public protocol ARGameStampDelegate: class {
 }
 
 public class ARGameHomeViewController : UIViewController, CLLocationManagerDelegate{
-    public var sevenEnv: SevenEnvironment = .prod
+    public var sevenEnv: SevenEnvironment = .dev
     public var delegate: ARGameStampDelegate? // Link Main app
     public var fid:String? // Link firebase_ID from Main app
     
@@ -173,8 +171,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         var url:URL? = URL(string: "")
         //var responseData:Data?
         //var responseStatus:Int? = nil
-        
-        let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
+        let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let myURL = URL(string: encoded) {
             url = myURL
@@ -262,7 +259,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         var url:URL? = URL(string: "")
         //var responseData:Data?
         var responseStatus:Int? = nil
-        let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
+        let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let myURL = URL(string: encoded) {
             url = myURL
@@ -384,7 +381,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             })
         }*/
         
-        ARGameEnv.shared.updateEnv(newEnv: sevenEnv)
+        ARGameEnv.updateEnv()
         if UIDevice().userInterfaceIdiom == .phone {
         switch UIScreen.main.nativeBounds.height {
             case 1136:
@@ -441,7 +438,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         //=========================
         //*** Core Token ***
         //=========================
-        //self.fid = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
+        //self.fid = "V98MW1GtsMPjMiZjoICCTOPnDXu2" // use in case DEVELOPMENT
         if((self.fid) != nil){
             // use FID from main app
             self.firebase_id = self.fid
@@ -658,7 +655,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             let strUrl = "game/" + game_uuid
             let requestType = "GET"
             var url = URL(string:"")
-            let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
+            let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
             if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
                 let myURL = URL(string: encoded) {
                 url = myURL

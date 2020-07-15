@@ -14,12 +14,14 @@ import Lottie
 
 class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     
+    var mainUrlReact = ARGameEnv.urlReact
+    var mainUrlPHP = ARGameEnv.urlPHP
     // Appsync DEV
-    var mainUrl:String = "https://argame-dev.7eleven-game.com/"
-    var mainUrlBws = "https://argame-2-dev.7eleven-game.com/Views/"
+    //var mainUrlReact:String = "https://argame-dev.7eleven-game.com/"
+    //var mainUrlPHP = "https://argame-2-dev.7eleven-game.com/Views/"
     // DEV
-    //let mainUrl:String = "https://argame-dev.7eleven-game.com"
-    //let mainUrlBws = "https://www.bluewindsolution.com/project/7eleven2020/sampleweb/Views/"
+    //let mainUrlReact:String = "https://argame-dev.7eleven-game.com"
+    //let mainUrlPHP = "https://argame-2-dev.7eleven-game.com/Views/"
     
     
     //var coreTokenResultObject: responseCoreTokenObject?
@@ -110,8 +112,8 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.mainUrl = ARGameEnv.shared.urlReact
-        self.mainUrlBws = ARGameEnv.shared.urlPHP+"Views/"
+        self.mainUrlReact = ARGameEnv.urlReact
+        self.mainUrlPHP = ARGameEnv.urlPHP+"Views/"
         
         let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
         let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
@@ -147,16 +149,16 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         switch webType {
         // Stamp book
         case 1:
-            urlTemp = "\(mainUrlBws)StampBook/Stamp_Book.php?firebase_id=111&game_uuid=111"
-            urlFull = "\(mainUrlBws)StampBook/Stamp_Book.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
+            urlTemp = "\(mainUrlPHP)StampBook/Stamp_Book.php?firebase_id=111&game_uuid=111"
+            urlFull = "\(mainUrlPHP)StampBook/Stamp_Book.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
             //url = URL(string:urlFull)!
             url = URL(string: (isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x204651)
             break
         // Mission Gallery
         case 2:
-            urlTemp = "\(mainUrlBws)Mission/Select_Mission.php?firebase_id=1234&game_uuid=1234"
-            urlFull = "\(mainUrlBws)Mission/Select_Mission.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)&mstamp=\(mstamp)&timetrick=\(timetick)"
+            urlTemp = "\(mainUrlPHP)Mission/Select_Mission.php?firebase_id=1234&game_uuid=1234"
+            urlFull = "\(mainUrlPHP)Mission/Select_Mission.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)&mstamp=\(mstamp)&timetrick=\(timetick)"
             //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x204651)
@@ -164,16 +166,16 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
             break
         // checkin
         case 3:
-            urlTemp = "\(mainUrl)checkin"
-            urlFull = "\(mainUrl)checkin?firebase_id=\(firebase_id)&mstamp=\(mstamp)&lat=\(self.lat!)&long=\(self.long!)&game_uuid=\(game_uuid!)"
+            urlTemp = "\(mainUrlReact)checkin"
+            urlFull = "\(mainUrlReact)checkin?firebase_id=\(firebase_id)&mstamp=\(mstamp)&lat=\(self.lat!)&long=\(self.long!)&game_uuid=\(game_uuid!)"
             //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x1b754a)
             break
         // Promotion
         case 4:
-            urlTemp = "\(mainUrl)promotion"
-            urlFull = "\(mainUrl)promotion?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
+            urlTemp = "\(mainUrlReact)promotion"
+            urlFull = "\(mainUrlReact)promotion?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
             //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x1d70a4)
@@ -184,53 +186,53 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
             //urlTemp = "\(mainUrl)donate"
             //urlFull = "\(mainUrl)donate?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
             //global-maps/all-premium?mstamp=20000&game_uuid=c97dd402-b900-11ea-bf1c-24359e7a8738&firebase_id=V98MW1GtsMPjMiZjoICCTOPnDXu2"
-            urlTemp = "\(mainUrl)global-maps/all-premium"
-            urlFull = "\(mainUrl)global-maps/all-premium?game_uuid=\(game_uuid!)&firebase_id=\(firebase_id)"
+            urlTemp = "\(mainUrlReact)global-maps/all-premium"
+            urlFull = "\(mainUrlReact)global-maps/all-premium?game_uuid=\(game_uuid!)&firebase_id=\(firebase_id)"
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x00c6c1)
             break
         // Global-maps
         case 6	:
-            urlTemp = "\(mainUrl)global-maps"
-            urlFull = "\(mainUrl)global-maps?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
+            urlTemp = "\(mainUrlReact)global-maps"
+            urlFull = "\(mainUrlReact)global-maps?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
             //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x000000)
             break
         case 8: //random stamp
-            urlTemp = "\(mainUrlBws)StampBook/Gotgift.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
-            urlFull = "\(mainUrlBws)StampBook/Gotgift.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
+            urlTemp = "\(mainUrlPHP)StampBook/Gotgift.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
+            urlFull = "\(mainUrlPHP)StampBook/Gotgift.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
         case 9:
-            urlTemp =  "\(self.mainUrlBws)StampSummary/Stamp_Summary.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
-            urlFull = "\(self.mainUrlBws)StampSummary/Stamp_Summary.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
+            urlTemp =  "\(self.mainUrlPHP)StampSummary/Stamp_Summary.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
+            urlFull = "\(self.mainUrlPHP)StampSummary/Stamp_Summary.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)"
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x204651)
             break
         case 10:
-            urlTemp =  "\(self.mainUrlBws)Info/index.php"
-            urlFull = "\(self.mainUrlBws)Info/index.php"
+            urlTemp =  "\(self.mainUrlPHP)Info/index.php"
+            urlFull = "\(self.mainUrlPHP)Info/index.php"
                        //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x204651)
             break
         // Term and Condition
         case 11:
-            urlTemp =  "\(self.mainUrlBws)agreement/?firebase_id=1&mstamp=1"
-            urlFull = "\(self.mainUrlBws)agreement/?firebase_id=\(firebase_id)&mstamp=\(mstamp)"
+            urlTemp =  "\(self.mainUrlPHP)agreement/?firebase_id=1&mstamp=1"
+            urlFull = "\(self.mainUrlPHP)agreement/?firebase_id=\(firebase_id)&mstamp=\(mstamp)"
                        //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             break
         // Preview Stamp in round
         case 12:
-            urlTemp =  "\(self.mainUrlBws)stampReview/index.php"
-            urlFull = "\(self.mainUrlBws)stampReview/index.php"
+            urlTemp = "\(self.mainUrlPHP)stampReview/index.php"
+            urlFull = "\(self.mainUrlPHP)stampReview/index.php"
                        //url = URL(string:urlFull)!
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             break
         // go to core function
         default:
-            urlTemp = "\(mainUrlBws)/postTest.php"
+            urlTemp = "\(mainUrlPHP)/postTest.php"
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             break
         }
@@ -242,7 +244,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 request.httpMethod = "POST"
                 
                 if (firebase_id == ""){
-                    urlTemp = "\(mainUrlBws)StampBook/AnimationRandomStamp.php?firebase_id=111&game_uuid=111&finish_mode=1"
+                    urlTemp = "\(mainUrlPHP)StampBook/AnimationRandomStamp.php?firebase_id=111&game_uuid=111&finish_mode=1"
                     request = URLRequest(url: url)
                 }
                 // Encode
@@ -274,6 +276,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                     let jsonEncoder = JSONEncoder()
                     let jsonData = try! jsonEncoder.encode(encodeData)
                     json = String(data: jsonData, encoding: String.Encoding.utf8)
+                    json = recheckData(json!)
                     print((json!))
                     let postData = "data=\(json!)"
                     request.httpBody = postData.data(using: .utf8, allowLossyConversion: false)
@@ -315,6 +318,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                     let jsonEncoder = JSONEncoder()
                     let jsonData = try! jsonEncoder.encode(encodeData)
                     json = String(data: jsonData, encoding: String.Encoding.utf8)
+                    json = recheckData(json!)
                     let postData = "data=\(json!)"
                     request.httpBody = postData.data(using: .utf8, allowLossyConversion: false)
                 }
@@ -327,8 +331,8 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 //let encodeData:SendDataToGameDetail = SendDataToGameDetail(data:self.gameDetailObject!)
                 let jsonEncoder = JSONEncoder()
                 let jsonData = try! jsonEncoder.encode(self.gameDetailObject!)
-                let json = String(data: jsonData, encoding: String.Encoding.utf8)
-                
+                var json = String(data: jsonData, encoding: String.Encoding.utf8)
+                json = recheckData(json!)
                 let postData = "data=\(json!)"
                 request.httpBody = postData.data(using: .utf8, allowLossyConversion: false)
                 gameWebView.load(request)
@@ -340,7 +344,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         urlObservation = gameWebView.observe(\.url, changeHandler: { (webView, change) in
             //self.vLoading.isHidden = false
             //print(webView.url?.absoluteString!)
-            if(webView.url?.absoluteString == "https://argame-dev.7eleven-game.com/"){
+            if(webView.url?.absoluteString == self.mainUrlReact){
                 //SoundController.shared.playClickButton()
                 self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
             }
@@ -358,8 +362,8 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 ARGameSoundController.shared.playClickButton()
                 // MARK:Stamp Summary
                 //self.urlTemp = "\(self.mainUrlBws)/postTest.php"
-                self.urlTemp = "\(self.mainUrlBws)StampSummary/Stamp_Summary.php?firebase_id=\(self.firebase_id)&game_uuid=\(self.game_uuid!)"
-                self.urlFull = "\(self.mainUrlBws)StampSummary/Stamp_Summary.php?firebase_id=\(self.firebase_id)&game_uuid=\(self.game_uuid!)"
+                self.urlTemp = "\(self.mainUrlPHP)StampSummary/Stamp_Summary.php?firebase_id=\(self.firebase_id)&game_uuid=\(self.game_uuid!)"
+                self.urlFull = "\(self.mainUrlPHP)StampSummary/Stamp_Summary.php?firebase_id=\(self.firebase_id)&game_uuid=\(self.game_uuid!)"
                 if let url = URL(string:(self.isUseUrlTemp ? self.urlTemp : self.urlFull)){
                     var request = URLRequest(url: url)
                     request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -387,6 +391,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                         let jsonEncoder = JSONEncoder()
                         let jsonData = try! jsonEncoder.encode(encodeData)
                         json = String(data: jsonData, encoding: String.Encoding.utf8)
+                        json = self.recheckData(json!)
                         let postData = "data=\(json!)"
                         request.httpBody = postData.data(using: .utf8, allowLossyConversion: false)
                     }
@@ -444,7 +449,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         var url:URL? = URL(string: "")
         //var responseData:Data?
         var responseStatus:Int? = nil
-        let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
+        let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let myURL = URL(string: encoded) {
             url = myURL
@@ -519,5 +524,13 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         task.resume()
         //semaphore.wait()
         //return (responseData,responseStatus)
+    }
+    
+    func recheckData(_ _data: String) -> String {
+        
+        return _data
+        .replacingOccurrences(of: "%", with: "%25")
+        .replacingOccurrences(of: "&", with: "%26")
+        .replacingOccurrences(of: "+", with: "%2B")
     }
 }

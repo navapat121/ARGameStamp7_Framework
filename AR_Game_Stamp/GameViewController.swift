@@ -608,7 +608,7 @@ class GameViewController: UIViewController {
             var url:URL? = URL(string: "")
             //var responseData:Data?
             //var responseStatus:Int? = nil
-            let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
+            let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
             if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
                 let myURL = URL(string: encoded) {
                 url = myURL

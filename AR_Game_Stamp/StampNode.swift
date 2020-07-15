@@ -90,7 +90,7 @@ class ARStampObject : SCNNode {
         let spin = CABasicAnimation(keyPath: "rotation")
         // Use from-to to explicitly make a full rotation around z
          spin.fromValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 0, w: 0))
-         spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 0, w: Float(CGFloat(2 * M_PI))))
+        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 0, w: Float(CGFloat(2 * Double.pi))))
          spin.duration = CFTimeInterval(abs(14 - self.level)) // default is 6
          spin.repeatCount = .infinity
          stamp.addAnimation(spin, forKey: "spin around")

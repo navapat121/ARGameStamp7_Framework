@@ -10,7 +10,7 @@ import Foundation
 
 struct DataFactory {
     // UAT
-    var apiUrlMain = "https://argame-api-dev.7eleven-game.com/api/v1/"
+    //var apiUrlMain = "https://argame-api-dev.7eleven-game.com/api/v1/"
     // DEV
     //static var apiUrlMain = "https://argame-api-dev.7eleven-game.com/api/v1/"
     static var urlMain = ""
@@ -19,7 +19,7 @@ struct DataFactory {
     var env:SevenEnvironment
     init(env:SevenEnvironment,apiUrl:String) {
         self.env = env
-        self.apiUrlMain = apiUrl
+        //self.apiUrlMain = apiUrl
     }
 }
 

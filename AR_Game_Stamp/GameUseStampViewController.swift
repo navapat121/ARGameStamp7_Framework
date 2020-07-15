@@ -194,7 +194,7 @@ class GameUseStampViewController: UIViewController {
             strUrl = "game/" + game_uuid + "/use-mstamp"
             requestType = "POST"
             url = URL(string: "")
-            let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
+            let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
             if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
                 let myURL = URL(string: encoded) {
                 url = myURL
@@ -325,7 +325,7 @@ class GameUseStampViewController: UIViewController {
         
         strUrl = "game/" + (self.gameDetailResultObject?.data?.game?.game_uuid)! + "/start"
         requestType = "POST"
-        let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
+        let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let myURL = URL(string: encoded) {
             url = myURL
@@ -433,7 +433,7 @@ class GameUseStampViewController: UIViewController {
             
             strUrl = "game/" + game_uuid + "?lat=\(self.lat!)&long=\(self.long!)"
             requestType = "GET"
-            let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
+            let apiOriginal = "\(ARGameEnv.url)\(strUrl)"
             if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
                 let myURL = URL(string: encoded) {
                 url = myURL
