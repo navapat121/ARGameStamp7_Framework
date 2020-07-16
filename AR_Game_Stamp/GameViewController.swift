@@ -15,7 +15,7 @@ import WebKit
 import Darwin
 import CoreLocation
 import Lottie
-import FirebaseAnalytics
+//import FirebaseAnalytics
 
 class GameViewHeaderController: UIViewController {
     
@@ -390,7 +390,7 @@ class GameViewController: UIViewController {
 
         // ----------------------------
         // FIREBASE GOOGLE ANALYTICS
-        Analytics.logEvent("M18_GamePage", parameters: nil)
+        //Analytics.logEvent("M18_GamePage", parameters: nil)
         
         DispatchQueue.main.async {
             let str = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")

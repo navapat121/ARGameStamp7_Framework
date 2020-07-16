@@ -12,7 +12,8 @@ import AVFoundation
 import CoreMotion
 import CoreLocation
 import Lottie
-import FirebaseAnalytics
+//import FirebaseCore
+//import FirebaseAnalytics
 
 class ARGameEnv {
     static let shared = ARGameEnv()
@@ -73,6 +74,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     var lat:Double?
     var long:Double?
     var locationManager: CLLocationManager = CLLocationManager()
+    var isFirstLoading = true
     
     // MARK: Unwind To Home (Core Function)
     
@@ -386,6 +388,43 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        // FIREBASE WILL DO IT LATER
+        /*
+        if isFirstLoading {
+            
+            let secondaryOptions = FirebaseOptions(googleAppID: "1:834824914099:ios:6edfd11c60efa0b4ba5cc6",
+                                                   gcmSenderID: "834824914099") //
+            secondaryOptions.apiKey = "AIzaSyB9Z0eZ1Xj3-7ycRTtY-9yzBXyTQPjE9Gg" //
+            secondaryOptions.projectID = "elevenstampartest" //
+            secondaryOptions.bundleID = "org.cocoapods.ARGameStamp7-11" //
+                   /*
+                   let secondaryOptions = FirebaseOptions(googleAppID: "1:834824914099:ios:6edfd11c60efa0b4ba5cc6",
+                                                          gcmSenderID: "834824914099") //
+                   secondaryOptions.apiKey = "AIzaSyB9Z0eZ1Xj3-7ycRTtY-9yzBXyTQPjE9Gg" //
+                   secondaryOptions.projectID = "elevenstampartest" //
+                   secondaryOptions.bundleID = "org.cocoapods.ARGameStamp7-11" //
+            */
+                   /*
+                   //secondaryOptions.trackingID = "UA-12345678-1"
+                   secondaryOptions.clientID = "834824914099-u76sqrc0e4950656tv643nkrrh67mpq9.apps.googleusercontent.com" //
+                   //secondaryOptions.databaseURL = "https://elevenstampartest.firebaseio.com" //
+                   //secondaryOptions.storageBucket = "myproject.appspot.com"
+                   //secondaryOptions.androidClientID = "12345.apps.googleusercontent.com"
+                   //secondaryOptions.deepLinkURLScheme = "myapp://"
+                   secondaryOptions.storageBucket = "elevenstampartest.appspot.com" //
+                   */
+                   
+                   // Use Firebase library to configure APIs
+                   //FirebaseApp.configure(name: "secondary", options: )
+                   FirebaseApp.configure(options: secondaryOptions)
+                   print("generate FirebaseApp2")
+            
+            isFirstLoading = false
+        }
+ */
+        
+        print("Start AR-Stamp Game")
+        
         // Register Font To Framework
         do {
             try UIFont.register(path: "Asset/AR STAMP ASSET/font/", fileNameString: "DB HelvethaicaMon X Bd v3.2 4", type: ".ttf")
@@ -401,7 +440,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         
         // ----------------------------
         // FIREBASE GOOGLE ANALYTICS
-        Analytics.logEvent("M18_Page", parameters: nil)
+        //Analytics.logEvent("M18_Page", parameters: nil)
         
         ARGameEnv.shared.updateEnv(newEnv: sevenEnv)
         if UIDevice().userInterfaceIdiom == .phone {
@@ -450,12 +489,10 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
                 self.lat = locManager.location?.coordinate.latitude
                 self.long = locManager.location?.coordinate.longitude
             } else {
-                //self.present(systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-                print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
+                print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
             }
         } else {
-            //self.present(systemAlertMessage(title: "Unauthorize Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-            print("Unauthorize Location: Cannot recieve Lat,Long from device. Using Default location")
+            print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
         }
         //=========================
         //*** Core Token ***
@@ -610,7 +647,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         
         // ----------------------------
         // FIREBASE GOOGLE ANALYTICS
-        Analytics.logEvent("m19_theme_selected", parameters: nil)
+        //Analytics.logEvent("m19_theme_selected", parameters: nil)
         
         self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
     }
@@ -828,7 +865,7 @@ class HeaderVIewController: UIViewController {
         
         // ----------------------------
         // FIREBASE GOOGLE ANALYTICS
-        Analytics.logEvent("m18_ir_open_content", parameters: nil)
+        //Analytics.logEvent("m18_ir_open_content", parameters: nil)
         
         delegate?.deeplinkToMainApp(to: "/internal/navPage/SE034")
         //self.present(systemAlertMessage(title: "Link Main App", message: "SE034 Use Stamp all member here"), animated: true, completion: nil)
@@ -856,8 +893,7 @@ class HeaderVIewController: UIViewController {
                     destinationViewController.long = homeview.long!
                     sourceViewController.webType = 3
                 } else {
-                    sourceViewController.present(sourceViewController.systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-                    //print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
+                    sourceViewController.present(sourceViewController.systemAlertMessage(title: "Not found location", message: "ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ"), animated: true, completion: nil)
                     return
                 }
             }
@@ -903,7 +939,7 @@ class LowerVIewController: UIViewController {
 
                 // ----------------------------
                 // FIREBASE GOOGLE ANALYTICS
-                Analytics.logEvent("M18_StampBookPage", parameters: nil)
+                //Analytics.logEvent("M18_StampBookPage", parameters: nil)
                 
                 sourceViewController.webType = 1
             }
@@ -912,7 +948,7 @@ class LowerVIewController: UIViewController {
 
                 // ----------------------------
                 // FIREBASE GOOGLE ANALYTICS
-                Analytics.logEvent("M18_TransferMStampPage", parameters: nil)
+                //Analytics.logEvent("M18_TransferMStampPage", parameters: nil)
                 
                 sourceViewController.webType = 2
             }
@@ -921,7 +957,7 @@ class LowerVIewController: UIViewController {
                 
                 // ----------------------------
                 // FIREBASE GOOGLE ANALYTICS
-                Analytics.logEvent("m18_ir_match", parameters: nil)
+                //Analytics.logEvent("m18_ir_match", parameters: nil)
                 
                 sourceViewController.webType = 4
             }
@@ -934,7 +970,7 @@ class LowerVIewController: UIViewController {
                 
                 // ----------------------------
                 // FIREBASE GOOGLE ANALYTICS
-                Analytics.logEvent("M18_DonatePage", parameters: nil)
+                //Analytics.logEvent("M18_DonatePage", parameters: nil)
                 
                 sourceViewController.webType = 5
             }
@@ -943,7 +979,7 @@ class LowerVIewController: UIViewController {
                 
                 // ----------------------------
                 // FIREBASE GOOGLE ANALYTICS
-                Analytics.logEvent("M18_PremiumPage", parameters: nil)
+                //Analytics.logEvent("M18_PremiumPage", parameters: nil)
                 
                 sourceViewController.webType = 6
             }

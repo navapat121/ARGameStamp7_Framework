@@ -8,9 +8,9 @@
 
 import UIKit
 import SystemConfiguration
-import FirebaseCore
 
 //@UIApplicationMain
+// THIS DELEGATE WILL NOT LOAD< NO MATTER WHAT
 class ARGameAppDelegate: UIResponder, UIApplicationDelegate  {
     var window: UIWindow?
     let session = URLSession.shared
@@ -18,9 +18,40 @@ class ARGameAppDelegate: UIResponder, UIApplicationDelegate  {
     //let firebase_token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImMzZjI3NjU0MmJmZmU0NWU5OGMyMGQ2MDNlYmUyYmExMTc2ZWRhMzMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc2V2ZW4tZWxldmVuLXN0YWdpbmciLCJhdWQiOiJzZXZlbi1lbGV2ZW4tc3RhZ2luZyIsImF1dGhfdGltZSI6MTU5MTc4NjgzMCwidXNlcl9pZCI6ImFEdTgxNVpSYVJaUjlhSGpKYWF2S0JBYnNQNzIiLCJzdWIiOiJhRHU4MTVaUmFSWlI5YUhqSmFhdktCQWJzUDcyIiwiaWF0IjoxNTkyNTQzMDU5LCJleHAiOjE1OTI1NDY2NTksImVtYWlsIjoiYmlyZF9zdXJpbjU1NUBob3RtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImJpcmRfc3VyaW41NTVAaG90bWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.LWULkOtZxjih65ZO6bFX9A0ZkNKc2jgVKP1PA0j7kMxdtdYlmUsFVCpasWHkqf2E_kpKL24b3vrfNR2hoNj0hxj9MBTCznOinCgpBz3CCuHwYsGjaKwnAvYgPMxKlvffdzFpA9R6lhO4DqbxqeuK9rATX8F3DqGbm7zJ9d1X5vf9anlVD_CbY98UyD-2xy6nreUrxUWrowmx7EZrNvJkUVGsji6WbHN8d-hMaDMma5QQ2HjCYFO77ryCQO8SdNb6zdtcPrTihMx5ExcTZEK-TwMzNs-hXWCB_v5F4gThWVbOsxKMPSh-V4jGGagecZ30ghRl2DkD_iCape9ukSyBEA"
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+
+        //FirebaseApp.configure()
+        
+        /*
+        print("generate FirebaseApp1")
+        // Configure with manual options. Note that projectID and apiKey, though not
+        // required by the initializer, are mandatory.
+        let secondaryOptions = FirebaseOptions(googleAppID: "1:834824914099:ios:db36f0f9f10e6943ba5cc6",
+                                               gcmSenderID: "834824914099") //
+        secondaryOptions.apiKey = "AIzaSyB9Z0eZ1Xj3-7ycRTtY-9yzBXyTQPjE9Gg" //
+        secondaryOptions.projectID = "elevenstampartest" //
+        secondaryOptions.bundleID = "com.jenosize.iPhoneTestDev" //
+        /*
+        let secondaryOptions = FirebaseOptions(googleAppID: "1:834824914099:ios:6edfd11c60efa0b4ba5cc6",
+                                               gcmSenderID: "834824914099") //
+        secondaryOptions.apiKey = "AIzaSyB9Z0eZ1Xj3-7ycRTtY-9yzBXyTQPjE9Gg" //
+        secondaryOptions.projectID = "elevenstampartest" //
+        secondaryOptions.bundleID = "org.cocoapods.ARGameStamp7-11" //
+ */
+        /*
+        //secondaryOptions.trackingID = "UA-12345678-1"
+        secondaryOptions.clientID = "834824914099-u76sqrc0e4950656tv643nkrrh67mpq9.apps.googleusercontent.com" //
+        //secondaryOptions.databaseURL = "https://elevenstampartest.firebaseio.com" //
+        //secondaryOptions.storageBucket = "myproject.appspot.com"
+        //secondaryOptions.androidClientID = "12345.apps.googleusercontent.com"
+        //secondaryOptions.deepLinkURLScheme = "myapp://"
+        secondaryOptions.storageBucket = "elevenstampartest.appspot.com" //
+        */
         
         // Use Firebase library to configure APIs
-        FirebaseApp.configure()
+        //FirebaseApp.configure(name: "secondary", options: )
+        FirebaseApp.configure(options: secondaryOptions)
+        print("generate FirebaseApp2")
+        */
         
         return true
     }

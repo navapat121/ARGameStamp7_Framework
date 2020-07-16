@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "ARGameStamp7_11"
-  spec.version      = "14.0.0"
+  spec.version      = "18.0.0"
   spec.summary      = "ARGame stamp 7-11"
   spec.description  = <<-DESC 
 ARStamp Game Framework for connect with Main 7-11 Application
@@ -14,7 +14,6 @@ DESC
   spec.source_files = ['AR_Game_Stamp/*.swift', 'AR_Game_Stamp/*.h']
   spec.resource = ['AR_Game_Stamp/**/ARgame.storyboard' , 
     'AR_Game_Stamp/**/Assets.xcassets', 
-    'Firebase',
     'AR_Game_Stamp/Asset', 
     'AR_Game_Stamp/art.scnassets',
     #'AR_Game_Stamp/Content',

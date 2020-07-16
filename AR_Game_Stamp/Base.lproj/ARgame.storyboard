@@ -891,7 +891,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="152"/>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="bg-header" translatesAutoresizingMaskIntoConstraints="NO" id="lb3-EO-MUD">
-                                <rect key="frame" x="0.0" y="44" width="414.00000000000023" height="147"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="147"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="lb3-EO-MUD" secondAttribute="height" multiplier="138:49" id="Tae-j3-Cyh"/>
                                 </constraints>
@@ -1347,7 +1347,7 @@
         <image name="tutorial_button" width="342" height="160"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="LwQ-Fn-f49"/>
-        <segue reference="CHo-q5-JJS"/>
+        <segue reference="oPj-8z-sGk"/>
+        <segue reference="dFs-p4-Ecy"/>
     </inferredMetricsTieBreakers>
 </document>

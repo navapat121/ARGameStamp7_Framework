@@ -62,12 +62,10 @@ class GameUseStampViewController: UIViewController {
                 self.lat = locManager.location?.coordinate.latitude
                 self.long = locManager.location?.coordinate.longitude
             } else {
-                //self.present(systemAlertMessage(title: "Unsupport Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-                print("Unsupport Location: Cannot recieve Lat,Long from device. Using Default location")
+                print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
             }
         } else {
-            //self.present(systemAlertMessage(title: "Unauthorize Location", message: "Cannot recieve Lat,Long from device. Using Default location"), animated: true, completion: nil)
-            print("Unauthorize Location: Cannot recieve Lat,Long from device. Using Default location")
+            print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
         }
         
         loading_ani.imageProvider = imageProvider
