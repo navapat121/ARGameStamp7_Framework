@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		550CF49624C02B2C0022DE78 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550CF49524C02B2C0022DE78 /* FirebaseCore.framework */; };
 		55614F9524BFA27900FED284 /* Firebase.h in Headers */ = {isa = PBXBuildFile; fileRef = 55614F9324BFA27900FED284 /* Firebase.h */; };
 		55614F9924BFA2D700FED284 /* FirebaseCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9724BFA2D700FED284 /* FirebaseCore.xcframework */; };
 		55614F9A24BFA2D700FED284 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9824BFA2D700FED284 /* FirebaseAnalytics.framework */; };
@@ -66,6 +67,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		550CF49524C02B2C0022DE78 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
 		55614F9324BFA27900FED284 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
 		55614F9424BFA27900FED284 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		55614F9724BFA2D700FED284 /* FirebaseCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FirebaseCore.xcframework; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				55614F9924BFA2D700FED284 /* FirebaseCore.xcframework in Frameworks */,
 				55614F9A24BFA2D700FED284 /* FirebaseAnalytics.framework in Frameworks */,
 				55614FA524BFA2F000FED284 /* PromisesObjC.xcframework in Frameworks */,
+				550CF49624C02B2C0022DE78 /* FirebaseCore.framework in Frameworks */,
 				55614FA824BFA2F000FED284 /* FIRAnalyticsConnector.framework in Frameworks */,
 				55614FAA24BFA2F000FED284 /* FirebaseCoreDiagnostics.xcframework in Frameworks */,
 				55614FAF24BFA35B00FED284 /* libsqlite3.tbd in Frameworks */,
@@ -161,6 +164,7 @@
 				55614F9B24BFA2EE00FED284 /* GoogleUtilities.xcframework */,
 				55614F9C24BFA2EE00FED284 /* nanopb.xcframework */,
 				55614F9D24BFA2EE00FED284 /* PromisesObjC.xcframework */,
+				550CF49524C02B2C0022DE78 /* FirebaseCore.framework */,
 				55614F9824BFA2D700FED284 /* FirebaseAnalytics.framework */,
 				55614F9724BFA2D700FED284 /* FirebaseCore.xcframework */,
 			);
