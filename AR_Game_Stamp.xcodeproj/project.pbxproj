@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		550CF49B24C0384D0022DE78 /* FirebaseCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9724BFA2D700FED284 /* FirebaseCore.xcframework */; };
-		550CF49C24C0384D0022DE78 /* FirebaseCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9724BFA2D700FED284 /* FirebaseCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		550CF49E24C0384E0022DE78 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550CF49524C02B2C0022DE78 /* FirebaseCore.framework */; };
 		550CF4A024C038500022DE78 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9824BFA2D700FED284 /* FirebaseAnalytics.framework */; };
 		550CF4A124C038500022DE78 /* FirebaseAnalytics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9824BFA2D700FED284 /* FirebaseAnalytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		550CF4A224C038E30022DE78 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550CF49524C02B2C0022DE78 /* FirebaseCore.framework */; };
+		550CF4A324C038E30022DE78 /* FirebaseCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 550CF49524C02B2C0022DE78 /* FirebaseCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		55614F9524BFA27900FED284 /* Firebase.h in Headers */ = {isa = PBXBuildFile; fileRef = 55614F9324BFA27900FED284 /* Firebase.h */; };
 		55614FA324BFA2F000FED284 /* GoogleUtilities.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9B24BFA2EE00FED284 /* GoogleUtilities.xcframework */; };
 		55614FA424BFA2F000FED284 /* nanopb.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9C24BFA2EE00FED284 /* nanopb.xcframework */; };
@@ -75,7 +75,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				550CF49C24C0384D0022DE78 /* FirebaseCore.xcframework in Embed Frameworks */,
+				550CF4A324C038E30022DE78 /* FirebaseCore.framework in Embed Frameworks */,
 				550CF4A124C038500022DE78 /* FirebaseAnalytics.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -153,8 +153,8 @@
 				B66F1292249BC4D50027E623 /* Lottie in Frameworks */,
 				55614FA524BFA2F000FED284 /* PromisesObjC.xcframework in Frameworks */,
 				55614FA824BFA2F000FED284 /* FIRAnalyticsConnector.framework in Frameworks */,
-				550CF49E24C0384E0022DE78 /* FirebaseCore.framework in Frameworks */,
 				550CF4A024C038500022DE78 /* FirebaseAnalytics.framework in Frameworks */,
+				550CF4A224C038E30022DE78 /* FirebaseCore.framework in Frameworks */,
 				55614FAA24BFA2F000FED284 /* FirebaseCoreDiagnostics.xcframework in Frameworks */,
 				55614FAF24BFA35B00FED284 /* libsqlite3.tbd in Frameworks */,
 				55614FA624BFA2F000FED284 /* GoogleDataTransport.xcframework in Frameworks */,
