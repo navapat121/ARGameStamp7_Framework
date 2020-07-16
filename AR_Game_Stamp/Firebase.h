@@ -72,34 +72,8 @@ Firebase Dynamic Links works as intended."
     #import "FirebaseFunctions.h"
   #endif
 
-  #if __has_include(<FirebaseInAppMessaging/FirebaseInAppMessaging.h>)
-    #import <FirebaseInAppMessaging/FirebaseInAppMessaging.h>
-    #if !__has_include(<FirebaseAnalytics/FirebaseAnalytics.h>)
-      #ifndef FIREBASE_ANALYTICS_SUPPRESS_WARNING
-        #warning "FirebaseAnalytics.framework is not included in your target. Please add \
-`Firebase/Analytics` to your Podfile or add FirebaseAnalytics.framework to your project to ensure \
-Firebase In App Messaging works as intended."
-      #endif // #ifndef FIREBASE_ANALYTICS_SUPPRESS_WARNING
-    #endif
-  #elif __has_include("FirebaseInAppMessaging.h")
-    #import "FirebaseInAppMessaging.h"
-  #endif
-
   #if __has_include(<FirebaseInstanceID/FirebaseInstanceID.h>)
     #import <FirebaseInstanceID/FirebaseInstanceID.h>
-  #endif
-
-  #if __has_include(<FirebaseMessaging/FirebaseMessaging.h>)
-    #import <FirebaseMessaging/FirebaseMessaging.h>
-      #if !__has_include(<FirebaseAnalytics/FirebaseAnalytics.h>)
-      #ifndef FIREBASE_ANALYTICS_SUPPRESS_WARNING
-        #warning "FirebaseAnalytics.framework is not included in your target. Please add \
-`Firebase/Analytics` to your Podfile or add FirebaseAnalytics.framework to your project to ensure \
-Firebase Messaging works as intended."
-      #endif // #ifndef FIREBASE_ANALYTICS_SUPPRESS_WARNING
-    #endif
-  #elif __has_include("FirebaseMessaging.h")
-    #import "FirebaseMessaging.h"
   #endif
 
   #if __has_include(<FirebaseMLCommon/FirebaseMLCommon.h>)
