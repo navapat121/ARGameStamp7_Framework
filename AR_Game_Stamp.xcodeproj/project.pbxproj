@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		550CF49624C02B2C0022DE78 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550CF49524C02B2C0022DE78 /* FirebaseCore.framework */; };
+		550CF49B24C0384D0022DE78 /* FirebaseCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9724BFA2D700FED284 /* FirebaseCore.xcframework */; };
+		550CF49C24C0384D0022DE78 /* FirebaseCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9724BFA2D700FED284 /* FirebaseCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		550CF49E24C0384E0022DE78 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550CF49524C02B2C0022DE78 /* FirebaseCore.framework */; };
+		550CF4A024C038500022DE78 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9824BFA2D700FED284 /* FirebaseAnalytics.framework */; };
+		550CF4A124C038500022DE78 /* FirebaseAnalytics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9824BFA2D700FED284 /* FirebaseAnalytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		55614F9524BFA27900FED284 /* Firebase.h in Headers */ = {isa = PBXBuildFile; fileRef = 55614F9324BFA27900FED284 /* Firebase.h */; };
-		55614F9924BFA2D700FED284 /* FirebaseCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9724BFA2D700FED284 /* FirebaseCore.xcframework */; };
-		55614F9A24BFA2D700FED284 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9824BFA2D700FED284 /* FirebaseAnalytics.framework */; };
 		55614FA324BFA2F000FED284 /* GoogleUtilities.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9B24BFA2EE00FED284 /* GoogleUtilities.xcframework */; };
 		55614FA424BFA2F000FED284 /* nanopb.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9C24BFA2EE00FED284 /* nanopb.xcframework */; };
 		55614FA524BFA2F000FED284 /* PromisesObjC.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614F9D24BFA2EE00FED284 /* PromisesObjC.xcframework */; };
@@ -65,6 +67,21 @@
 		B6E7C7E6249F341900C6CE3C /* tapHourGlassStamp.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6E7C7E5249F341900C6CE3C /* tapHourGlassStamp.mp3 */; };
 		B6E7C7EB249F4A8300C6CE3C /* tapNetStamp.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6E7C7EA249F4A8300C6CE3C /* tapNetStamp.mp3 */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		550CF49D24C0384D0022DE78 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				550CF49C24C0384D0022DE78 /* FirebaseCore.xcframework in Embed Frameworks */,
+				550CF4A124C038500022DE78 /* FirebaseAnalytics.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		550CF49524C02B2C0022DE78 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
@@ -134,15 +151,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B66F1292249BC4D50027E623 /* Lottie in Frameworks */,
-				55614F9924BFA2D700FED284 /* FirebaseCore.xcframework in Frameworks */,
-				55614F9A24BFA2D700FED284 /* FirebaseAnalytics.framework in Frameworks */,
 				55614FA524BFA2F000FED284 /* PromisesObjC.xcframework in Frameworks */,
-				550CF49624C02B2C0022DE78 /* FirebaseCore.framework in Frameworks */,
 				55614FA824BFA2F000FED284 /* FIRAnalyticsConnector.framework in Frameworks */,
+				550CF49E24C0384E0022DE78 /* FirebaseCore.framework in Frameworks */,
+				550CF4A024C038500022DE78 /* FirebaseAnalytics.framework in Frameworks */,
 				55614FAA24BFA2F000FED284 /* FirebaseCoreDiagnostics.xcframework in Frameworks */,
 				55614FAF24BFA35B00FED284 /* libsqlite3.tbd in Frameworks */,
 				55614FA624BFA2F000FED284 /* GoogleDataTransport.xcframework in Frameworks */,
 				55614FA924BFA2F000FED284 /* FirebaseInstallations.xcframework in Frameworks */,
+				550CF49B24C0384D0022DE78 /* FirebaseCore.xcframework in Frameworks */,
 				55614FA424BFA2F000FED284 /* nanopb.xcframework in Frameworks */,
 				55614FA724BFA2F000FED284 /* GoogleAppMeasurement.framework in Frameworks */,
 				55614FB124BFA36200FED284 /* StoreKit.framework in Frameworks */,
@@ -352,6 +369,7 @@
 				B66F0B60249BC28E0027E623 /* Sources */,
 				B66F0B61249BC28E0027E623 /* Frameworks */,
 				B66F0B62249BC28E0027E623 /* Resources */,
+				550CF49D24C0384D0022DE78 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
