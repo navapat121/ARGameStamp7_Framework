@@ -801,7 +801,12 @@ class GameViewController: UIViewController {
                     
                     // Update preview small
                     self.headerViewController.preview_small_stamp.image = tapedStamp.stampImg
-                    self.headerViewController.hp_label.text = "\(tapedStamp.hitCount!)/\(tapedStamp.hp!)"
+                    if tapedStamp.hitCount > tapedStamp.hp! {
+                        self.headerViewController.hp_label.text = "\(tapedStamp.hp!)/\(tapedStamp.hp!)"
+                    }
+                    else {
+                        self.headerViewController.hp_label.text = "\(tapedStamp.hitCount!)/\(tapedStamp.hp!)"
+                    }
                 } else if(tapedStamp.stamp_type == 1){
                     ARGameSoundController.shared.playTapBombStamp()
                     self.bombAnimated.play()
@@ -1178,7 +1183,8 @@ class GameViewController: UIViewController {
                     guard let data:NSData = NSData(contentsOf: url as URL) else {
                         continue
                     }
-                    let stampImage = UIImage(data: data as Data)
+                    //let stampImage = UIImage(data: data as Data)
+                    let stampImage = resizeImage(image: UIImage(data: data as Data)!, targetSize: CGSize(width: 300,height: 300))
                     
                     for i in 0 ..< (stamp?.quantity)!{
                         normal_stamp_amount += 1
@@ -1275,6 +1281,32 @@ class GameViewController: UIViewController {
             imageList[i].image = stampCatchList[i]
         }
     }
+}
+
+func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+    let size = image.size
+
+    let widthRatio  = targetSize.width  / size.width
+    let heightRatio = targetSize.height / size.height
+
+    // Figure out what our orientation is, and use that to form the rectangle
+    var newSize: CGSize
+    if(widthRatio > heightRatio) {
+        newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+    } else {
+        newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+    }
+
+    // This is the rect that we've calculated out and this is what is actually used below
+    let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+
+    // Actually do the resizing to the rect using the ImageContext stuff
+    UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+    image.draw(in: rect)
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+
+    return newImage!
 }
 
 func cloneStamp(scene: SCNScene,parentNode: SCNNode){

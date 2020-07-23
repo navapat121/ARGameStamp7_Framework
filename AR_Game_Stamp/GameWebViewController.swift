@@ -99,6 +99,10 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     // On finish loading page
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         print("loaded")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            self.vLoading.isHidden = true
+        })
+        /*
         if(self.webType == 11){
             DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 self.vLoading.isHidden = true
@@ -108,6 +112,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 self.vLoading.isHidden = true
             })
         }
+        */
     }
     
     override func viewDidLoad() {
@@ -180,14 +185,17 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x1d70a4)
             break
-        // Donate
+        // Premium
         case 5:
-            // Donate stil not use
-            //urlTemp = "\(mainUrl)donate"
-            //urlFull = "\(mainUrl)donate?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
-            //global-maps/all-premium?mstamp=20000&game_uuid=c97dd402-b900-11ea-bf1c-24359e7a8738&firebase_id=V98MW1GtsMPjMiZjoICCTOPnDXu2"
             urlTemp = "\(mainUrlReact)global-maps/all-premium"
             urlFull = "\(mainUrlReact)global-maps/all-premium?game_uuid=\(game_uuid!)&firebase_id=\(firebase_id)"
+            url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
+            blockView.backgroundColor = UIColor(rgb: 0x00c6c1)
+            break
+        // Donate
+        case 51:
+            urlTemp = "\(mainUrlReact)donate"
+            urlFull = "\(mainUrlReact)donate?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)"
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             blockView.backgroundColor = UIColor(rgb: 0x00c6c1)
             break
@@ -218,17 +226,31 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
             break
         // Term and Condition
         case 11:
+            // 20200724 use in v2
+            urlTemp =  "\(self.mainUrlPHP)agreement/index_v2.php?firebase_id=1&mstamp=1"
+            urlFull = "\(self.mainUrlPHP)agreement/index_v2.php?firebase_id=\(firebase_id)&mstamp=\(mstamp)"
+            // 20200717 use in v1
+            /*
             urlTemp =  "\(self.mainUrlPHP)agreement/?firebase_id=1&mstamp=1"
             urlFull = "\(self.mainUrlPHP)agreement/?firebase_id=\(firebase_id)&mstamp=\(mstamp)"
-                       //url = URL(string:urlFull)!
+            */
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
             break
         // Preview Stamp in round
         case 12:
             urlTemp = "\(self.mainUrlPHP)stampReview/index.php"
-            urlFull = "\(self.mainUrlPHP)stampReview/index.php"
-                       //url = URL(string:urlFull)!
+            urlFull = "\(self.mainUrlPHP)stampReview/index.php?firebase_id=\(firebase_id)"
+                       
+            // case code == 3, no mstamp
+                       if self.gameDetailObject?.code == 3 {
+                           urlFull = "\(mainUrlPHP)stampReview/nomstamp.php?firebase_id=\(firebase_id)"
+                       }
             url = URL(string:(isUseUrlTemp ? urlTemp : urlFull))
+            break
+            
+        case 13:
+            urlFull = "\(self.mainUrlPHP)stampReview/nomstamp.php?firebase_id=\(firebase_id)"
+            url = URL(string:(urlFull))
             break
         // go to core function
         default:
@@ -238,6 +260,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         }
         
         if let url = URL(string:(urlFull)){
+            print("url=\(url)")
             var request = URLRequest(url: url)
             if(webType == 8){
                 request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -325,7 +348,11 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 //request.httpBody = "data=\(postData)"
                 self.gameWebView.load(request)
             }else if(webType == 12){
+                
                 var request = URLRequest(url: url)
+                //var request = URLRequest(url: URL(string:("\(self.mainUrlPHP)postTest.php"))!)
+                //var request = URLRequest(url: URL(string:("https://postman-echo.com/post"))!)
+                
                 request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
                 request.httpMethod = "POST"
                 //let encodeData:SendDataToGameDetail = SendDataToGameDetail(data:self.gameDetailObject!)
@@ -333,34 +360,71 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 let jsonData = try! jsonEncoder.encode(self.gameDetailObject!)
                 var json = String(data: jsonData, encoding: String.Encoding.utf8)
                 json = recheckData(json!)
+                // TEST
+                //json = "{\"data\":{\"firebase_id\":\"dlesVvxbzPM1WUU53eW4e9XQ6dm2\",\"game\":{\"detail\":\"test\",\"game_uuid\":\"c97dd402-b900-11ea-bf1c-24359e7a8738\",\"start_date\":\"1593322320\",\"title\":\"game-1\",\"is_firsttime\":false,\"description\":\"test\",\"end_date\":\"1596214500\",\"schedule\":{\"items\":[{\"hp\":7,\"quantity\":5,\"image_url\":\"https:\\/\\/cpgamear.s3.ap-southeast-1.amazonaws.com\\/game\\/2020\\/07\\/04\\/3d362f2b2acddb44320d9b2968179e55.png\",\"level\":1,\"type\":1,\"description\":\"\\u0e01\\u0e35\\u0e27\\u0e35\\u0e48\",\"name\":\"A1\"}],\"is_store\":false,\"mstamp_use\":2}}},\"code\":0}"
                 let postData = "data=\(json!)"
+                print("postData=")
+                print(postData)
                 request.httpBody = postData.data(using: .utf8, allowLossyConversion: false)
                 gameWebView.load(request)
-            }else{
+            }
+            else{
                 gameWebView.load(request)
             }
         }
         // Add observation.
         urlObservation = gameWebView.observe(\.url, changeHandler: { (webView, change) in
             //self.vLoading.isHidden = false
-            //print(webView.url?.absoluteString!)
             if let checkUrlString = webView.url?.absoluteString {
+                print("checkUrlString=\(checkUrlString)")
                 if(checkUrlString == self.mainUrlReact){
                     //SoundController.shared.playClickButton()
                     self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
                     self.dismiss(animated: false, completion: nil)
+                    self.destroyWebview()
                 }
-                    // back from WebView
-                /*else if (webView.url?.absoluteString.contains("back"))! {
-                    SoundController.shared.playClickButton()
-                    self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
-                }*/
-                    // Close from WebView
+                // 20200724 use in v2
+                else if ((checkUrlString.contains("exittomainapp"))) {
+                    self.performSegue(withIdentifier: "webViewToExit_segue", sender: nil)
+                    self.dismiss(animated: false, completion: nil)
+                    self.destroyWebview()
+                }
+                // 20200724 use in v2
+                else if ((webView.url?.fragment == ("sharescreen"))) {
+                    let image = self.takeScreenshot(false)
+
+                    // set up activity view controller
+                    let imageToShare = [ image! ]
+                    let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+                    activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+
+                    // exclude some activity types from the list (optional)
+                    activityViewController.excludedActivityTypes = [ UIActivity.ActivityType.airDrop, UIActivity.ActivityType.postToFacebook ]
+
+                    // present the view controller
+                    self.present(activityViewController, animated: true, completion: nil)
+                    
+                    self.gameWebView.load(URLRequest(url: URL(string: "\(checkUrlString)complete")!));
+                    return
+                }
+                // Close from WebView
                 else if ((checkUrlString.contains("close")) || (checkUrlString.contains("back"))) {
                     // webView now use "closeWebView" as signal
                     //SoundController.shared.playClickButton()
+
                     self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
+                    /*
+                    // deprecate
+                    // 20200717 use in v1
+                    if(self.webType == 11){
+                        self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
+                    }
+                    else {
+                        self.performSegue(withIdentifier: "webViewToHome_segue", sender: nil)
+                    }
+                    */
                     self.dismiss(animated: false, completion: nil)
+                    self.destroyWebview()
                 }
                 else if (checkUrlString.contains("nextpage")) {
                     ARGameSoundController.shared.playClickButton()
@@ -405,14 +469,19 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 }else if(checkUrlString.contains("play")) {
                     if(self.webType == 12){
                         self.dismiss(animated: false, completion: nil)
-                    } else {
+                        self.destroyWebview()
+                    }
+                    else {
                         self.performSegue(withIdentifier: "continue_to_play_segue", sender: nil)
                         self.dismiss(animated: false, completion: nil)
+                        // not sure can destroy or not
+                        self.destroyWebview()
                     }
                 }
                 else if (checkUrlString.contains("sharecomplete")) {
                     self.gameWebView.goBack()
                 }
+                /*
                 else if (checkUrlString.contains("share")) {
                     //print(webView.url?.query)
                     let urlString = webView.url?.query?.split(separator: "=")
@@ -434,7 +503,9 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                         // User completed activity
                     }
                     self.present(activityVC, animated: false, completion: nil)
-                }else if (checkUrlString.contains("agreement_success")) {
+                }
+                */
+                else if (checkUrlString.contains("agreement_success")) {
                     self.requestCore()
                 }
             }
@@ -525,6 +596,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 if((self.coreResultObject?.code)! == 0){
                     // Success
                     self.dismiss(animated: false, completion: nil)
+                    self.destroyWebview()
                 }else{
                     self.present(self.systemAlertMessage(title: "Request Error", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
                 }
@@ -543,9 +615,32 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         .replacingOccurrences(of: "+", with: "%2B")
     }
     
+    // share screen
+    /// Takes the screenshot of the screen and returns the corresponding image
+    ///
+    /// - Parameter shouldSave: Boolean flag asking if the image needs to be saved to user's photo library. Default set to 'true'
+    /// - Returns: (Optional)image captured as a screenshot
+    open func takeScreenshot(_ shouldSave: Bool = true) -> UIImage? {
+        var screenshotImage :UIImage?
+        let layer = UIApplication.shared.keyWindow!.layer
+        let scale = UIScreen.main.scale
+        UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
+        guard let context = UIGraphicsGetCurrentContext() else {return nil}
+        layer.render(in:context)
+        screenshotImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        if let image = screenshotImage, shouldSave {
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        }
+        return screenshotImage
+    }
+    
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
         
+    func destroyWebview() {
         animationLoading.removeFromSuperview()
         animationLoading = nil
         

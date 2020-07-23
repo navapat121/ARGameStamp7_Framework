@@ -16,7 +16,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
     @IBOutlet weak var skipBtn: UIButton!
     var gameDetail:responseGameDetailObject?
     var resultUpdateFirstTime:responseGameDetailObject?
-    var is_tutorial:Int? = 0
+    var is_tutorial_from_firsttime:Int? = 0
     var firebase_id:String?
     var strUrl:String = ""
     var requestType:String = ""
@@ -44,13 +44,20 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        dismiss(animated: false, completion: nil)
+        //dismiss(animated: false, completion: nil)
     }
 
     @objc
     func playFromTutorialButtonAction(sender:UIButton){
         ARGameSoundController.shared.playClickButton()
-        submitFirstTime()
+        // 20200724
+        // v2. let PHP handler this
+        self.performSegue(withIdentifier: "tutorial_to_usestamp_segue", sender: nil)
+        self.dismiss(animated: false, completion: nil)
+        self.destroyTutorial()
+        // 20200717
+        // deprecate
+        //submitFirstTime()
     }
     
     @objc
@@ -61,6 +68,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
         pageView.setContentOffset(bottomOffset, animated: true)
     }
     
+    /*
     func submitFirstTime(){
         if !isConnectedToNetwork() {
             self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
@@ -144,10 +152,11 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
         }
         task.resume()
     }
+    */
     
     func createSlides(){
         // Image not in first time tutorial 2, 3, 6, 7, 8, 9, 10, 11
-        if(self.is_tutorial == 1){
+        if(self.is_tutorial_from_firsttime == 1){
             let array = [1,4,5,12]
             for i in array{
                 let oneSlide:GameTutorialSlideView = ARGameBundle()!.loadNibNamed("GameTutorialSlide", owner: self, options: nil)?.first as! GameTutorialSlideView
@@ -185,46 +194,11 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
             self.skipBtn.isHidden = false
             playButton.isHidden = true
         }
-        
-        //let maximumHorizontalOffset: CGFloat = scrollView.contentSize.width - scrollView.frame.width
-        //let currentHorizontalOffset: CGFloat = scrollView.contentOffset.x
-        
-        // vertical
-        //let maximumVerticalOffset: CGFloat = scrollView.contentSize.height - scrollView.frame.height
-        //let currentVerticalOffset: CGFloat = scrollView.contentOffset.y
-        
-        //let percentageHorizontalOffset: CGFloat = currentHorizontalOffset / maximumHorizontalOffset
-        //let percentageVerticalOffset: CGFloat = currentVerticalOffset / maximumVerticalOffset
-        
-        
-        /*
-         * below code changes the background color of view on paging the scrollview
-         */
-        //        self.scrollView(scrollView, didScrollToPercentageOffset: percentageHorizontalOffset)
-        
-        
-        /*
-         * below code scales the imageview on paging the scrollview
-         */
-        //let percentOffset: CGPoint = CGPoint(x: percentageHorizontalOffset, y: percentageVerticalOffset)
-        
-        /*if(percentOffset.x > 0 && percentOffset.x <= 0.25) {
-         
-         slides[0].page1.transform = CGAffineTransform(scaleX: (0.25-percentOffset.x)/0.25, y: (0.25-percentOffset.x)/0.25)
-         slides[1].page1.transform = CGAffineTransform(scaleX: percentOffset.x/0.25, y: percentOffset.x/0.25)
-         
-         } else if(percentOffset.x > 0.25 && percentOffset.x <= 0.50) {
-         slides[1].page1.transform = CGAffineTransform(scaleX: (0.50-percentOffset.x)/0.25, y: (0.50-percentOffset.x)/0.25)
-         slides[2].page1.transform = CGAffineTransform(scaleX: percentOffset.x/0.50, y: percentOffset.x/0.50)
-         
-         } else if(percentOffset.x > 0.50 && percentOffset.x <= 0.75) {
-         slides[2].page1.transform = CGAffineTransform(scaleX: (0.75-percentOffset.x)/0.25, y: (0.75-percentOffset.x)/0.25)
-         slides[3].page1.transform = CGAffineTransform(scaleX: percentOffset.x/0.75, y: percentOffset.x/0.75)
-         
-         } else if(percentOffset.x > 0.75 && percentOffset.x <= 1) {
-         slides[3].page1.transform = CGAffineTransform(scaleX: (1-percentOffset.x)/0.25, y: (1-percentOffset.x)/0.25)
-         slides[4].page1.transform = CGAffineTransform(scaleX: percentOffset.x, y: percentOffset.x)
-         }*/
+    }
+    
+    func destroyTutorial() {
+        pageView.removeFromSuperview()
+        pageView = nil
     }
 }
 

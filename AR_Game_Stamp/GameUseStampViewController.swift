@@ -29,7 +29,7 @@ class GameUseStampViewController: UIViewController {
     var url:URL?
     var responseData:Data?
     var responseStatus:Int?
-    var is_tutorial:Int? = 0
+    var is_tutorial_from_firsttime:Int? = 0
     var lat:Double?
     var long:Double?
     
@@ -164,7 +164,7 @@ class GameUseStampViewController: UIViewController {
             
             // Send parameter To GamePlay
             //print(sourceViewController.gameDetailResultObject)
-            destinationViewController.is_tutorial = sourceViewController.is_tutorial
+            destinationViewController.is_tutorial_from_firsttime = sourceViewController.is_tutorial_from_firsttime
             destinationViewController.firebase_id = sourceViewController.firebase_id
             destinationViewController.gameDetail = sourceViewController.gameDetailResultObject
             sourceViewController.present(destinationViewController, animated: false, completion: nil)
@@ -185,6 +185,7 @@ class GameUseStampViewController: UIViewController {
         }
     }
     
+    // step 3:
     func requestGameUseStamp(){
         if !isConnectedToNetwork() {
             self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
@@ -253,6 +254,8 @@ class GameUseStampViewController: UIViewController {
                 let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
                 print("Response data string:\n \(dataString)")
                 
+                // deprecate in v.2
+                // will never happen anymore
                 if (dataString.contains("\"code\":3")) {
                     DispatchQueue.main.async(execute: { () -> Void in
                         self.loadingBG.isHidden = true
@@ -286,6 +289,17 @@ class GameUseStampViewController: UIViewController {
                 DispatchQueue.main.async(execute: { () -> Void in
                     if ((self.gameUseStampResultObject?.code)! == 0){
                         self.performSegue(withIdentifier: "playGame", sender: nil)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                            self.loading_ani.isHidden = true
+                            self.loading_ani.stop()
+
+                            self.loading_ani.removeFromSuperview()
+                            self.loading_ani = nil
+                            self.loadingImage.isHidden = false
+                            self.loadingBG.isHidden = false
+                            // this page wont show anymore , destroy to clear memory
+                        })
+                        
                     } else {
                         //self.present(self.systemAlertMessage(title: "Request Error", message: (self.gameUseStampResultObject?.msg)!), animated: true, completion: nil)
                         self.popUpImage.image = UIImage(named: "m-stamp_notError", in: self.ARGameBundle(), compatibleWith: nil)
@@ -332,6 +346,7 @@ class GameUseStampViewController: UIViewController {
          }*/
     }
     
+    // step 2: when click confirm
     func requestGameStart(){
         if !isConnectedToNetwork() {
             self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
@@ -401,7 +416,7 @@ class GameUseStampViewController: UIViewController {
             }
             
             let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-            print("Response data string:\n \(dataString)")
+            print("requestGameStart() Response data string:\n \(dataString)")
             // --------
             // data ready, call next method here
             do{
@@ -441,6 +456,7 @@ class GameUseStampViewController: UIViewController {
          }*/
     }
     
+    // step 1 [view load, before click]
     func requestGameDetail(){
         if !isConnectedToNetwork() {
             self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
@@ -511,12 +527,15 @@ class GameUseStampViewController: UIViewController {
                 
                 let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
                 self.gameDetailResultString = dataString
-                print("Response data string:\n \(dataString)")
+                print("requestGameDetail() Response data string:\n \(dataString)")
                 // --------
                 // data ready, call next method here
                 do {
                     self.gameDetailResultObject = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
-                } catch {
+                    
+                    
+                }
+                catch {
                     self.present(self.systemAlertMessage(title: "Request Error", message: "Response data Game Detail. Data Wrong"), animated: true, completion: nil)
                     self.loading_ani.isHidden = true
                     self.loadingImage.isHidden = true
@@ -529,13 +548,15 @@ class GameUseStampViewController: UIViewController {
                 DispatchQueue.main.async(execute: { () -> Void in
                     if((self.gameDetailResultObject?.code)! == 0){
                         if((self.gameDetailResultObject?.data?.game?.is_firsttime)!){
-                            self.loadingBG.isHidden = true
-                            self.loadingImage.isHidden = true
-                            self.loading_ani.isHidden = true
-                            self.loading_ani.stop()
-                            self.is_tutorial = 1
+                            self.gameDetailResultObject?.data?.game?.is_firsttime = false
+                            //self.loadingBG.isHidden = true
+                            //self.loadingImage.isHidden = true
+                            //self.loading_ani.isHidden = true
+                            //self.loading_ani.stop()
+                            self.is_tutorial_from_firsttime = 1
                             self.performSegue(withIdentifier: "tutorialFirstTime", sender: nil)
-                        } else {
+                        }
+                        else {
                             self.performSegue(withIdentifier: "useStamp_to_webView", sender: self)
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                                 self.loading_ani.isHidden = true
@@ -546,6 +567,8 @@ class GameUseStampViewController: UIViewController {
                         }
                     }
                         // ptoon: พี่ว่าไม่ใช่นะ แล้วอีกอย่าง มันไม่มีทางเข้า เพราะ code=3 มันก็เข้าอันบนไปแล้ว
+                        // ptoon: สรุป มันต้องเข้า เพราะเอ๊งตั้งลำดับ method สลับกัน...
+                        // hotfix v.1 ไม่ต้องเข้าแล้ว จะไม่มีโอกาสเข้าอีกต่อไป
                         /*
                     else if((self.gameDetailResultObject?.code)! == 3){
                         self.loadingBG.isHidden = true
@@ -558,10 +581,19 @@ class GameUseStampViewController: UIViewController {
                     }
                      */
                      else {
+                         self.performSegue(withIdentifier: "useStamp_to_webView", sender: self)
+                         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                             self.loading_ani.isHidden = true
+                             self.loadingImage.isHidden = true
+                             self.loadingBG.isHidden = true
+                             self.loading_ani.stop()
+                         })
+                        /*
                          self.loadingBG.isHidden = true
                          self.loadingImage.isHidden = true
                          self.loading_ani.isHidden = true
                          self.loading_ani.stop()
+                         */
                      }
                 })
             }
@@ -610,9 +642,27 @@ class GameUseStampViewController: UIViewController {
             let destinationViewController = self.destination as! GameWebViewController
             
             destinationViewController.webType = 12
+            destinationViewController.firebase_id = sourceViewController.firebase_id ?? "0"
             destinationViewController.coreResultObject = sourceViewController.coreResultObject
             destinationViewController.gameDetailObject = sourceViewController.gameDetailResultObject
             sourceViewController.present(destinationViewController, animated: false, completion: nil)
+        }
+    }
+    
+    @IBAction func unwindToUseStamp( _ seg: UIStoryboardSegue) {
+        if(seg.identifier == "tutorial_to_usestamp_segue"){
+            if is_tutorial_from_firsttime == 1 {
+                is_tutorial_from_firsttime = 0
+                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                    self.performSegue(withIdentifier: "useStamp_to_webView", sender: self)
+                })
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                    self.loading_ani.isHidden = true
+                    self.loadingImage.isHidden = true
+                    self.loadingBG.isHidden = true
+                    self.loading_ani.stop()
+                })
+            }
         }
     }
 }

@@ -33,9 +33,9 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>7-Eleven TH require Location Service</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>7-Eleven TH require Photo Lib</string>
+	<string>7-Eleven TH require Photo Library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>7-Eleven TH require Photo Lib</string>
+	<string>7-Eleven TH require Photo Library</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

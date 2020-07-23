@@ -51,6 +51,7 @@ struct coreData : Codable {
     var mstamp:Int?
     var is_accept:Bool?
     var game:gameInfo?
+    var is_show_btn_donate: Bool?
 }
 struct gameInfo : Codable {
     var game_uuid:String
@@ -61,6 +62,7 @@ struct gameInfo : Codable {
     var start_date:String?
     var end_date:String?
     var schedule:scheduleObject?
+    var firebase_id:String?
 }
 
 //--------------------------------------//

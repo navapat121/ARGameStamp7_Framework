@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "ARGameStamp7_11"
-  spec.version      = "18.0.0"
+  spec.version      = "19.0.0"
   spec.summary      = "ARGame stamp 7-11"
   spec.description  = <<-DESC 
 ARStamp Game Framework for connect with Main 7-11 Application

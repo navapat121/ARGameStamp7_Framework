@@ -17,7 +17,7 @@ import Lottie
 
 class ARGameEnv {
     static let shared = ARGameEnv()
-    var env:SevenEnvironment = .prod
+    //var env:SevenEnvironment = .prod // ptoon: ไม่ได้ใช้แล้วนื
     var url:String = ""
     var urlPHP:String = ""
     var urlReact:String = ""
@@ -34,6 +34,10 @@ class ARGameEnv {
             url = "https://argame-api-staging.7eleven-game.com/api/v1/"
             urlReact = "https://argame-staging.7eleven-game.com/"
             urlPHP = "https://argame-2-staging.7eleven-game.com/"
+        }else if(newEnv == .bws){//bws - dev
+            url = "https://argame-api-dev.7eleven-game.com/api/v1/"
+            urlReact = "https://argame-dev.7eleven-game.com/"
+            urlPHP = "https://bluewindsolution.com/project/7eleven2020/sampleweb/"
         }
     }
 }
@@ -42,6 +46,7 @@ public enum SevenEnvironment {
   case dev
   case staging
   case prod
+    case bws
 }
 
 // prepare to navigate to main App
@@ -75,6 +80,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     var long:Double?
     var locationManager: CLLocationManager = CLLocationManager()
     var isFirstLoading = true
+    static var isShowDonate = false
     
     // MARK: Unwind To Home (Core Function)
     
@@ -122,6 +128,11 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             self.lottieLoading.stop()
             self.vLoading.isHidden = true
         }
+        // 20200722
+        // terminate app, because reject agreement
+        else if (seg.identifier == "webViewToExit_segue") {
+            self.headerController.backToMain_btn.sendActions(for: .touchUpInside)
+        }
     }
     private var lowerController: LowerVIewController!
     private var headerController: HeaderVIewController!
@@ -139,12 +150,40 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         }
     }
     public override func viewDidAppear(_ animated: Bool) {
+        
+        if AVCaptureDevice.authorizationStatus(for: .video) ==  AVAuthorizationStatus.authorized
+        {
+           // Already Authorized
+        }
+        else
+        {
+            AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted :Bool) -> Void in
+           });
+        }
+        
+        setupLocationManager()
+        //locationManager.requestAlwaysAuthorization()
+        //locationManager.requestWhenInUseAuthorization()
+        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == .authorizedAlways)
+        {
+            if(locationManager.location?.coordinate.latitude != nil && locationManager.location?.coordinate.longitude != nil){
+                self.lat = locationManager.location?.coordinate.latitude
+                self.long = locationManager.location?.coordinate.longitude
+            } else {
+                print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
+            }
+        } else {
+            print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
+        }
+        
         // Check request Data
         if(self.coreTokenResultObject?.msg != nil){
             //self.present(systemAlertMessage(title: "Request Error", message: (self.coreTokenResultObject?.msg)!), animated: true, completion: nil)
         } else if(self.coreTokenResultObject?.code == 0){
             requestCore()
         }
+        
         if((self.fid) != nil){
             // use FID from main app
             self.firebase_id = self.fid
@@ -163,11 +202,9 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     }
     
     deinit {
-        
         lottieLoading.removeFromSuperview()
         lottieLoading = nil
     }
-    
     
     func requestCoreToken() {
         if !isConnectedToNetwork() {
@@ -270,7 +307,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         
         // -----------------
         //MARK: Core
-        let strUrl = "core"
+        let strUrl = "core?check_accept=1"
         let requestType = "POST"
         
         var url:URL? = URL(string: "")
@@ -338,43 +375,64 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             // --------
             // data ready, call next method here
             do{
-                self.coreResultObject = try JSONDecoder().decode(responseCoreObject.self, from: data!)
-            } catch {
-                self.present(self.systemAlertMessage(title: "Request Error", message: dataString), animated: true, completion: nil)
-                self.vLoading.isHidden = true
+                 self.coreResultObject = try JSONDecoder().decode(responseCoreObject.self, from: data!)
+                
+                 DispatchQueue.main.async(execute: { () -> Void in
+                     if((self.coreResultObject?.code)! == 0){
+                         self.lowerController.coreResultObject = self.coreResultObject
+                         self.headerController.coreResultObject = self.coreResultObject
+                         
+                         let currencyFormatter = NumberFormatter()
+                         currencyFormatter.usesGroupingSeparator = true
+                         currencyFormatter.numberStyle = .decimal
+                         currencyFormatter.locale = Locale.current
+
+                         let priceString = currencyFormatter.string(from: NSNumber(value: (self.coreResultObject?.data?.mstamp)!))!
+                         self.headerController.your_stamp.text = "\(priceString)"
+                        
+                        // new button donate
+                        ARGameHomeViewController.isShowDonate = self.coreResultObject?.data?.is_show_btn_donate ?? false
+                        if ARGameHomeViewController.isShowDonate == true {
+                            self.lowerController.btnDonate.setImage(UIImage(named: "btn_donate_1", in: Bundle(identifier: "org.cocoapods.ARGameStamp7-11"), compatibleWith: nil), for: UIControl.State.normal)
+                        }
+                        else {
+                            self.lowerController.btnDonate.setImage(UIImage(named: "btn_donate", in: Bundle(identifier: "org.cocoapods.ARGameStamp7-11"), compatibleWith: nil), for: UIControl.State.normal)
+                        }
+                        
+                         if(self.playgame){
+                             self.requestGameDetail()
+                             self.playgame = false
+                         }
+                        else if(self.coreResultObject?.data?.is_accept == false){
+                            self.webType = 11
+                            self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                self.vLoading.isHidden = true
+                            })
+                        }
+                         else {
+                             self.vLoading.isHidden = true
+                         }
+                         // test accept term
+                         /*
+                             self.coreResultObject?.data?.is_accept = false
+                          */
+                     }
+                     else{
+                         // hide stich here
+                         self.vLoading.isHidden = true
+                         self.present(self.systemAlertMessage(title: "Request Error", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
+                         self.headerController.your_stamp.text = "\(0)"
+                     }
+                 })
+             }
+             catch {
+                DispatchQueue.main.async(execute: { () -> Void in
+                 self.present(self.systemAlertMessage(title: "Request Error", message: dataString), animated: true, completion: nil)
+                 self.vLoading.isHidden = true
+                 })
                 return
             }
-            
-            
-            DispatchQueue.main.async(execute: { () -> Void in
-                if((self.coreResultObject?.code)! == 0){
-                    self.lowerController.coreResultObject = self.coreResultObject
-                    self.headerController.coreResultObject = self.coreResultObject
-                    
-                    let currencyFormatter = NumberFormatter()
-                    currencyFormatter.usesGroupingSeparator = true
-                    currencyFormatter.numberStyle = .decimal
-                    currencyFormatter.locale = Locale.current
-
-                    let priceString = currencyFormatter.string(from: NSNumber(value: (self.coreResultObject?.data?.mstamp)!))!
-                    self.headerController.your_stamp.text = "\(priceString)"
-                    if(self.playgame){
-                        self.requestGameDetail()
-                        self.playgame = false
-                    } else {
-                        self.vLoading.isHidden = true
-                    }
-                    if(self.coreResultObject?.data?.is_accept == false){
-                        self.webType = 11
-                        self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
-                    }
-                }else{
-                    // hide stich here
-                    self.vLoading.isHidden = true
-                    self.present(self.systemAlertMessage(title: "Request Error", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
-                    self.headerController.your_stamp.text = "\(0)"
-                }
-            })
         }
         task.resume()
         //semaphore.wait()
@@ -382,7 +440,6 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     }
     
     public override func viewWillAppear(_ animated: Bool) {
-        //requestCore()
     }
     
     public override func viewDidLoad() {
@@ -443,6 +500,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         //Analytics.logEvent("M18_Page", parameters: nil)
         
         ARGameEnv.shared.updateEnv(newEnv: sevenEnv)
+        
         if UIDevice().userInterfaceIdiom == .phone {
         switch UIScreen.main.nativeBounds.height {
             case 1136:
@@ -469,7 +527,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
                 print("Unknown")
             }
         }
-        
+
         //ptoon: set asset
         let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
         let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
@@ -478,22 +536,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         lottieLoading.animation = Animation.filepath(str!)
         lottieLoading.play()
         
-        setupLocationManager()
         // Request Lat, Long from Device
-        let locManager = CLLocationManager()
-        locManager.requestWhenInUseAuthorization()
-        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
-            CLLocationManager.authorizationStatus() == .authorizedAlways)
-        {
-            if(locManager.location?.coordinate.latitude != nil && locManager.location?.coordinate.longitude != nil){
-                self.lat = locManager.location?.coordinate.latitude
-                self.long = locManager.location?.coordinate.longitude
-            } else {
-                print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
-            }
-        } else {
-            print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
-        }
         //=========================
         //*** Core Token ***
         //=========================
@@ -561,6 +604,8 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         self.headerController.backToMain_btn.addTarget(self, action: #selector(coreBackToMain), for: .touchUpInside)
         self.lowerController.btn_play.addTarget(self, action: #selector(playButtonAction), for: .touchUpInside)
         self.headerController.checkin_btn.addTarget(self, action: #selector(checkInButtonAction), for: .touchUpInside)
+        
+
     }
     @objc
        func coreBackToMain(sender:UIButton){
@@ -571,37 +616,42 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     @objc
     func playButtonAction(sender:UIButton){
         ARGameSoundController.shared.playClickButton()
+        
+        if !isConnectedToNetwork() {
+            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            self.vLoading.isHidden = true
+            return
+        }
+        
         self.playgame = true
         self.vLoading.isHidden = false
-        self.lottieLoading.play()
-        // on api error
-        // skip to gameplay for test
-        if ((self.coreResultObject) == nil ){
-            if !isConnectedToNetwork() {
-                self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
-                self.vLoading.isHidden = true
-                self.lottieLoading.stop()
-                return
-            } else {
-                requestCore()
-                //playButtonAction(sender: self.headerController.checkin_btn)
-            }
-            //self.performSegue(withIdentifier: "playGameSkipForTest", sender: nil)
-        } else if((self.coreResultObject?.code) == 0){
+        self.lottieLoading.stop()
+        
+        if((self.coreResultObject?.code) == 0){
+            // 20200724
+            //self.requestCore()
+            self.requestGameDetail()
+            
+            // deprecate
+            // 20200717
+            /*
             if(self.coreResultObject?.data?.is_accept == false){ // not Accept T&C
                 self.webType = 11
                 self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
                 self.vLoading.isHidden = true
-            } else if((self.coreResultObject?.data?.mstamp) == 0){ // no mstamp
+            }
+            else if((self.coreResultObject?.data?.mstamp) == 0){ // no mstamp
                 // requestCore to refresh mstamp
                 self.requestCore()
             } else {
                 // MARK: Game Detail
                 //==========================
-                //*** Game Detail ***
+                // *** Game Detail ***
                 //==========================
                 self.requestGameDetail()
             }
+            */
+ 
         } /*else{
             // Request Game Detail
              if let game_uuid = self.coreResultObject?.data?.game.game_uuid{
@@ -792,10 +842,10 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
                     if((self.gameDetailResultObject?.code)! == 0){
                         self.vLoading.isHidden = false
                         self.performSegue(withIdentifier: "useStamp", sender: nil)
-                    } else if((self.gameDetailResultObject?.code)! == 3){ // Mstamp not enough
+                    }
+                    else if((self.gameDetailResultObject?.code)! == 3){ // Mstamp not enough
                         self.vLoading.isHidden = false
                         self.performSegue(withIdentifier: "useStamp", sender: nil)
-                        //self.requestCore()
                     } else {
                         self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: " + (self.gameDetailResultObject?.msg)!), animated: true, completion: nil)
                         self.vLoading.isHidden = true
@@ -906,11 +956,13 @@ class HeaderVIewController: UIViewController {
         }
     }
 }
+
 class LowerVIewController: UIViewController {
     @IBOutlet weak var btn_play: UIButton!
     var webType:Int?
     var firebase_id:String?
     var delegate: ARGameStampDelegate?
+    @IBOutlet weak var btnDonate: UIButton!
     @IBOutlet weak var btnCoupon: UIButton!
     var coreResultObject:responseCoreObject?
     override func viewDidLoad() {
@@ -971,8 +1023,12 @@ class LowerVIewController: UIViewController {
                 // ----------------------------
                 // FIREBASE GOOGLE ANALYTICS
                 //Analytics.logEvent("M18_DonatePage", parameters: nil)
-                
-                sourceViewController.webType = 5
+                if ARGameHomeViewController.isShowDonate {
+                    sourceViewController.webType = 51
+                }
+                else {
+                    sourceViewController.webType = 5
+                }
             }
                 // 6 GlobalMaps
             else if(self.identifier == "webview_premiem_products_segue"){
@@ -987,6 +1043,8 @@ class LowerVIewController: UIViewController {
            else if(self.identifier == "webview_info_segue"){
                sourceViewController.webType = 10
            }
+            
+            
             // Send parameter To UseStampViewController
             destinationViewController.webType = sourceViewController.webType
             destinationViewController.firebase_id = sourceViewController.firebase_id!
@@ -1005,9 +1063,23 @@ class BGViewController: UIViewController {
 }
 class BGMickyController: UIViewController {
     @IBOutlet weak var bgMicky: UIImageView!
+    
     override func viewDidLoad(){
         super.viewDidLoad()
+
         bgMicky.contentMode = UIView.ContentMode.scaleAspectFill
+        if UIDevice.modelName == "NEWVERSION" {
+            bgMicky.image = UIImage(named: "BG core function");
+
+            bgMicky.image = UIImage(named: "BG core function", in: Bundle(identifier: "org.cocoapods.ARGameStamp7-11"), compatibleWith: nil)
+            //bgMicky.contentMode = UIView.ContentMode.scaleAspectFill
+        }
+        else {
+            let randomInt = Int.random(in: 0..<3)
+            
+            bgMicky.image = UIImage(named: "bg_home_default_\(randomInt + 1)", in: Bundle(identifier: "org.cocoapods.ARGameStamp7-11"), compatibleWith: nil)
+            //bgMicky.contentMode = UIView.ContentMode.scaleAspectFit
+        }
     }
 }
 
@@ -1021,18 +1093,24 @@ class  HeaderEffectController: UIViewController{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Dot Promax/data", ofType: "json"){
-             //dotAnimate.contentMode = UIView.ContentMode.scaleAspectFill
-            if(!imageloaded){
-                let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Dot Promax/images")
-                dotAnimate.imageProvider = imageProvider
-                dotAnimate.animation = Animation.filepath(str)
-                dotAnimate.backgroundBehavior = .pauseAndRestore
-                imageloaded = true
+        
+        if UIDevice.modelName == "NEWVERSION" {
+            if let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Dot Promax/data", ofType: "json"){
+                 //dotAnimate.contentMode = UIView.ContentMode.scaleAspectFill
+                if(!imageloaded){
+                    let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Dot Promax/images")
+                    dotAnimate.imageProvider = imageProvider
+                    dotAnimate.animation = Animation.filepath(str)
+                    dotAnimate.backgroundBehavior = .pauseAndRestore
+                    imageloaded = true
+                }
             }
+            dotAnimate.loopMode = .loop
+            dotAnimate.play()
         }
-        dotAnimate.loopMode = .loop
-        dotAnimate.play()
+        else {
+            
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1056,18 +1134,28 @@ class MickyController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Corefunction Pro Max Full/data", ofType: "json"){
-            let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Corefunction Pro Max Full/images")
-            if(!imageProviderLoaded){
-                mickyAnimate.imageProvider = imageProvider
-                mickyAnimate.animation = Animation.filepath(str)
-                imageProviderLoaded = true
-                mickyAnimate.backgroundBehavior = .pauseAndRestore
-                mickyAnimate.contentMode = UIView.ContentMode.scaleAspectFill
-                mickyAnimate.loopMode = .loop
-                mickyAnimate.play()
+        
+        if UIDevice.modelName == "NEWVERSION" {
+
+            if let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Corefunction Pro Max Full/data", ofType: "json"){
+                let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Corefunction Pro Max Full/images")
+                if(!imageProviderLoaded){
+                    mickyAnimate.imageProvider = imageProvider
+                    mickyAnimate.animation = Animation.filepath(str)
+                    imageProviderLoaded = true
+                    mickyAnimate.backgroundBehavior = .pauseAndRestore
+                    mickyAnimate.contentMode = UIView.ContentMode.scaleAspectFill
+                    mickyAnimate.loopMode = .loop
+                    mickyAnimate.play()
+                }
             }
+            
         }
+        // old version
+        else {
+            
+        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1082,3 +1170,4 @@ class MickyController: UIViewController {
     }
     
 }
+
