@@ -482,8 +482,8 @@
                                     <segue destination="me2-CU-xT0" kind="custom" identifier="webview_checkin_segue" customClass="HeaderGotoWebViewSegue" id="iYX-8l-BRs"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fAt-8J-BKv" userLabel="lMainStampTotal">
-                                <rect key="frame" x="115.5" y="17" width="150" height="145.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fAt-8J-BKv" userLabel="lMainStampTotal">
+                                <rect key="frame" x="115.5" y="20" width="150" height="145.5"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="30"/>
                                 <color key="textColor" red="0.0" green="0.45200610159999999" blue="0.24621307849999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -493,7 +493,7 @@
                             <constraint firstItem="fAt-8J-BKv" firstAttribute="width" secondItem="OXg-bu-8me" secondAttribute="width" id="24b-x3-buH"/>
                             <constraint firstItem="OXg-bu-8me" firstAttribute="centerX" secondItem="WPa-z3-zCe" secondAttribute="centerX" id="2QB-bd-F9D"/>
                             <constraint firstItem="u9e-Fs-JuB" firstAttribute="leading" secondItem="wEE-h4-atN" secondAttribute="leading" id="3io-ed-qC8"/>
-                            <constraint firstItem="fAt-8J-BKv" firstAttribute="top" secondItem="wEE-h4-atN" secondAttribute="top" constant="17" id="9DJ-5d-MrH"/>
+                            <constraint firstItem="fAt-8J-BKv" firstAttribute="top" secondItem="wEE-h4-atN" secondAttribute="top" constant="20" id="9DJ-5d-MrH"/>
                             <constraint firstItem="i20-s9-iyy" firstAttribute="top" secondItem="OXg-bu-8me" secondAttribute="bottom" constant="-25" id="Amq-W9-QG7"/>
                             <constraint firstItem="VXP-Ou-G34" firstAttribute="top" secondItem="wEE-h4-atN" secondAttribute="top" constant="8" id="Io8-M5-AU2"/>
                             <constraint firstItem="u9e-Fs-JuB" firstAttribute="width" secondItem="WPa-z3-zCe" secondAttribute="width" id="MwH-pZ-0CE"/>
