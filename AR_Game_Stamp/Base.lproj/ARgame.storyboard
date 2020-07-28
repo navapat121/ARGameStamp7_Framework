@@ -429,7 +429,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="bg-stamp-total" translatesAutoresizingMaskIntoConstraints="NO" id="OXg-bu-8me" userLabel="ivMainStampTotal">
-                                <rect key="frame" x="112.5" y="0.0" width="150" height="155.5"/>
+                                <rect key="frame" x="112.5" y="2" width="150" height="155.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="OXg-bu-8me" secondAttribute="height" multiplier="521:540" id="7yI-qY-YEh"/>
                                     <constraint firstAttribute="width" constant="150" id="Wzj-V8-NNh"/>
@@ -453,7 +453,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="bMainHelp" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VXP-Ou-G34" userLabel="bMainHelp">
-                                <rect key="frame" x="246" y="8" width="22" height="24"/>
+                                <rect key="frame" x="261.5" y="8" width="22" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="VXP-Ou-G34" secondAttribute="height" multiplier="21:23" id="EF1-LH-CjZ"/>
                                     <constraint firstAttribute="width" constant="22" id="xT4-3v-vp4"/>
@@ -464,7 +464,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" restorationIdentifier="bMainUseStamp" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i20-s9-iyy" userLabel="bMainUseStamp">
-                                <rect key="frame" x="137.5" y="130.5" width="100" height="49.5"/>
+                                <rect key="frame" x="137.5" y="132.5" width="100" height="49.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="i20-s9-iyy" secondAttribute="height" multiplier="418:207" id="dbY-FV-YwH"/>
                                     <constraint firstAttribute="width" constant="100" id="oag-rO-Wf1"/>
@@ -472,7 +472,7 @@
                                 <state key="normal" image="b-use-m-stamp"/>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" restorationIdentifier="bMainCheckin" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YJg-Z3-ly2" userLabel="bMainCheckin">
-                                <rect key="frame" x="152.5" y="183" width="70" height="35"/>
+                                <rect key="frame" x="152.5" y="184" width="70" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="lLa-d3-hO1"/>
                                     <constraint firstAttribute="width" secondItem="YJg-Z3-ly2" secondAttribute="height" multiplier="307:153" id="tcp-Li-u0c"/>
@@ -483,7 +483,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fAt-8J-BKv" userLabel="lMainStampTotal">
-                                <rect key="frame" x="115.5" y="10" width="150" height="145.5"/>
+                                <rect key="frame" x="115.5" y="17" width="150" height="145.5"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="30"/>
                                 <color key="textColor" red="0.0" green="0.45200610159999999" blue="0.24621307849999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -493,19 +493,19 @@
                             <constraint firstItem="fAt-8J-BKv" firstAttribute="width" secondItem="OXg-bu-8me" secondAttribute="width" id="24b-x3-buH"/>
                             <constraint firstItem="OXg-bu-8me" firstAttribute="centerX" secondItem="WPa-z3-zCe" secondAttribute="centerX" id="2QB-bd-F9D"/>
                             <constraint firstItem="u9e-Fs-JuB" firstAttribute="leading" secondItem="wEE-h4-atN" secondAttribute="leading" id="3io-ed-qC8"/>
-                            <constraint firstItem="VXP-Ou-G34" firstAttribute="trailing" secondItem="OXg-bu-8me" secondAttribute="trailing" multiplier="1.02" id="54L-Kw-B7J"/>
-                            <constraint firstItem="fAt-8J-BKv" firstAttribute="top" secondItem="wEE-h4-atN" secondAttribute="top" constant="10" id="9DJ-5d-MrH"/>
+                            <constraint firstItem="fAt-8J-BKv" firstAttribute="top" secondItem="wEE-h4-atN" secondAttribute="top" constant="17" id="9DJ-5d-MrH"/>
                             <constraint firstItem="i20-s9-iyy" firstAttribute="top" secondItem="OXg-bu-8me" secondAttribute="bottom" constant="-25" id="Amq-W9-QG7"/>
                             <constraint firstItem="VXP-Ou-G34" firstAttribute="top" secondItem="wEE-h4-atN" secondAttribute="top" constant="8" id="Io8-M5-AU2"/>
                             <constraint firstItem="u9e-Fs-JuB" firstAttribute="width" secondItem="WPa-z3-zCe" secondAttribute="width" id="MwH-pZ-0CE"/>
                             <constraint firstItem="u9e-Fs-JuB" firstAttribute="top" secondItem="WPa-z3-zCe" secondAttribute="top" id="QMn-qL-Z6J"/>
+                            <constraint firstItem="VXP-Ou-G34" firstAttribute="leading" secondItem="fAt-8J-BKv" secondAttribute="trailing" constant="-4" id="ZHs-de-ZyS"/>
                             <constraint firstItem="u9e-Fs-JuB" firstAttribute="height" secondItem="WPa-z3-zCe" secondAttribute="height" id="ZJS-1f-Mv3"/>
                             <constraint firstItem="i20-s9-iyy" firstAttribute="centerX" secondItem="WPa-z3-zCe" secondAttribute="centerX" id="ZZf-jq-sot"/>
                             <constraint firstItem="YJg-Z3-ly2" firstAttribute="centerX" secondItem="WPa-z3-zCe" secondAttribute="centerX" id="Za4-ar-L35"/>
                             <constraint firstItem="u9e-Fs-JuB" firstAttribute="trailing" secondItem="wEE-h4-atN" secondAttribute="trailing" id="cYE-p9-bvP"/>
                             <constraint firstItem="fAt-8J-BKv" firstAttribute="centerX" secondItem="WPa-z3-zCe" secondAttribute="centerX" constant="3" id="fgd-Kp-Jb6"/>
-                            <constraint firstItem="YJg-Z3-ly2" firstAttribute="top" secondItem="i20-s9-iyy" secondAttribute="bottom" constant="3" id="jo1-ni-y91"/>
-                            <constraint firstItem="OXg-bu-8me" firstAttribute="top" secondItem="wEE-h4-atN" secondAttribute="top" id="kIV-Lh-hWM"/>
+                            <constraint firstItem="YJg-Z3-ly2" firstAttribute="top" secondItem="i20-s9-iyy" secondAttribute="bottom" constant="2" id="jo1-ni-y91"/>
+                            <constraint firstItem="OXg-bu-8me" firstAttribute="top" secondItem="wEE-h4-atN" secondAttribute="top" constant="2" id="kIV-Lh-hWM"/>
                             <constraint firstItem="fAt-8J-BKv" firstAttribute="height" secondItem="OXg-bu-8me" secondAttribute="height" constant="-10" id="m7J-1U-MrY"/>
                             <constraint firstItem="8Tg-Kc-a49" firstAttribute="leading" secondItem="wEE-h4-atN" secondAttribute="leading" constant="16" id="oXl-lw-bia"/>
                             <constraint firstItem="8Tg-Kc-a49" firstAttribute="top" secondItem="wEE-h4-atN" secondAttribute="top" constant="8" id="wtM-zr-WnX"/>
@@ -1350,7 +1350,7 @@
         <image name="tutorial_button" width="342" height="160"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="LwQ-Fn-f49"/>
-        <segue reference="CHo-q5-JJS"/>
+        <segue reference="iYX-8l-BRs"/>
+        <segue reference="dFs-p4-Ecy"/>
     </inferredMetricsTieBreakers>
 </document>

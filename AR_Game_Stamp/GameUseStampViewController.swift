@@ -197,7 +197,7 @@ class GameUseStampViewController: UIViewController {
         //==========================
         // request Use Stamp
         if let game_uuid = self.coreResultObject?.data?.game?.game_uuid {
-            strUrl = "game/" + game_uuid + "/use-mstamp"
+            strUrl = "game/" + game_uuid + "/use-mstamp?version=2"
             requestType = "POST"
             url = URL(string: "")
             let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
@@ -361,7 +361,7 @@ class GameUseStampViewController: UIViewController {
         let json: [String: Any] = ["lat": self.lat as Any,
                                    "long": self.long as Any]
         
-        strUrl = "game/" + (self.gameDetailResultObject?.data?.game?.game_uuid)! + "/start"
+        strUrl = "game/" + (self.gameDetailResultObject?.data?.game?.game_uuid)! + "/start?version=2"
         requestType = "POST"
         let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
         if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
@@ -470,7 +470,7 @@ class GameUseStampViewController: UIViewController {
         if let game_uuid = self.coreResultObject?.data?.game?.game_uuid{
             //let requestUrl = "game/" + game_uuid
             
-            strUrl = "game/" + game_uuid + "?lat=\(self.lat!)&long=\(self.long!)"
+            strUrl = "game/" + game_uuid + "?lat=\(self.lat!)&long=\(self.long!)&version=2"
             requestType = "GET"
             let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
             if let encoded = apiOriginal.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),

@@ -11,7 +11,6 @@ import CoreMotion
 import QuartzCore
 import SceneKit
 import AVKit
-import WebKit
 import Darwin
 import CoreLocation
 import Lottie
@@ -177,8 +176,6 @@ class GameViewController: UIViewController {
     @IBOutlet weak var GameHeaderView: UIView!
     @IBOutlet weak var start_button: UIButton!
     @IBOutlet weak var label_countdown: UILabel!
-    @IBOutlet weak var web: WKWebView!
-    @IBOutlet weak var btncloseweb: UIButton!
     @IBOutlet weak var stampPreview: UIImageView!
     // Animation from storyboard
     @IBOutlet weak var startAnimation: AnimationView!
@@ -545,13 +542,6 @@ class GameViewController: UIViewController {
         // ******************************************************
         
         
-        /*self.web.isHidden = false
-         self.btncloseweb.isHidden = false
-         if let theurl = URL(string: "https://www.bluewindsolution.com/en/404.php"){
-         let theURLRequest = URLRequest(url: theurl)
-         web?.load(theURLRequest)
-         
-         }*/
     }
     @objc func muteAction(sender:UIButton){
         ARGameSoundController.shared.sound_on = !ARGameSoundController.shared.sound_on
@@ -630,7 +620,7 @@ class GameViewController: UIViewController {
         if(self.gameDetail != nil){
             let requestData = (try? JSONSerialization.data(withJSONObject: jsonObject))!
             
-            let strUrl = "game/" + (self.gameDetail?.data?.game?.game_uuid)! + "/finish"
+            let strUrl = "game/" + (self.gameDetail?.data?.game?.game_uuid)! + "/finish?version=2"
             let requestType = "POST"
             
             var url:URL? = URL(string: "")
@@ -956,11 +946,6 @@ class GameViewController: UIViewController {
              )
              */
         }
-    }
-    
-    @IBAction func closeWeb(_ sender: Any) {
-        self.web.isHidden = true
-        self.btncloseweb.isHidden = true
     }
     
     @IBAction func tab_start(_ sender: Any) {

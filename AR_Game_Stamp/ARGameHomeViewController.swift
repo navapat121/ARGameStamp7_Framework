@@ -216,7 +216,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         let firebaseString = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjdkNTU0ZjBjMTJjNjQ3MGZiMTg1MmY3OWRiZjY0ZjhjODQzYmIxZDciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc2V2ZW4tZWxldmVuLXN0YWdpbmciLCJhdWQiOiJzZXZlbi1lbGV2ZW4tc3RhZ2luZyIsImF1dGhfdGltZSI6MTU5MzY3NjQ3NSwidXNlcl9pZCI6IlM0Zm93VFFCaUNURURteXlBWDNCZ1VVNU9pZzEiLCJzdWIiOiJTNGZvd1RRQmlDVEVEbXl5QVgzQmdVVTVPaWcxIiwiaWF0IjoxNTkzNjc2NDc1LCJleHAiOjE1OTM2ODAwNzUsImVtYWlsIjoicHJlYXdfYWxvaGFoQGhvdG1haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicHJlYXdfYWxvaGFoQGhvdG1haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.lNp8iYu4QxBcaX5VmZNXxo51oM5xmps4kdO2xaX4zXCNs6TqAengVYKMY5x9nNHkw-5dMhxFRG0sb4jmq9XRJBXluHIJiied0Bovt1lsn6nefVOtjSbeXJJsQmop1UIpaB8L7Roq9bmQC2LAIigF5d4tBZoeJxhpS45uLoWoId_BZt3gn12sW8ouoDox_aaKPopwHbDKXEvaZnO26bIenULipuJLye9X7Z01zSDzaGDyUi3yiNSwERO1Ab7a2vnfzYK4pLMvUKIkPivDjli4kzgwCOYgyU7HO3uGpaBjkRgU7MDv-ZUfRmDEDM651aqdmVHAElZUlAMzE9pk71A7ng"
         // -----------------
         //MARK: Core Token
-        let strUrl = "core/token"
+        let strUrl = "core/token?version=2"
         let requestType = "POST"
         let json: [String:Any] = ["token": "\(firebaseString)"]
         //var firebase_id = ""
@@ -307,7 +307,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         
         // -----------------
         //MARK: Core
-        let strUrl = "core?check_accept=1"
+        let strUrl = "core?check_accept=1&version=2"
         let requestType = "POST"
         
         var url:URL? = URL(string: "")
@@ -769,7 +769,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         // Request Game Detail
         if let game_uuid = self.coreResultObject?.data?.game?.game_uuid{
             //let requestUrl = "game/" + game_uuid
-            let strUrl = "game/" + game_uuid
+            let strUrl = "game/\(game_uuid)?version=2"
             let requestType = "GET"
             var url = URL(string:"")
             let apiOriginal = "\(ARGameEnv.shared.url)\(strUrl)"
@@ -854,37 +854,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             }
             task.resume()
             
-            /*if let (data,statusCode) = sendHttpRequest(requestType:"GET", strUrl: requestUrl, requestData: nil, firebase_id: (self.coreTokenObject?.data?.firebase_id!)!) {
-             self.gameDetailResultObject = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
-             if(statusCode! == 200){
-             // success
-             // Use Stamp !!
-             if((self.gameDetailResultObject?.code) == 0){
-             // first time
-             if((self.gameDetailResultObject?.data?.game?.is_firsttime)!){
-             // go to how to play
-             //
-             }else{
-             //self.performSegue(withIdentifier: "useStamp", sender: nil)
-             }
-             }else{
-             self.present(systemAlertMessage(title: "Request Error", message: (self.gameDetailResultObject?.msg)!), animated: true, completion: nil)
-             }
-             }else{
-             //print("Request data not Success: " + (self.resultObject?.msg)!)
-             self.present(systemAlertMessage(title: "Request Error", message: (self.gameDetailResultObject?.msg)!), animated: true, completion: nil)
-             return
-             }
-             } else {
-             self.gameDetailResultObject = nil
-             self.present(systemAlertMessage(title: "Request Error", message: "Request data not Success"), animated: true, completion: nil)
-             }*/
         } else {
-            /*if(debug_mode){
-             SoundController.shared.playClickButton()
-             performSegue(withIdentifier: "useStampToHomeSegue", sender: self)
-             }*/
-            //self.present(systemAlertMessage(title: "Request Error", message: (self.gameDetailResultObject?.msg)!), animated: true, completion: nil)
             requestCore()
         }
     }

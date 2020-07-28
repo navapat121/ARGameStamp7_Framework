@@ -9,10 +9,6 @@
 import Foundation
 
 struct DataFactory {
-    // UAT
-    //var apiUrlMain = "https://argame-api-dev.7eleven-game.com/api/v1/"
-    // DEV
-    //static var apiUrlMain = "https://argame-api-dev.7eleven-game.com/api/v1/"
     static var urlMain = ""
     static var firebase_id = ""
     static var is_production = false
