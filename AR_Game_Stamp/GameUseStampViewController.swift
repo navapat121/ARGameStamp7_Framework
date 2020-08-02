@@ -240,50 +240,48 @@ class GameUseStampViewController: UIViewController {
             // Send HTTP Request
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 
-                // Check if Error took place
-                if let error = error {
-                    //print("Error took place \(error)")
-                    // move all statusCode != 200 to here
-                   if let response = response as? HTTPURLResponse {
-                        print("Response HTTP Status code: \(response.statusCode)")
-                        self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
-                        return
-                    }
-                }
-                
-                let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-                print("Response data string:\n \(dataString)")
-                
-                // deprecate in v.2
-                // will never happen anymore
-                if (dataString.contains("\"code\":3")) {
-                    DispatchQueue.main.async(execute: { () -> Void in
-                        self.loadingBG.isHidden = true
-                        self.loadingImage.isHidden = true
-                        self.loading_ani.isHidden = true
-                        self.loading_ani.stop()
-                        
-                        self.popUpImage.isHidden = true
-                        self.vPopUpUseMStamp.isHidden = true
-                        self.tutorialBtn.isHidden = true
-                        
-                        self.ivNoMStampPopup.isHidden = false
-                        self.bNoMStampOK.isHidden = false
-                    })
-                    return
-                }
-                
                 // --------
                 // data ready, call next method here
                 do{
-                    self.gameUseStampResultObject = try! JSONDecoder().decode(responseGameUseStampObject.self, from: data!)
+                    // Check if Error took place
+                    if error != nil, let response = response as? HTTPURLResponse {
+                        //print("Error took place \(error)")
+                        // move all statusCode != 200 to here
+                        print("Response HTTP Status code: \(response.statusCode)")
+                        self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code \(response.statusCode), on requestGameUseStamp)"), animated: true, completion: nil)
+                        return
+                    }
+                    
+                    let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+                    print("Response data string:\n \(dataString)")
+                    
+                    // deprecate in v.2
+                    // will never happen anymore
+                    if (dataString.contains("\"code\":3")) {
+                        DispatchQueue.main.async(execute: { () -> Void in
+                            self.loadingBG.isHidden = true
+                            self.loadingImage.isHidden = true
+                            self.loading_ani.isHidden = true
+                            self.loading_ani.stop()
+                            
+                            self.popUpImage.isHidden = true
+                            self.vPopUpUseMStamp.isHidden = true
+                            self.tutorialBtn.isHidden = true
+                            
+                            self.ivNoMStampPopup.isHidden = false
+                            self.bNoMStampOK.isHidden = false
+                        })
+                        return
+                    }
+                    self.gameUseStampResultObject = try JSONDecoder().decode(responseGameUseStampObject.self, from: data!)
                 }
                 catch {
-                    self.present(self.systemAlertMessage(title: "Request Error", message: "Response data. Game useStamp. Data Wrong"), animated: true, completion: nil)
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code convertData, on requestGameUseStamp)"), animated: true, completion: nil)
                     self.loadingBG.isHidden = true
                     self.loadingImage.isHidden = true
                     self.loading_ani.isHidden = true
                     self.loading_ani.stop()
+                    return
                 }
                 
                 DispatchQueue.main.async(execute: { () -> Void in
@@ -292,7 +290,7 @@ class GameUseStampViewController: UIViewController {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                             self.loading_ani.isHidden = true
                             self.loading_ani.stop()
-
+                            
                             self.loading_ani.removeFromSuperview()
                             self.loading_ani = nil
                             self.loadingImage.isHidden = false
@@ -404,29 +402,28 @@ class GameUseStampViewController: UIViewController {
         // Send HTTP Request
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
-            // Check if Error took place
-            if let error = error {
-                //print("Error took place \(error)")
-                // move all statusCode != 200 to here
-                if let response = response as? HTTPURLResponse {
-                    print("Response HTTP Status code: \(response.statusCode)")
-                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
-                    return
-                }
-            }
-            
-            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-            print("requestGameStart() Response data string:\n \(dataString)")
             // --------
             // data ready, call next method here
             do{
+                // Check if Error took place
+                if error != nil, let response = response as? HTTPURLResponse {
+                    //print("Error took place \(error)")
+                    // move all statusCode != 200 to here
+                    print("Response HTTP Status code: \(response.statusCode)")
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code \(response.statusCode), on requestGameStart)"), animated: true, completion: nil)
+                    return
+                }
+                
+                let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+                print("requestGameStart() Response data string:\n \(dataString)")
                 self.gameStartResultObject = try JSONDecoder().decode(responseGameStartObject.self, from: data!)
             }catch{
-                self.present(self.systemAlertMessage(title: "Request Error", message: "Response data Game Start. Data Wrong"), animated: true, completion: nil)
+                self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code convertData, on requestGameStart)"), animated: true, completion: nil)
                 self.loadingBG.isHidden = true
                 self.loadingImage.isHidden = true
                 self.loading_ani.isHidden = true
                 self.loading_ani.stop()
+                return
             }
             
             DispatchQueue.main.async(execute: { () -> Void in
@@ -514,36 +511,33 @@ class GameUseStampViewController: UIViewController {
             // Send HTTP Request
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 
-                // Check if Error took place
-                if let error = error {
-                    //print("Error took place \(error)")
-                    // move all statusCode != 200 to here
-                    if let response = response as? HTTPURLResponse {
-                        print("Response HTTP Status code: \(response.statusCode)")
-                        self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
-                        return
-                    }
-                }
-                
-                let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-                self.gameDetailResultString = dataString
-                print("requestGameDetail() Response data string:\n \(dataString)")
                 // --------
                 // data ready, call next method here
                 do {
-                    self.gameDetailResultObject = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
+                    // Check if Error took place
+                    if error != nil, let response = response as? HTTPURLResponse {
+                        //print("Error took place \(error)")
+                        // move all statusCode != 200 to here
+                        print("Response HTTP Status code: \(response.statusCode)")
+                        self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code \(response.statusCode), on requestGameDetail)"), animated: true, completion: nil)
+                        return
+                    }
+                    
+                    let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+                    self.gameDetailResultString = dataString
+                    print("requestGameDetail() Response data string:\n \(dataString)")
+                    self.gameDetailResultObject = try JSONDecoder().decode(responseGameDetailObject.self, from: data!)
                     
                     
                 }
                 catch {
-                    self.present(self.systemAlertMessage(title: "Request Error", message: "Response data Game Detail. Data Wrong"), animated: true, completion: nil)
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code convertData, on requestGameDetail)"), animated: true, completion: nil)
                     self.loading_ani.isHidden = true
                     self.loadingImage.isHidden = true
                     self.loadingBG.isHidden = true
                     self.loading_ani.stop()
                     return
                 }
-                
                 
                 DispatchQueue.main.async(execute: { () -> Void in
                     if((self.gameDetailResultObject?.code)! == 0){
@@ -570,31 +564,31 @@ class GameUseStampViewController: UIViewController {
                         // ptoon: สรุป มันต้องเข้า เพราะเอ๊งตั้งลำดับ method สลับกัน...
                         // hotfix v.1 ไม่ต้องเข้าแล้ว จะไม่มีโอกาสเข้าอีกต่อไป
                         /*
-                    else if((self.gameDetailResultObject?.code)! == 3){
-                        self.loadingBG.isHidden = true
-                        self.loadingImage.isHidden = true
-                        self.loading_ani.isHidden = true
-                        self.loading_ani.stop()
-                        self.popUpImage.image = UIImage(named: "m-stamp_notError", in: self.ARGameBundle(), compatibleWith: nil)
-                        self.confirm_btn.removeTarget(self, action: #selector(self.confirmButtonAction), for: .touchUpInside)
-                        self.confirm_btn.addTarget(self, action: #selector(self.buttonBack), for: .touchUpInside)
-                    }
-                     */
-                     else {
-                         self.performSegue(withIdentifier: "useStamp_to_webView", sender: self)
-                         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                             self.loading_ani.isHidden = true
-                             self.loadingImage.isHidden = true
-                             self.loadingBG.isHidden = true
-                             self.loading_ani.stop()
-                         })
+                         else if((self.gameDetailResultObject?.code)! == 3){
+                         self.loadingBG.isHidden = true
+                         self.loadingImage.isHidden = true
+                         self.loading_ani.isHidden = true
+                         self.loading_ani.stop()
+                         self.popUpImage.image = UIImage(named: "m-stamp_notError", in: self.ARGameBundle(), compatibleWith: nil)
+                         self.confirm_btn.removeTarget(self, action: #selector(self.confirmButtonAction), for: .touchUpInside)
+                         self.confirm_btn.addTarget(self, action: #selector(self.buttonBack), for: .touchUpInside)
+                         }
+                         */
+                    else {
+                        self.performSegue(withIdentifier: "useStamp_to_webView", sender: self)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                            self.loading_ani.isHidden = true
+                            self.loadingImage.isHidden = true
+                            self.loadingBG.isHidden = true
+                            self.loading_ani.stop()
+                        })
                         /*
                          self.loadingBG.isHidden = true
                          self.loadingImage.isHidden = true
                          self.loading_ani.isHidden = true
                          self.loading_ani.stop()
                          */
-                     }
+                    }
                 })
             }
             task.resume()

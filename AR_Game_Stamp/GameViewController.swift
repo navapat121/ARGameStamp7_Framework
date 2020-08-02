@@ -407,10 +407,17 @@ class GameViewController: UIViewController {
         
         // MARK: Prepare Animation
         // Touch Screen
+        
+        if UIDevice.modelName == "NEWVERSION" {
+            let str_touch =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Touch_Effect/data", ofType: "json")
+            self.touchAnimate.animation = Animation.filepath(str_touch!)
+        }
+        /*
         if(!phoneModel.contains("iPhone 5") && !phoneModel.contains("iPhone 6")){
             let str_touch =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Touch_Effect/data", ofType: "json")
             self.touchAnimate.animation = Animation.filepath(str_touch!)
         }
+        */
 
         // Time Up
         let str_timeup =  self.alertViewController.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Time up/data", ofType: "json")
@@ -418,26 +425,90 @@ class GameViewController: UIViewController {
         self.alertViewController.timeup_animate.imageProvider = imageProvider_timeup
         self.alertViewController.timeup_animate.animation = Animation.filepath(str_timeup!)
         // light time up
+        if UIDevice.modelName == "NEWVERSION" {
+            let str_lighttimeup =  self.alertViewController.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Effect Light/data", ofType: "json")
+            let imageProvider_lighttimeup = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Effect Light/images")
+            self.alertViewController.light_timeupAnimate.imageProvider = imageProvider_lighttimeup
+            self.alertViewController.light_timeupAnimate.animation = Animation.filepath(str_lighttimeup!)
+        }
+        /*
         if(!phoneModel.contains("iPhone 5") && !phoneModel.contains("iPhone 6")){
             let str_lighttimeup =  self.alertViewController.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Effect Light/data", ofType: "json")
             let imageProvider_lighttimeup = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Effect Light/images")
             self.alertViewController.light_timeupAnimate.imageProvider = imageProvider_lighttimeup
             self.alertViewController.light_timeupAnimate.animation = Animation.filepath(str_lighttimeup!)
         }
-        
+        */
         
         
         // MARK: Bomb Animation
+        if UIDevice.modelName == "NEWVERSION" {
+            let bombpath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/bomb effect/data", ofType: "json")
+             let imageProvider_bomb  = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/bomb effect/images")
+            self.bombAnimated.imageProvider = imageProvider_bomb
+            self.bombAnimated.animation = Animation.filepath(bombpath!)
+        }
+        /*
         if(!phoneModel.contains("iPhone 5") && !phoneModel.contains("iPhone 6")){
             let bombpath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/bomb effect/data", ofType: "json")
              let imageProvider_bomb  = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/bomb effect/images")
             self.bombAnimated.imageProvider = imageProvider_bomb
             self.bombAnimated.animation = Animation.filepath(bombpath!)
         }
+        */
         
         
         
         // BG Bomb
+        if UIDevice.modelName == "NEWVERSION" {
+            let bgBombPath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/BG Light/data", ofType: "json")
+            self.bombBGAnimated.contentMode = UIView.ContentMode.scaleToFill
+            self.bombBGAnimated.animation = Animation.filepath(bgBombPath!)
+            // Decease Time
+            let str_minus_five =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/data", ofType: "json")
+            let imageProvider_minus_five = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/images")
+            self.decreaseTimeAnimated.imageProvider = imageProvider_minus_five
+            self.decreaseTimeAnimated.animation = Animation.filepath(str_minus_five!)
+            // Decrease Time Effect
+            let str_timer_minus =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/data", ofType: "json")
+            //let imageProvider_timer_minus = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Bomb/minus five second/images")
+            self.headerViewController.timereffect_animate.imageProvider = imageProvider_minus_five
+            self.headerViewController.timereffect_animate.animation = Animation.filepath(str_timer_minus!)
+            // MARK: Net
+            self.NetAnimated.imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Net/Net Image/images")
+            self.NetAnimated.animation = Animation.filepath((ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Net/Net Image/data", ofType: "json"))!)
+            
+            // NET BG
+            let bgNetPath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Net/BG Light/data", ofType: "json")
+            self.netBGAnimated.contentMode = UIView.ContentMode.scaleToFill
+            self.netBGAnimated.animation = Animation.filepath(bgNetPath!)
+            
+            // Header Flash
+            let str_header_flash =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Net/Header Flash/data", ofType: "json")
+            let imageProvider_header_flash  = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/Net/Header Flash/images")
+            self.headerViewController.netHeaderFlashAnimated.imageProvider = imageProvider_header_flash
+            self.headerViewController.netHeaderFlashAnimated.animation = Animation.filepath(str_header_flash!)
+            self.headerViewController.netHeaderFlashAnimated.loopMode = .loop
+            self.headerViewController.netHeaderFlashAnimated2.imageProvider = imageProvider_header_flash
+            self.headerViewController.netHeaderFlashAnimated2.animation = Animation.filepath(str_header_flash!)
+            self.headerViewController.netHeaderFlashAnimated2.loopMode = .loop
+            
+            // MARK: HourGlass
+            // HourGlass
+            var pathFile = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/HourGlass/hourGlass image/data", ofType: "json")
+            var pathImage = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/HourGlass/hourGlass image/images")
+            self.hourGlassAnimated.imageProvider = pathImage
+            self.hourGlassAnimated.animation = Animation.filepath(pathFile!)
+            // Incease Time
+            pathFile =  self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/HourGlass/plus five second/data", ofType: "json")
+            pathImage = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/HourGlass/plus five second/images")
+            self.increaseTimeAnimated.imageProvider = pathImage
+            self.increaseTimeAnimated.animation = Animation.filepath(pathFile!)
+            
+            pathFile = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/HourGlass/BG Light/data", ofType: "json")
+            self.hourGlassBGAnimated.animation = Animation.filepath(pathFile!)
+        }
+        /*
         if(!phoneModel.contains("iPhone 5") && !phoneModel.contains("iPhone 6")){
             let bgBombPath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/BG Light/data", ofType: "json")
             self.bombBGAnimated.contentMode = UIView.ContentMode.scaleToFill
@@ -486,6 +557,7 @@ class GameViewController: UIViewController {
             pathFile = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/HourGlass/BG Light/data", ofType: "json")
             self.hourGlassBGAnimated.animation = Animation.filepath(pathFile!)
         }
+        */
         // MARK: Basket
         let str_basket = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Basket Fly for loop/basketRecieve", ofType: "json")
         let imageProvider_basket = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Basket Fly for loop/images")
@@ -654,22 +726,20 @@ class GameViewController: UIViewController {
             // Send HTTP Request
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 
+                // --------
+                // data ready, call next method here
+                do{
                 // Check if Error took place
-                if let error = error {
+                if error != nil, let response = response as? HTTPURLResponse {
                     //print("Error took place \(error)")
                     // move all statusCode != 200 to here
-                    if let response = response as? HTTPURLResponse {
-                        print("Response HTTP Status code: \(response.statusCode)")
-                        self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
+                    print("Response HTTP Status code: \(response.statusCode)")
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code \(response.statusCode), on finishGame)"), animated: true, completion: nil)
                         return
-                    }
                 }
                 
                 let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
                 print("Response data string:\n \(dataString)")
-                // --------
-                // data ready, call next method here
-                do{
                     self.gameFinishResultObject = try JSONDecoder().decode(responseGameFinishObject.self, from: data!)
                 } catch {
                     self.alertViewController.loadingAnimated.isHidden = true
@@ -677,8 +747,8 @@ class GameViewController: UIViewController {
                     self.alertViewController.loadingImage.isHidden = true
                     self.alertViewController.loadingAnimated.stop()
                     self.performSegue(withIdentifier: "timeup_to_home_segue", sender: nil)
+                    return
                 }
-                
                 
                 DispatchQueue.main.async(execute: { () -> Void in
                     self.scene = SCNScene()

@@ -541,27 +541,25 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         // Send HTTP Request
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
-            // Check if Error took place
-            if error != nil {
-                //print("Error took place \(error)")
-                // move all statusCode != 200 to here
-                // Read HTTP Response Status code
-                if let response = response as? HTTPURLResponse {
-                    print("Response HTTP Status code: \(response.statusCode)")
-                    responseStatus = response.statusCode
-                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(responseStatus!)"), animated: true, completion: nil)
-                    return
-                }
-            }
-            
-            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-            print("Response data string:\n \(dataString)")
             // --------
             // data ready, call next method here
             do{
+                // Check if Error took place
+                if error != nil, let response = response as? HTTPURLResponse {
+                    //print("Error took place \(error)")
+                    // move all statusCode != 200 to here
+                    // Read HTTP Response Status code
+                    print("Response HTTP Status code: \(response.statusCode)")
+                    responseStatus = response.statusCode
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code \(response.statusCode), on requestCore)"), animated: true, completion: nil)
+                    return
+                }
+                
+                let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+                print("Response data string:\n \(dataString)")
                 self.coreResultObject = try JSONDecoder().decode(responseCoreObject.self, from: data!)
             } catch {
-                self.present(self.systemAlertMessage(title: "Request Error", message: dataString), animated: true, completion: nil)
+                self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code convertData, on requestCore)"), animated: true, completion: nil)
                 self.vLoading.isHidden = true
                 return
             }

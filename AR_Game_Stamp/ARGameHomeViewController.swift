@@ -206,6 +206,8 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         lottieLoading = nil
     }
     
+    // deprecate
+    /*
     func requestCoreToken() {
         if !isConnectedToNetwork() {
             self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
@@ -294,6 +296,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         //semaphore.wait()
         //return (responseData,responseStatus)
     }
+    */
     
     //==========================
     // *** Core get game_uuid ***
@@ -356,83 +359,81 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         //let semaphore = DispatchSemaphore(value: 0)
         // Send HTTP Request
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
-            // Check if Error took place
-            if let error = error {
-                //print("Error took place \(error)")
-                // move all statusCode != 200 to here
-                // Read HTTP Response Status code
-                if let response = response as? HTTPURLResponse {
-                    print("Response HTTP Status code: \(response.statusCode)")
-                    responseStatus = response.statusCode
-                    self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(responseStatus!)"), animated: true, completion: nil)
-                    return
-                }
-            }
-            
-            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-            print("Response data string:\n \(dataString)")
             // --------
             // data ready, call next method here
             do{
-                 self.coreResultObject = try JSONDecoder().decode(responseCoreObject.self, from: data!)
+                // Check if Error took place
+                if error != nil, let response = response as? HTTPURLResponse {
+                    //print("Error took place \(error)")
+                    // move all statusCode != 200 to here
+                    // Read HTTP Response Status code
+                    print("Response HTTP Status code: \(response.statusCode)")
+                    responseStatus = response.statusCode
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code \(response.statusCode), on requestCore)"), animated: true, completion: nil)
+                    return
+                }
                 
-                 DispatchQueue.main.async(execute: { () -> Void in
-                     if((self.coreResultObject?.code)! == 0){
-                         self.lowerController.coreResultObject = self.coreResultObject
-                         self.headerController.coreResultObject = self.coreResultObject
-                         
-                         let currencyFormatter = NumberFormatter()
-                         currencyFormatter.usesGroupingSeparator = true
-                         currencyFormatter.numberStyle = .decimal
-                         currencyFormatter.locale = Locale.current
-
-                         let priceString = currencyFormatter.string(from: NSNumber(value: (self.coreResultObject?.data?.mstamp)!))!
-                         self.headerController.your_stamp.text = "\(priceString)"
-                        
-                        // new button donate
-                        ARGameHomeViewController.isShowDonate = self.coreResultObject?.data?.is_show_btn_donate ?? false
-                        if ARGameHomeViewController.isShowDonate == true {
-                            self.lowerController.btnDonate.setImage(UIImage(named: "btn_donate_1", in: Bundle(identifier: "org.cocoapods.ARGameStamp7-11"), compatibleWith: nil), for: UIControl.State.normal)
-                        }
-                        else {
-                            self.lowerController.btnDonate.setImage(UIImage(named: "btn_donate", in: Bundle(identifier: "org.cocoapods.ARGameStamp7-11"), compatibleWith: nil), for: UIControl.State.normal)
-                        }
-                        
-                         if(self.playgame){
-                             self.requestGameDetail()
-                             self.playgame = false
-                         }
-                        else if(self.coreResultObject?.data?.is_accept == false){
-                            self.webType = 11
-                            self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                self.vLoading.isHidden = true
-                            })
-                        }
-                         else {
-                             self.vLoading.isHidden = true
-                         }
-                         // test accept term
-                         /*
-                             self.coreResultObject?.data?.is_accept = false
-                          */
-                     }
-                     else{
-                         // hide stich here
-                         self.vLoading.isHidden = true
-                         self.present(self.systemAlertMessage(title: "Request Error", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
-                         self.headerController.your_stamp.text = "\(0)"
-                     }
-                 })
-             }
-             catch {
+                let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+                print("Response data string:\n \(dataString)")
+                self.coreResultObject = try JSONDecoder().decode(responseCoreObject.self, from: data!)
+                
+            }
+            catch {
                 DispatchQueue.main.async(execute: { () -> Void in
-                 self.present(self.systemAlertMessage(title: "Request Error", message: dataString), animated: true, completion: nil)
-                 self.vLoading.isHidden = true
-                 })
+                self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code convertData, on requestCore)"), animated: true, completion: nil)
+                    self.vLoading.isHidden = true
+                })
                 return
             }
+            
+            DispatchQueue.main.async(execute: { () -> Void in
+                if((self.coreResultObject?.code)! == 0){
+                    self.lowerController.coreResultObject = self.coreResultObject
+                    self.headerController.coreResultObject = self.coreResultObject
+                    
+                    let currencyFormatter = NumberFormatter()
+                    currencyFormatter.usesGroupingSeparator = true
+                    currencyFormatter.numberStyle = .decimal
+                    currencyFormatter.locale = Locale.current
+                    
+                    let priceString = currencyFormatter.string(from: NSNumber(value: (self.coreResultObject?.data?.mstamp ?? 0)!))!
+                    self.headerController.your_stamp.text = "\(priceString)"
+                    
+                    // new button donate
+                    ARGameHomeViewController.isShowDonate = self.coreResultObject?.data?.is_show_btn_donate ?? false
+                    if ARGameHomeViewController.isShowDonate == true {
+                        self.lowerController.btnDonate.setImage(UIImage(named: "btn_donate_1", in: Bundle(identifier: "org.cocoapods.ARGameStamp7-11"), compatibleWith: nil), for: UIControl.State.normal)
+                    }
+                    else {
+                        self.lowerController.btnDonate.setImage(UIImage(named: "btn_donate", in: Bundle(identifier: "org.cocoapods.ARGameStamp7-11"), compatibleWith: nil), for: UIControl.State.normal)
+                    }
+                    
+                    if(self.playgame){
+                        self.requestGameDetail()
+                        self.playgame = false
+                    }
+                    else if(self.coreResultObject?.data?.is_accept == false){
+                        self.webType = 11
+                        self.performSegue(withIdentifier: "home_to_webview_segue", sender: nil)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                            self.vLoading.isHidden = true
+                        })
+                    }
+                    else {
+                        self.vLoading.isHidden = true
+                    }
+                    // test accept term
+                    /*
+                     self.coreResultObject?.data?.is_accept = false
+                     */
+                }
+                else{
+                    // hide stich here
+                    self.vLoading.isHidden = true
+                    self.present(self.systemAlertMessage(title: "Request Error", message: (self.coreResultObject?.msg)!), animated: true, completion: nil)
+                    self.headerController.your_stamp.text = "\(0)"
+                }
+            })
         }
         task.resume()
         //semaphore.wait()
@@ -814,29 +815,27 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             // Send HTTP Request
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 
-                // Check if Error took place
-                if let error = error {
-                    //print("Error took place \(error)")
-                    // move all statusCode != 200 to here
-                    if let response = response as? HTTPURLResponse {
-                        print("Response HTTP Status code: \(response.statusCode)")
-                        self.present(self.systemAlertMessage(title: "Request Error", message: "Request data not Success: Status code \(response.statusCode)"), animated: true, completion: nil)
-                        return
-                    }
-                }
-                
-                let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-                print("Response data string:\n \(dataString)")
                 // --------
                 // data ready, call next method here
                 do {
-                    self.gameDetailResultObject = try! JSONDecoder().decode(responseGameDetailObject.self, from: data!)
+                    // Check if Error took place
+                    if error != nil, let response = response as? HTTPURLResponse {
+                        //print("Error took place \(error)")
+                        // move all statusCode != 200 to here
+                        print("Response HTTP Status code: \(response.statusCode)")
+                        self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code \(response.statusCode), on requestGameDetail)"), animated: true, completion: nil)
+                        return
+                    }
+                    
+                    let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+                    print("Response data string:\n \(dataString)")
+                    self.gameDetailResultObject = try JSONDecoder().decode(responseGameDetailObject.self, from: data!)
+                    
                 } catch {
-                    self.present(self.systemAlertMessage(title: "Request Error", message: "Response Game Detail. Data wrong" + dataString), animated: true, completion: nil)
+                    self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code convertData, on requestGameDetail)"), animated: true, completion: nil)
                     self.vLoading.isHidden = true
                     return
                 }
-                
                 
                 DispatchQueue.main.async(execute: { () -> Void in
                     if((self.gameDetailResultObject?.code)! == 0){
