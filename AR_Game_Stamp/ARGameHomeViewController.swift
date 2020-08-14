@@ -171,10 +171,10 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
                 self.lat = locationManager.location?.coordinate.latitude
                 self.long = locationManager.location?.coordinate.longitude
             } else {
-                print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
+                print("ไม่พบตำแหน่งของคุณ กรุณาตรวจสอบสิทธิ์การเข้าถึงหรือสัญญาณ GPS อีกครั้ง")
             }
         } else {
-            print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
+            print("ไม่พบตำแหน่งของคุณ กรุณาตรวจสอบสิทธิ์การเข้าถึงหรือสัญญาณ GPS อีกครั้ง")
         }
         
         // Check request Data
@@ -191,7 +191,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
             // use default FID from JNZ UAT
             // self.firebase_id = "V98MW1GtsMPjMiZjoICCTOPnDXu2"
             self.vLoading.isHidden = true
-            self.present(self.systemAlertMessage(title: "Alert", message: "Firebase ID Not Found"), animated: true, completion: nil)
+            self.present(self.systemAlertMessage(title: "Alert", message: "ไม่พบข้อมูล กรุณาลองใหม่ภายหลัง"), animated: true, completion: nil)
         }
     }
     
@@ -204,6 +204,20 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     deinit {
         lottieLoading.removeFromSuperview()
         lottieLoading = nil
+    }
+    
+    // กรณียังโหลด request Core, Game Detail ไม่สำเร็จ ให้ปิดแอพไปเลย
+    func systemAlertMessageAndTerminate(title:String?, message: String?) -> UIAlertController {
+        // create the alert
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        
+        // add an action (button)
+        alert.addAction( UIAlertAction(title: "OK", style: UIAlertAction.Style.default) { (action:UIAlertAction) in
+            self.dismiss(animated: true, completion: nil)
+        })
+        
+        // show the alert
+        return alert
     }
     
     // deprecate
@@ -303,8 +317,10 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     //==========================
     func requestCore() {
         if !isConnectedToNetwork() {
-            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
-            self.vLoading.isHidden = true
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.present(self.systemAlertMessageAndTerminate(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+                self.vLoading.isHidden = true
+            })
             return
         }
         
@@ -608,6 +624,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         
 
     }
+    
     @objc
        func coreBackToMain(sender:UIButton){
         ARGameSoundController.shared.playClickButton()
@@ -619,8 +636,10 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         ARGameSoundController.shared.playClickButton()
         
         if !isConnectedToNetwork() {
-            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
-            self.vLoading.isHidden = true
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.present(self.systemAlertMessage(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+                self.vLoading.isHidden = true
+            })
             return
         }
         
@@ -692,7 +711,9 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         ARGameSoundController.shared.playClickButton()
         self.webType = 3
         if !isConnectedToNetwork() {
-            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.present(self.systemAlertMessage(title: "No Internet Connection", message: "ไม่ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+            })
             return
         }
         
@@ -721,7 +742,9 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         override func perform() {
             ARGameSoundController.shared.playClickButton()
             if !self.source.isConnectedToNetwork() {
-                self.source.present(self.source.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.source.present(self.source.systemAlertMessage(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+                })
                 return
             }
             let sourceViewController = self.source as! ARGameHomeViewController
@@ -758,8 +781,10 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     
     func requestGameDetail(){
         if !isConnectedToNetwork() {
-            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
-            self.vLoading.isHidden = true
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.present(self.systemAlertMessageAndTerminate(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+                self.vLoading.isHidden = true
+            })
             return
         }
         
@@ -893,7 +918,9 @@ class HeaderVIewController: UIViewController {
     @objc(HeaderGotoWebViewSegue) class HeaderGotoWebViewSegue: UIStoryboardSegue {
         override func perform() {
             if !self.source.parent!.isConnectedToNetwork() {
-                self.source.parent!.present(self.source.parent!.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.source.parent!.present(self.source.parent!.systemAlertMessage(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+                })
                 return
             }
             ARGameSoundController.shared.playClickButton()
@@ -912,7 +939,7 @@ class HeaderVIewController: UIViewController {
                     destinationViewController.long = homeview.long!
                     sourceViewController.webType = 3
                 } else {
-                    sourceViewController.present(sourceViewController.systemAlertMessage(title: "Not found location", message: "ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ"), animated: true, completion: nil)
+                    sourceViewController.present(sourceViewController.systemAlertMessage(title: "Location Not Found", message: "ไม่พบตำแหน่งของคุณ กรุณาตรวจสอบสิทธิ์การเข้าถึงหรือสัญญาณ GPS อีกครั้ง"), animated: true, completion: nil)
                     return
                 }
             }
@@ -948,7 +975,9 @@ class LowerVIewController: UIViewController {
         override func perform() {
             ARGameSoundController.shared.playClickButton()
             if !self.source.parent!.isConnectedToNetwork() {
-                self.source.parent!.present(self.source.parent!.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.source.parent!.present(self.source.parent!.systemAlertMessage(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+                })
                 return
             }
             let sourceViewController = self.source as! LowerVIewController

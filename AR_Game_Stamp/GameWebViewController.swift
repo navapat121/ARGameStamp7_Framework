@@ -448,7 +448,6 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                     else {
                         self.performSegue(withIdentifier: "continue_to_play_segue", sender: nil)
                         self.dismiss(animated: false, completion: nil)
-                        // not sure can destroy or not
                         self.destroyWebview()
                     }
                 }
@@ -490,8 +489,10 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         self.vLoading.isHidden = false
         self.animationLoading.play()
         if !isConnectedToNetwork() {
-            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
-            self.vLoading.isHidden = true
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.present(self.systemAlertMessage(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+                self.vLoading.isHidden = true
+            })
             return
         }
         

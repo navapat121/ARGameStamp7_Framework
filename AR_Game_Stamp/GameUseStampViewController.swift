@@ -62,10 +62,10 @@ class GameUseStampViewController: UIViewController {
                 self.lat = locManager.location?.coordinate.latitude
                 self.long = locManager.location?.coordinate.longitude
             } else {
-                print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
+                print("ไม่พบตำแหน่งของคุณ กรุณาตรวจสอบสิทธิ์การเข้าถึงหรือสัญญาณ GPS อีกครั้ง")
             }
         } else {
-            print("ไม่สามารถตรวจสอบตำแหน่งของคุณได้ กรุณาตรวจสอบ GPS ตำแหน่งที่ตั้งของคุณ")
+            print("ไม่พบตำแหน่งของคุณ กรุณาตรวจสอบสิทธิ์การเข้าถึงหรือสัญญาณ GPS อีกครั้ง")
         }
         
         loading_ani.imageProvider = imageProvider
@@ -188,7 +188,9 @@ class GameUseStampViewController: UIViewController {
     // step 3:
     func requestGameUseStamp(){
         if !isConnectedToNetwork() {
-            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.present(self.systemAlertMessage(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+            })
             return
         }
         
@@ -347,7 +349,9 @@ class GameUseStampViewController: UIViewController {
     // step 2: when click confirm
     func requestGameStart(){
         if !isConnectedToNetwork() {
-            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.present(self.systemAlertMessage(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+            })
             return
         }
         //==========================
@@ -456,7 +460,9 @@ class GameUseStampViewController: UIViewController {
     // step 1 [view load, before click]
     func requestGameDetail(){
         if !isConnectedToNetwork() {
-            self.present(self.systemAlertMessage(title: "Internet not connect", message: "Please check internet connection"), animated: true, completion: nil)
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.present(self.systemAlertMessage(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
+            })
             return
         }
         // MARK: Game Detail

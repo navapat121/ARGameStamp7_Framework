@@ -42,15 +42,17 @@ class GameViewHeaderController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.timer_animate.removeFromSuperview()
-        self.timereffect_animate.removeFromSuperview()
-        self.netHeaderFlashAnimated.removeFromSuperview()
-        self.netHeaderFlashAnimated2.removeFromSuperview()
-        
-        self.timer_animate = nil
-        self.timereffect_animate = nil
-        self.netHeaderFlashAnimated = nil
-        self.netHeaderFlashAnimated2 = nil
+        DispatchQueue.main.async {
+            self.timer_animate.removeFromSuperview()
+            self.timereffect_animate.removeFromSuperview()
+            self.netHeaderFlashAnimated.removeFromSuperview()
+            self.netHeaderFlashAnimated2.removeFromSuperview()
+            
+            self.timer_animate = nil
+            self.timereffect_animate = nil
+            self.netHeaderFlashAnimated = nil
+            self.netHeaderFlashAnimated2 = nil
+        }
         
         dismiss(animated: false, completion: nil)
     }
@@ -86,15 +88,17 @@ class GameViewSpecialController: UIViewController{
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.specialAlertAnimate.removeFromSuperview()
-        self.timeup_animate.removeFromSuperview()
-        self.loadingAnimated.removeFromSuperview()
-        self.light_timeupAnimate.removeFromSuperview()
-        
-        self.specialAlertAnimate = nil
-        self.timeup_animate = nil
-        self.loadingAnimated = nil
-        self.light_timeupAnimate = nil
+        DispatchQueue.main.async {
+            self.specialAlertAnimate.removeFromSuperview()
+            self.timeup_animate.removeFromSuperview()
+            self.loadingAnimated.removeFromSuperview()
+            self.light_timeupAnimate.removeFromSuperview()
+            
+            self.specialAlertAnimate = nil
+            self.timeup_animate = nil
+            self.loadingAnimated = nil
+            self.light_timeupAnimate = nil
+        }
         
         dismiss(animated: false, completion: nil)
     }
@@ -326,47 +330,48 @@ class GameViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.startAnimation.removeFromSuperview()
-        self.basketAnimate.removeFromSuperview()
-        self.NetAnimated.removeFromSuperview()
-        self.hourGlassAnimated.removeFromSuperview()
-        self.increaseTimeAnimated.removeFromSuperview()
-        self.decreaseTimeAnimated.removeFromSuperview()
-        self.bombAnimated.removeFromSuperview()
-        self.bombBGAnimated.removeFromSuperview()
-        self.hourGlassBGAnimated.removeFromSuperview()
-        self.netBGAnimated.removeFromSuperview()
-        self.touchAnimate.removeFromSuperview()
-        
-        self.startAnimation = nil
-        self.basketAnimate = nil
-        self.NetAnimated = nil
-        self.hourGlassAnimated = nil
-        self.increaseTimeAnimated = nil
-        self.decreaseTimeAnimated = nil
-        self.bombAnimated = nil
-        self.bombBGAnimated = nil
-        self.hourGlassBGAnimated = nil
-        self.netBGAnimated = nil
-        self.touchAnimate = nil
-        
-        self.scene.rootNode.enumerateChildNodes { (node, stop) in
-            node.removeFromParentNode()
+        DispatchQueue.main.async {
+            self.startAnimation.removeFromSuperview()
+            self.basketAnimate.removeFromSuperview()
+            self.NetAnimated.removeFromSuperview()
+            self.hourGlassAnimated.removeFromSuperview()
+            self.increaseTimeAnimated.removeFromSuperview()
+            self.decreaseTimeAnimated.removeFromSuperview()
+            self.bombAnimated.removeFromSuperview()
+            self.bombBGAnimated.removeFromSuperview()
+            self.hourGlassBGAnimated.removeFromSuperview()
+            self.netBGAnimated.removeFromSuperview()
+            self.touchAnimate.removeFromSuperview()
+            
+            self.startAnimation = nil
+            self.basketAnimate = nil
+            self.NetAnimated = nil
+            self.hourGlassAnimated = nil
+            self.increaseTimeAnimated = nil
+            self.decreaseTimeAnimated = nil
+            self.bombAnimated = nil
+            self.bombBGAnimated = nil
+            self.hourGlassBGAnimated = nil
+            self.netBGAnimated = nil
+            self.touchAnimate = nil
+            self.scene.rootNode.enumerateChildNodes { (node, stop) in
+                node.removeFromParentNode()
+            }
+            
+            for stamp in self.stampList{
+                stamp.stampChildNode.removeFromParentNode()
+                stamp.cleanup()
+            }
+            self.scnView.delegate = nil
+            self.scnView.removeFromSuperview()
+            
+            self.scene.rootNode.cleanup()
+            self.scene = nil
+            let cache = LRUAnimationCache()
+            cache.clearCache()
+            
+            self.view.removeFromSuperview()
         }
-        
-        for stamp in self.stampList{
-            stamp.stampChildNode.removeFromParentNode()
-            stamp.cleanup()
-        }
-        self.scnView.delegate = nil
-        self.scnView.removeFromSuperview()
-        
-        self.scene.rootNode.cleanup()
-        self.scene = nil
-        let cache = LRUAnimationCache()
-        cache.clearCache()
-        
-        self.view.removeFromSuperview()
         
         self.motionManager.stopDeviceMotionUpdates()
         
@@ -403,7 +408,7 @@ class GameViewController: UIViewController {
         self.alertViewController.loadingBG.isHidden = false
         self.alertViewController.loadingImage.isHidden = false
         
-        let phoneModel = UIDevice.modelName
+        //let phoneModel = UIDevice.modelName
         
         // MARK: Prepare Animation
         // Touch Screen
@@ -457,10 +462,8 @@ class GameViewController: UIViewController {
         }
         */
         
-        
-        
-        // BG Bomb
         if UIDevice.modelName == "NEWVERSION" {
+            // BG Bomb
             let bgBombPath = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/Bomb/BG Light/data", ofType: "json")
             self.bombBGAnimated.contentMode = UIView.ContentMode.scaleToFill
             self.bombBGAnimated.animation = Animation.filepath(bgBombPath!)
