@@ -155,7 +155,13 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
     */
     
     func createSlides(){
+        for i in 1...4 {
+            let oneSlide:GameTutorialSlideView = ARGameBundle()!.loadNibNamed("GameTutorialSlide", owner: self, options: nil)?.first as! GameTutorialSlideView
+            oneSlide.page1.image = UIImage(named: "tutorial_in_game_tutorial_\(i)", in: ARGameBundle(), compatibleWith: nil)
+            slides.append(oneSlide)
+        }
         // Image not in first time tutorial 2, 3, 6, 7, 8, 9, 10, 11
+        /*
         if(self.is_tutorial_from_firsttime == 1){
             let array = [1,4,5,12]
             for i in array{
@@ -170,6 +176,7 @@ class TutorialViewController: UIViewController, UIScrollViewDelegate   {
                 slides.append(oneSlide)
             }
         }
+         */
     }
     
     func setupSlideScrollView(slides : [GameTutorialSlideView]) {

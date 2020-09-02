@@ -163,13 +163,14 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         
         setupLocationManager()
         //locationManager.requestAlwaysAuthorization()
-        //locationManager.requestWhenInUseAuthorization()
         if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
             CLLocationManager.authorizationStatus() == .authorizedAlways)
         {
-            if(locationManager.location?.coordinate.latitude != nil && locationManager.location?.coordinate.longitude != nil){
+            if(locationManager.location?.coordinate.latitude != nil &&
+                locationManager.location?.coordinate.longitude != nil){
                 self.lat = locationManager.location?.coordinate.latitude
                 self.long = locationManager.location?.coordinate.longitude
+                locationManager.stopUpdatingLocation()
             } else {
                 print("ไม่พบตำแหน่งของคุณ กรุณาตรวจสอบสิทธิ์การเข้าถึงหรือสัญญาณ GPS อีกครั้ง")
             }
@@ -546,8 +547,8 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         }
 
         //ptoon: set asset
-        let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
-        let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
+        let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page Animation/data", ofType: "json")
+        let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page Animation/images")
         //loadingAnimated.contentMode = UIView.ContentMode.scaleToFill
         lottieLoading.imageProvider = imageProvider
         lottieLoading.animation = Animation.filepath(str!)
@@ -645,7 +646,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
         
         self.playgame = true
         self.vLoading.isHidden = false
-        self.lottieLoading.stop()
+        self.lottieLoading.play()
         
         if((self.coreResultObject?.code) == 0){
             // 20200724
@@ -774,9 +775,11 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
     }
     
     func setupLocationManager() {
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        //locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
     }
     
     func requestGameDetail(){
@@ -1067,8 +1070,7 @@ class BGMickyController: UIViewController {
 
         bgMicky.contentMode = UIView.ContentMode.scaleAspectFill
         if UIDevice.modelName == "NEWVERSION" {
-            bgMicky.image = UIImage(named: "BG core function");
-
+            //bgMicky.image = UIImage(named: "BG core function");
             bgMicky.image = UIImage(named: "BG core function", in: Bundle(identifier: "org.cocoapods.ARGameStamp7-11"), compatibleWith: nil)
             //bgMicky.contentMode = UIView.ContentMode.scaleAspectFill
         }
@@ -1078,48 +1080,6 @@ class BGMickyController: UIViewController {
             bgMicky.image = UIImage(named: "bg_home_default_\(randomInt + 1)", in: Bundle(identifier: "org.cocoapods.ARGameStamp7-11"), compatibleWith: nil)
             //bgMicky.contentMode = UIView.ContentMode.scaleAspectFit
         }
-    }
-}
-
-class  HeaderEffectController: UIViewController{
-    //@IBOutlet weak var dotEffect: UIImageView!
-    @IBOutlet weak var dotAnimate: AnimationView!
-    var imageloaded:Bool = false
-    var imgListArray : [UIImage]!
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-        if UIDevice.modelName == "NEWVERSION" {
-            if let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Dot Promax/data", ofType: "json"){
-                 //dotAnimate.contentMode = UIView.ContentMode.scaleAspectFill
-                if(!imageloaded){
-                    let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Dot Promax/images")
-                    dotAnimate.imageProvider = imageProvider
-                    dotAnimate.animation = Animation.filepath(str)
-                    dotAnimate.backgroundBehavior = .pauseAndRestore
-                    imageloaded = true
-                }
-            }
-            dotAnimate.loopMode = .loop
-            dotAnimate.play()
-        }
-        else {
-            
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        //dismiss(animated: false, completion: nil)
-    }
-    
-    deinit {
-        dotAnimate.removeFromSuperview()
-        dotAnimate = nil
     }
 }
 

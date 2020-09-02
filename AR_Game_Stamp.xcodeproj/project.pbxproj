@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		55614FAF24BFA35B00FED284 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614FAE24BFA35700FED284 /* libsqlite3.tbd */; };
 		55614FB124BFA36200FED284 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55614FB024BFA36200FED284 /* StoreKit.framework */; };
+		558ABE1124FA7EAF00EAAE19 /* UIColorAddition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558ABE1024FA7EAF00EAAE19 /* UIColorAddition.swift */; };
 		AA0EFE0424AF76D8004BF670 /* clickSFX.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AA0EFE0324AF76D8004BF670 /* clickSFX.mp3 */; };
 		AA7967BF249F2A0F0085B9FC /* GameWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7967BE249F2A0F0085B9FC /* GameWebViewController.swift */; };
 		B6124EF724A9E82100FB849D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6124EF624A9E82100FB849D /* TutorialViewController.swift */; };
@@ -57,6 +58,7 @@
 /* Begin PBXFileReference section */
 		55614FAE24BFA35700FED284 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		55614FB024BFA36200FED284 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		558ABE1024FA7EAF00EAAE19 /* UIColorAddition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorAddition.swift; sourceTree = "<group>"; };
 		AA0EFE0324AF76D8004BF670 /* clickSFX.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clickSFX.mp3; sourceTree = "<group>"; };
 		AA7967BE249F2A0F0085B9FC /* GameWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebViewController.swift; sourceTree = "<group>"; };
 		B6124EF624A9E82100FB849D /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				B66F128A249BC4220027E623 /* GameUseStampViewController.swift */,
 				B66F1289249BC4220027E623 /* ARgamrInfo.plist */,
 				B66F12D6249BCF2F0027E623 /* ARgameLaunchScreen.storyboard */,
+				558ABE1024FA7EAF00EAAE19 /* UIColorAddition.swift */,
 			);
 			path = AR_Game_Stamp;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				B66F1271249BC3CF0027E623 /* ARGameObjectData.swift in Sources */,
 				B66F1285249BC40E0027E623 /* StampNode.swift in Sources */,
 				B66F1270249BC3CF0027E623 /* ARGameAppDelegate.swift in Sources */,
+				558ABE1124FA7EAF00EAAE19 /* UIColorAddition.swift in Sources */,
 				B623355F24A9ED9500E9AE24 /* GameTutorialSlideView.swift in Sources */,
 				B66F127F249BC40E0027E623 /* ARGameExtension.swift in Sources */,
 				B66F126F249BC3CF0027E623 /* ARGameDataFactory.swift in Sources */,

@@ -111,8 +111,8 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         self.mainUrlReact = ARGameEnv.shared.urlReact
         self.mainUrlPHP = ARGameEnv.shared.urlPHP+"Views/"
         
-        let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
-        let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
+        let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page Animation/data", ofType: "json")
+        let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page Animation/images")
         //loadingAnimated.contentMode = UIView.ContentMode.scaleToFill
         animationLoading.imageProvider = imageProvider
         animationLoading.animation = Animation.filepath(str!)
@@ -142,49 +142,50 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         }
         
         let timetick = NSDate().timeIntervalSince1970
+        blockView.backgroundColor = UIColor(rgb: 0x9ECBEC)
         switch webType {
         // Stamp book
         case 1:
             urlFull = "\(mainUrlPHP)StampBook/Stamp_Book.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)&version=2"
             url = URL(string:urlFull)
-            blockView.backgroundColor = UIColor(rgb: 0x204651)
+            //blockView.backgroundColor = UIColor(rgb: 0x7baace) // pass
             break
         // Mission Gallery
         case 2:
             urlFull = "\(mainUrlPHP)Mission/Select_Mission.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)&mstamp=\(mstamp)&timetrick=\(timetick)&version=2"
             url = URL(string:urlFull)
-            blockView.backgroundColor = UIColor(rgb: 0x204651)
-
+            //blockView.backgroundColor = UIColor(rgb: 0x1e3e4c) // pass
             break
         // checkin
         case 3:
             urlFull = "\(mainUrlReact)checkin?firebase_id=\(firebase_id)&mstamp=\(mstamp)&lat=\(self.lat!)&long=\(self.long!)&game_uuid=\(game_uuid!)&version=2"
             url = URL(string:urlFull)
-            blockView.backgroundColor = UIColor(rgb: 0x1b754a)
+            //blockView.backgroundColor = UIColor(rgb: 0x7baace)
             break
         // Promotion
         case 4:
             urlFull = "\(mainUrlReact)promotion?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)&version=2"
             url = URL(string:urlFull)
-            blockView.backgroundColor = UIColor(rgb: 0x1d70a4)
+            //blockView.backgroundColor = UIColor(rgb: 0xd31e23) // pass red
+            blockView.backgroundColor = UIColor(rgb: 0x000000) // pass k'max request
             break
         // Premium
         case 5:
             urlFull = "\(mainUrlReact)global-maps/all-premium?game_uuid=\(game_uuid!)&firebase_id=\(firebase_id)&version=2"
             url = URL(string:urlFull)
-            blockView.backgroundColor = UIColor(rgb: 0x00c6c1)
+            //blockView.backgroundColor = UIColor(rgb: 0x7baace)
             break
         // Donate
         case 51:
             urlFull = "\(mainUrlReact)donate?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)&version=2"
             url = URL(string:urlFull)
-            blockView.backgroundColor = UIColor(rgb: 0x00c6c1)
+            //blockView.backgroundColor = UIColor(rgb: 0x00c6c1)
             break
         // Global-maps
         case 6	:
             urlFull = "\(mainUrlReact)global-maps?firebase_id=\(firebase_id)&mstamp=\(mstamp)&game_uuid=\(game_uuid!)&version=2"
             url = URL(string:urlFull)
-            blockView.backgroundColor = UIColor(rgb: 0x000000)
+            //blockView.backgroundColor = UIColor(rgb: 0x000000)
             break
         case 8: //random stamp
             urlFull = "\(mainUrlPHP)StampBook/Gotgift.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)&version=2"
@@ -192,12 +193,12 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         case 9:
             urlFull = "\(self.mainUrlPHP)StampSummary/Stamp_Summary.php?firebase_id=\(firebase_id)&game_uuid=\(game_uuid!)&version=2"
             url = URL(string:urlFull)
-            blockView.backgroundColor = UIColor(rgb: 0x204651)
+            //blockView.backgroundColor = UIColor(rgb: 0x204651)  // pass
             break
         case 10:
             urlFull = "\(self.mainUrlPHP)Info/index.php?version=2"
             url = URL(string:urlFull)
-            blockView.backgroundColor = UIColor(rgb: 0x204651)
+            //blockView.backgroundColor = UIColor(rgb: 0x204651)
             break
         // Term and Condition
         case 11:
@@ -208,6 +209,7 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
             urlFull = "\(self.mainUrlPHP)agreement/?firebase_id=\(firebase_id)&mstamp=\(mstamp)"
             */
             url = URL(string:urlFull)
+            //blockView.backgroundColor = UIColor(rgb: 0x204651)  // pass
             break
         // Preview Stamp in round
         case 12:
@@ -218,11 +220,13 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
                 urlFull = "\(mainUrlPHP)stampReview/nomstamp.php?firebase_id=\(firebase_id)&version=2"
             }
             url = URL(string:urlFull)
+            blockView.backgroundColor = UIColor(rgb: 0x000000)  // pass black
             break
             
         case 13:
             urlFull = "\(self.mainUrlPHP)stampReview/nomstamp.php?firebase_id=\(firebase_id)&version=2"
             url = URL(string:(urlFull))
+            blockView.backgroundColor = UIColor(rgb: 0x000000)  // pass
             break
         // go to core function
         default:
@@ -608,6 +612,44 @@ class GameWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         return screenshotImage
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        /*
+        setNeedsStatusBarAppearanceUpdate()
+
+        if #available(iOS 13.0, *) {
+            let tag = 3848245
+            let keyWindow = UIApplication.shared.connectedScenes
+                .map({$0 as? UIWindowScene})
+                .compactMap({$0})
+                .first?.windows.first
+
+            if let statusBar = keyWindow?.viewWithTag(tag) {
+                statusBar.backgroundColor = hexStringToUIColor(hex: "#7baace")
+            } else {
+                let height = keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? .zero
+                let statusBarView = UIView(frame: height)
+                statusBarView.tag = tag
+                statusBarView.layer.zPosition = 999999
+
+                keyWindow?.addSubview(statusBarView)
+                statusBarView.backgroundColor = hexStringToUIColor(hex: "#7baace")
+            }
+
+        } else {
+            let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+            if statusBar.responds(to: #selector(setter: UIView.backgroundColor)) {
+                statusBar.backgroundColor = hexStringToUIColor(hex: "#7baace")
+            }
+        }
+         */
+    }
+
+    /*
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    */
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

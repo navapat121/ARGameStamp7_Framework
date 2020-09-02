@@ -30,26 +30,22 @@ class GameUseStampViewController: UIViewController {
     var responseData:Data?
     var responseStatus:Int?
     var is_tutorial_from_firsttime:Int? = 0
+    var isPlayClick = false
     var lat:Double?
     var long:Double?
     
-
-    @IBOutlet weak var ivNoMStampPopup: UIImageView!
-    @IBOutlet weak var bNoMStampOK: UIButton!
     
     @IBOutlet weak var tutorialBtn: UIButton!
-    @IBOutlet weak var popUpImage: UIImageView!
     @IBOutlet weak var vPopUpUseMStamp: UIView!
     @IBOutlet weak var loading_ani: AnimationView!
     @IBOutlet weak var confirm_btn: UIButton!
-    @IBOutlet weak var loadingImage: UIImageView!
+    //@IBOutlet weak var loadingImage: UIImageView!
     @IBOutlet weak var loadingBG: UIImageView!
     @IBOutlet weak var cancel_btn: UIButton!
-    @IBOutlet weak var loadinfText: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
-        let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
+        let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page Animation/data", ofType: "json")
+        let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page Animation/images")
         //loading_ani.contentMode = UIView.ContentMode.scaleToFill
         
         // Request Lat, Long from Device
@@ -72,12 +68,10 @@ class GameUseStampViewController: UIViewController {
         loading_ani.animation = Animation.filepath(str!)
         loading_ani.play()
         loading_ani.loopMode = .loop
-        counterLabel()
+        //counterLabel()
         tutorialBtn.addTarget(self, action: #selector(goToTutorialAction), for: .touchUpInside)
         confirm_btn.addTarget(self, action: #selector(confirmButtonAction), for: .touchUpInside)
         cancel_btn.addTarget(self, action: #selector(buttonBack), for: .touchUpInside)
-        
-        bNoMStampOK.addTarget(self, action: #selector(buttonBack), for: .touchUpInside)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             if(self.lat == nil || self.long == nil){
@@ -106,18 +100,18 @@ class GameUseStampViewController: UIViewController {
     }
     @objc func buttonBack(sender:UIButton) {
         ARGameSoundController.shared.playClickButton()
-        self.loadingBG.isHidden = false
-        self.loadingImage.isHidden = false
-        self.loading_ani.isHidden = false
-        self.loading_ani.play()
+        //self.loadingBG.isHidden = false
+        //self.loadingImage.isHidden = false
+        //self.loading_ani.isHidden = false
+        //self.loading_ani.play()
         performSegue(withIdentifier: "useStampToHomeSegue", sender: self)
     }
     @objc func confirmButtonAction(sender:UIButton){
         ARGameSoundController.shared.playClickButton()
-        self.loadingBG.isHidden = false
-        self.loadingImage.isHidden = false
-        self.loading_ani.isHidden = false
-        self.loading_ani.play()
+        //self.loadingBG.isHidden = false
+        //self.loadingImage.isHidden = false
+        //self.loading_ani.isHidden = false
+        //self.loading_ani.play()
         // request game start
         self.requestGameStart()
         
@@ -170,7 +164,7 @@ class GameUseStampViewController: UIViewController {
             sourceViewController.present(destinationViewController, animated: false, completion: nil)
         }
     }
-    
+    /*
     func counterLabel(){
         let steps: Int = 1
         let duration = 0.01
@@ -183,7 +177,7 @@ class GameUseStampViewController: UIViewController {
                 }
             }
         }
-    }
+    }*/
     
     // step 3:
     func requestGameUseStamp(){
@@ -262,16 +256,13 @@ class GameUseStampViewController: UIViewController {
                     if (dataString.contains("\"code\":3")) {
                         DispatchQueue.main.async(execute: { () -> Void in
                             self.loadingBG.isHidden = true
-                            self.loadingImage.isHidden = true
+                            //self.loadingImage.isHidden = true
                             self.loading_ani.isHidden = true
                             self.loading_ani.stop()
                             
-                            self.popUpImage.isHidden = true
                             self.vPopUpUseMStamp.isHidden = true
                             self.tutorialBtn.isHidden = true
                             
-                            self.ivNoMStampPopup.isHidden = false
-                            self.bNoMStampOK.isHidden = false
                         })
                         return
                     }
@@ -280,7 +271,7 @@ class GameUseStampViewController: UIViewController {
                 catch {
                     self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code convertData, on requestGameUseStamp)"), animated: true, completion: nil)
                     self.loadingBG.isHidden = true
-                    self.loadingImage.isHidden = true
+                    //self.loadingImage.isHidden = true
                     self.loading_ani.isHidden = true
                     self.loading_ani.stop()
                     return
@@ -289,24 +280,24 @@ class GameUseStampViewController: UIViewController {
                 DispatchQueue.main.async(execute: { () -> Void in
                     if ((self.gameUseStampResultObject?.code)! == 0){
                         self.performSegue(withIdentifier: "playGame", sender: nil)
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                             self.loading_ani.isHidden = true
                             self.loading_ani.stop()
                             
                             self.loading_ani.removeFromSuperview()
                             self.loading_ani = nil
-                            self.loadingImage.isHidden = false
+                            //self.loadingImage.isHidden = false
                             self.loadingBG.isHidden = false
                             // this page wont show anymore , destroy to clear memory
                         })
                         
                     } else {
                         //self.present(self.systemAlertMessage(title: "Request Error", message: (self.gameUseStampResultObject?.msg)!), animated: true, completion: nil)
-                        self.popUpImage.image = UIImage(named: "m-stamp_notError", in: self.ARGameBundle(), compatibleWith: nil)
                         self.confirm_btn.removeTarget(self, action: #selector(self.confirmButtonAction), for: .touchUpInside)
                         self.confirm_btn.addTarget(self, action: #selector(self.buttonBack), for: .touchUpInside)
                         self.loadingBG.isHidden = true
-                        self.loadingImage.isHidden = true
+                        //self.loadingImage.isHidden = true
                         self.loading_ani.isHidden = true
                         self.loading_ani.stop()
                     }
@@ -348,12 +339,19 @@ class GameUseStampViewController: UIViewController {
     
     // step 2: when click confirm
     func requestGameStart(){
+        // allow to click play only 1 time
+        if isPlayClick {
+            return
+        }
+        
         if !isConnectedToNetwork() {
             DispatchQueue.main.async(execute: { () -> Void in
                 self.present(self.systemAlertMessage(title: "No Internet Connection", message: "ไม่ได้เชื่อมต่อ Internet กรุณาเชื่อมต่อ Internet"), animated: true, completion: nil)
             })
             return
         }
+
+        isPlayClick = true
         //==========================
         // *** Game Start ***
         //==========================
@@ -424,7 +422,7 @@ class GameUseStampViewController: UIViewController {
             }catch{
                 self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code convertData, on requestGameStart)"), animated: true, completion: nil)
                 self.loadingBG.isHidden = true
-                self.loadingImage.isHidden = true
+                //self.loadingImage.isHidden = true
                 self.loading_ani.isHidden = true
                 self.loading_ani.stop()
                 return
@@ -437,7 +435,7 @@ class GameUseStampViewController: UIViewController {
                 } else {
                     self.present(self.systemAlertMessage(title: "Request Error", message: (self.gameStartResultObject?.msg)!), animated: true, completion: nil)
                     self.loadingBG.isHidden = true
-                    self.loadingImage.isHidden = true
+                    //self.loadingImage.isHidden = true
                     self.loading_ani.isHidden = true
                     self.loading_ani.stop()
                 }
@@ -539,7 +537,7 @@ class GameUseStampViewController: UIViewController {
                 catch {
                     self.present(self.systemAlertMessage(title: "Request Error", message: "พบปัญหาระหว่างการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ (error code convertData, on requestGameDetail)"), animated: true, completion: nil)
                     self.loading_ani.isHidden = true
-                    self.loadingImage.isHidden = true
+                    //self.loadingImage.isHidden = true
                     self.loadingBG.isHidden = true
                     self.loading_ani.stop()
                     return
@@ -560,7 +558,7 @@ class GameUseStampViewController: UIViewController {
                             self.performSegue(withIdentifier: "useStamp_to_webView", sender: self)
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                                 self.loading_ani.isHidden = true
-                                self.loadingImage.isHidden = true
+                                //self.loadingImage.isHidden = true
                                 self.loadingBG.isHidden = true
                                 self.loading_ani.stop()
                             })
@@ -575,7 +573,6 @@ class GameUseStampViewController: UIViewController {
                          self.loadingImage.isHidden = true
                          self.loading_ani.isHidden = true
                          self.loading_ani.stop()
-                         self.popUpImage.image = UIImage(named: "m-stamp_notError", in: self.ARGameBundle(), compatibleWith: nil)
                          self.confirm_btn.removeTarget(self, action: #selector(self.confirmButtonAction), for: .touchUpInside)
                          self.confirm_btn.addTarget(self, action: #selector(self.buttonBack), for: .touchUpInside)
                          }
@@ -584,7 +581,7 @@ class GameUseStampViewController: UIViewController {
                         self.performSegue(withIdentifier: "useStamp_to_webView", sender: self)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                             self.loading_ani.isHidden = true
-                            self.loadingImage.isHidden = true
+                            //self.loadingImage.isHidden = true
                             self.loadingBG.isHidden = true
                             self.loading_ani.stop()
                         })
@@ -658,7 +655,7 @@ class GameUseStampViewController: UIViewController {
                 })
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                     self.loading_ani.isHidden = true
-                    self.loadingImage.isHidden = true
+                    //self.loadingImage.isHidden = true
                     self.loadingBG.isHidden = true
                     self.loading_ani.stop()
                 })

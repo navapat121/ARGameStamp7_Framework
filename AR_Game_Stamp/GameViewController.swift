@@ -61,7 +61,7 @@ class GameViewHeaderController: UIViewController {
 class GameViewSpecialController: UIViewController{
     @IBOutlet weak var loadingText: UILabel!
     @IBOutlet weak var loadingBG: UIImageView!
-    @IBOutlet weak var loadingImage: UIImageView!
+    //@IBOutlet weak var loadingImage: UIImageView!
     @IBOutlet weak var specialAlertAnimate: AnimationView!
     @IBOutlet weak var timeup_animate: AnimationView!
     @IBOutlet weak var loadingAnimated: AnimationView!
@@ -69,8 +69,8 @@ class GameViewSpecialController: UIViewController{
     @IBOutlet weak var bgAlpha: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
-        let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
+        let str = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page Game Animation/data", ofType: "json")
+        let imageProvider = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page Game Animation/images")
         //loadingAnimated.contentMode = UIView.ContentMode.scaleToFill
         loadingAnimated.imageProvider = imageProvider
         loadingAnimated.animation = Animation.filepath(str!)
@@ -197,8 +197,9 @@ class GameViewController: UIViewController {
     // animation timer circle
     let keypath = AnimationKeypath(keys: ["**", "Ellipse 1", "**", "Color"])
     let redColorProvider = ColorValueProvider(UIColor.red.lottieColorValue)
-    let greenColorProvider = ColorValueProvider(UIColor.green.lottieColorValue)
+    let greenColorProvider = ColorValueProvider(UIColor.blue.lottieColorValue)
     var changeColor:Bool = true
+    let notificationCenter = NotificationCenter.default
     private var headerViewController: GameViewHeaderController!
     private var alertViewController : GameViewSpecialController!
     private var lowerViewController: GameViewLowerController!
@@ -285,7 +286,7 @@ class GameViewController: UIViewController {
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 8, execute: {
                 self.alertViewController.loadingBG.isHidden = true
-                self.alertViewController.loadingImage.isHidden = true
+                //self.alertViewController.loadingImage.isHidden = true
                 self.alertViewController.loadingAnimated.isHidden = true
                 self.alertViewController.view.isHidden = true
                 self.alertViewController.loadingAnimated.stop()
@@ -375,6 +376,9 @@ class GameViewController: UIViewController {
         
         self.motionManager.stopDeviceMotionUpdates()
         
+        self.notificationCenter.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        self.notificationCenter.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+        
         if self.motionTimer != nil {
         self.motionTimer?.invalidate()
         self.motionTimer = nil
@@ -395,8 +399,8 @@ class GameViewController: UIViewController {
         //Analytics.logEvent("M18_GamePage", parameters: nil)
         
         DispatchQueue.main.async {
-            let str = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page  Animation/data", ofType: "json")
-            let imageProvider = BundleImageProvider(bundle: (self.ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page  Animation/images")
+            let str = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Loading Page Game Animation/data", ofType: "json")
+            let imageProvider = BundleImageProvider(bundle: (self.ARGameBundle())!, searchPath: "Asset/AnimationLottie/Loading Page Game Animation/images")
             //self.alertViewController.loadingAnimated.contentMode = UIView.ContentMode.scaleToFill
             self.alertViewController.loadingAnimated.imageProvider = imageProvider
             self.alertViewController.loadingAnimated.animation = Animation.filepath(str!)
@@ -406,7 +410,7 @@ class GameViewController: UIViewController {
         // Loading Screen Animation
         self.alertViewController.view.isHidden = false
         self.alertViewController.loadingBG.isHidden = false
-        self.alertViewController.loadingImage.isHidden = false
+        //self.alertViewController.loadingImage.isHidden = false
         
         //let phoneModel = UIDevice.modelName
         
@@ -562,8 +566,8 @@ class GameViewController: UIViewController {
         }
         */
         // MARK: Basket
-        let str_basket = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Basket Fly for loop/basketRecieve", ofType: "json")
-        let imageProvider_basket = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Basket Fly for loop/images")
+        let str_basket = ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/basket_receive/data", ofType: "json")
+        let imageProvider_basket = BundleImageProvider(bundle: (ARGameBundle())!, searchPath: "Asset/AnimationLottie/Gameplay Animation/basket_receive/images")
         basketAnimate.imageProvider = imageProvider_basket
         basketAnimate.animation = Animation.filepath(str_basket!)
         basketAnimate.currentFrame = 1
@@ -573,8 +577,9 @@ class GameViewController: UIViewController {
         self.headerViewController.timer_animate.animation = Animation.filepath(str_timer!)
         self.headerViewController.timer_animate.flipX()
         
-        let str_spc =  self.alertViewController.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Alert Special Stamp Full/alert", ofType: "json")
+        let str_spc =  self.alertViewController.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Alert Special Stamp Full/data", ofType: "json")
         let imageProvider_spc = BundleImageProvider(bundle: ( self.alertViewController.ARGameBundle())!, searchPath: "Asset/AnimationLottie/Alert Special Stamp Full/images")
+        self.alertViewController.specialAlertAnimate.contentMode = UIView.ContentMode.scaleToFill
         self.alertViewController.specialAlertAnimate.imageProvider = imageProvider_spc
         self.alertViewController.specialAlertAnimate.animation = Animation.filepath(str_spc!)
         
@@ -616,7 +621,8 @@ class GameViewController: UIViewController {
         //        scene.rootNode.addChildNode(swordNode)
         // ******************************************************
         
-        
+        notificationCenter.addObserver(self, selector: #selector(appWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appBecomesActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     @objc func muteAction(sender:UIButton){
         ARGameSoundController.shared.sound_on = !ARGameSoundController.shared.sound_on
@@ -747,7 +753,7 @@ class GameViewController: UIViewController {
                 } catch {
                     self.alertViewController.loadingAnimated.isHidden = true
                     self.alertViewController.loadingBG.isHidden = true
-                    self.alertViewController.loadingImage.isHidden = true
+                    //self.alertViewController.loadingImage.isHidden = true
                     self.alertViewController.loadingAnimated.stop()
                     self.performSegue(withIdentifier: "timeup_to_home_segue", sender: nil)
                     return
@@ -758,13 +764,13 @@ class GameViewController: UIViewController {
                     if((self.gameFinishResultObject?.code)! == 0 ){
                         self.alertViewController.loadingAnimated.isHidden = true
                         self.alertViewController.loadingBG.isHidden = true
-                        self.alertViewController.loadingImage.isHidden = true
+                        //self.alertViewController.loadingImage.isHidden = true
                         self.alertViewController.loadingAnimated.stop()
                         self.performSegue(withIdentifier: "timeup_to_home_segue", sender: nil)
                     }else{
                         self.alertViewController.loadingAnimated.isHidden = true
                         self.alertViewController.loadingBG.isHidden = true
-                        self.alertViewController.loadingImage.isHidden = true
+                        //self.alertViewController.loadingImage.isHidden = true
                         self.alertViewController.loadingAnimated.stop()
                         self.performSegue(withIdentifier: "timeup_to_home_segue", sender: nil)
                     }
@@ -971,6 +977,21 @@ class GameViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
+    }
+
+    @objc func appWillResignActive() {
+        //to background
+        if (motionManager.deviceMotion != nil) {
+            motionManager.stopDeviceMotionUpdates()
+        }
+    }
+
+    @objc func appBecomesActive() {
+        //to front
+        if (motionManager.deviceMotion != nil) {
+            self.motionManager.deviceMotionUpdateInterval = speed
+            self.motionManager.startDeviceMotionUpdates()
+        }
     }
     
     @objc func updateSensor() {
@@ -1425,7 +1446,7 @@ extension GameViewController: SCNSceneRendererDelegate {
                     
                     ARGameSoundController.shared.stopBGMGameplay()
                     ARGameSoundController.shared.playAlertSpecialStamp()
-                    let str_basket = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Basket Fly for loop/basketFly", ofType: "json")
+                    let str_basket = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/basket_special/data", ofType: "json")
                     self.basketAnimate.animation = Animation.filepath(str_basket!)
                     self.basketAnimate.loopMode = .loop
                     self.basketAnimate.play()
@@ -1470,7 +1491,7 @@ extension GameViewController: SCNSceneRendererDelegate {
                         self.alertViewController.view.isHidden = false
                         self.alertViewController.loadingAnimated.isHidden = true
                         self.alertViewController.loadingBG.isHidden = true
-                        self.alertViewController.loadingImage.isHidden = true
+                        //self.alertViewController.loadingImage.isHidden = true
                         self.alertViewController.light_timeupAnimate.isHidden = false
                         self.alertViewController.specialAlertAnimate.isHidden = true
                          self.alertViewController.bgAlpha.isHidden = false
@@ -1482,7 +1503,7 @@ extension GameViewController: SCNSceneRendererDelegate {
                             self.alertViewController.light_timeupAnimate.isHidden = true
                             self.alertViewController.loadingAnimated.isHidden = false
                             self.alertViewController.loadingBG.isHidden = false
-                            self.alertViewController.loadingImage.isHidden = false
+                            //self.alertViewController.loadingImage.isHidden = false
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                                 self.gameRunning = false
                                 self.stopSceneView()
@@ -1528,7 +1549,7 @@ extension GameViewController: SCNSceneRendererDelegate {
                                 self.stampPreview.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
                                 self.stampPreview.center.y = origin
                                 if(self.seconds > 10){
-                                    let str_basket = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Basket Fly for loop/basketRecieve", ofType: "json")
+                                    let str_basket = self.ARGameBundle()?.path(forResource: "Asset/AnimationLottie/Gameplay Animation/basket_receive/data", ofType: "json")
                                     self.basketAnimate.animation = Animation.filepath(str_basket!)
                                     self.basketAnimate.play()
                                 }

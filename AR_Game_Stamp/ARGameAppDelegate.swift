@@ -300,7 +300,7 @@ public extension UIDevice {
                 case "iPad6,7", "iPad6,8":                      return "iPad Pro"
                     
                 case "AppleTV5,3":                              return "Apple TV"
-                case "i386", "x86_64":                          return "Simulator"
+                //case "i386", "x86_64":                          return "Simulator" // comment to let simulator show lottie
                 default:                                        return "NEWVERSION"
             }
             #endif

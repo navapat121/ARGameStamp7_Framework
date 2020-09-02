@@ -1,8 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "tutorial_in_game_tutorial_03.jpg",
       "idiom" : "universal",
+      "filename" : "tutorial_in_game_tutorial_03.jpg",
       "scale" : "1x"
     },
     {
@@ -15,7 +15,7 @@
     }
   ],
   "info" : {
-    "author" : "xcode",
-    "version" : 1
+    "version" : 1,
+    "author" : "xcode"
   }
 }
