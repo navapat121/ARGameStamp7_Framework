@@ -962,7 +962,7 @@ class GameViewController: UIViewController {
 
     @objc func appBecomesActive() {
         //to front
-        if (motionManager.deviceMotion != nil) {
+        if self.motionManager.isDeviceMotionAvailable {
             self.motionManager.deviceMotionUpdateInterval = speed
             self.motionManager.startDeviceMotionUpdates()
         }
