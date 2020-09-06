@@ -245,14 +245,11 @@ class GameViewController: UIViewController {
         if(!game_is_start){
             // Loading Progess
             self.alertViewController.loadingText.font = UIFont(name: "DB HelvethaicaMon X", size: 43)
-            let steps: Int = 1
-            let duration = 0.01
-            let rate = duration / Double(steps)
-            let rand = Int.random(in: 10 ..< 40)
+            let rate = 0.02
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                 self.counterProgess = 0
                 DispatchQueue.global().async {
-                    for i in 0...rand {
+                    for i in 0...100 {
                         DispatchQueue.main.asyncAfter(deadline: .now() + rate * Double(i)) {
                             self.alertViewController.loadingText.text = "\(i)%"
                             self.counterProgess = i
@@ -261,30 +258,7 @@ class GameViewController: UIViewController {
                 }
             })
             
-            let rand2 = Int.random(in: 50 ..< 80)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                DispatchQueue.global().async {
-                    for i in self.counterProgess...rand2 {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + rate * Double(i)) {
-                            self.alertViewController.loadingText.text = "\(i)%"
-                            self.counterProgess = i
-                        }
-                    }
-                }
-            })
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
-                DispatchQueue.global().async {
-                    for i in self.counterProgess...100 {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + rate * Double(i)) {
-                            self.alertViewController.loadingText.text = "\(i)%"
-                            self.counterProgess = i
-                        }
-                    }
-                }
-            })
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 8, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
                 self.alertViewController.loadingBG.isHidden = true
                 //self.alertViewController.loadingImage.isHidden = true
                 self.alertViewController.loadingAnimated.isHidden = true
@@ -1462,6 +1436,7 @@ extension GameViewController: SCNSceneRendererDelegate {
                     self.clearNormalStamp()
                     self.alertViewController.specialAlertAnimate.play{(finished) in
                         self.seconds = 20
+                        self.alertViewController.specialAlertAnimate.isHidden = true
                     }
                     //red
                     //self.changeTimerColor(change: self.changeColor)
@@ -1503,6 +1478,20 @@ extension GameViewController: SCNSceneRendererDelegate {
                             self.alertViewController.light_timeupAnimate.isHidden = true
                             self.alertViewController.loadingAnimated.isHidden = false
                             self.alertViewController.loadingBG.isHidden = false
+
+                            self.alertViewController.loadingText.isHidden = false
+                            let duration = 0.03
+                            let rate = duration / 1.00
+                            DispatchQueue.main.async {
+                                DispatchQueue.global().async {
+                                    for i in 0...100 {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + rate * Double(i)) {
+                                            self.alertViewController.loadingText.text = "\(i)%"
+                                        }
+                                    }
+                                }
+                            }
+                            
                             //self.alertViewController.loadingImage.isHidden = false
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                                 self.gameRunning = false

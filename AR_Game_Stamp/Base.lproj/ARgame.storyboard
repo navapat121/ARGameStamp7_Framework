@@ -528,17 +528,17 @@
             <objects>
                 <viewController id="rWe-A5-EQa" customClass="LowerVIewController" customModule="AR_Game_Stamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UNF-kq-f4X">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="138.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="153"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JHK-aM-RGB">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="163"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="180"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4G0-FT-i2y">
-                                        <rect key="frame" x="66" y="0.0" width="243" height="81.5"/>
+                                        <rect key="frame" x="66" y="0.0" width="282" height="90"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oCG-FQ-hV7">
-                                                <rect key="frame" x="95" y="0.0" width="53" height="68"/>
+                                                <rect key="frame" x="110" y="0.0" width="62" height="79.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="oCG-FQ-hV7" secondAttribute="height" multiplier="81:104" id="Zpk-4T-VtV"/>
                                                 </constraints>
@@ -549,7 +549,7 @@
                                                 </state>
                                             </button>
                                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="slk-9l-PsU">
-                                                <rect key="frame" x="32" y="15" width="43" height="51.5"/>
+                                                <rect key="frame" x="38" y="15" width="52" height="62"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="slk-9l-PsU" secondAttribute="height" multiplier="215:257" id="iNE-iO-6fr"/>
                                                 </constraints>
@@ -561,7 +561,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KUG-n9-35N">
-                                                <rect key="frame" x="168" y="15" width="43" height="51.5"/>
+                                                <rect key="frame" x="192" y="15" width="52" height="62"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="KUG-n9-35N" secondAttribute="height" multiplier="215:257" id="VZc-3Z-NqB"/>
                                                 </constraints>
@@ -585,10 +585,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="62h-Ke-T2H">
-                                        <rect key="frame" x="66" y="73.5" width="243" height="81.5"/>
+                                        <rect key="frame" x="66" y="82" width="282" height="90"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AfU-S7-y3J">
-                                                <rect key="frame" x="0.0" y="0.0" width="43" height="51.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="52" height="62"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="AfU-S7-y3J" secondAttribute="height" multiplier="215:257" id="CAu-dv-BPf"/>
                                                 </constraints>
@@ -600,7 +600,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2h7-4f-pbs">
-                                                <rect key="frame" x="63" y="0.0" width="43" height="51.5"/>
+                                                <rect key="frame" x="72" y="0.0" width="52" height="62.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="2h7-4f-pbs" secondAttribute="height" multiplier="214:257" id="05M-VC-iBk"/>
                                                 </constraints>
@@ -609,7 +609,7 @@
                                                 </state>
                                             </button>
                                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Zm-us-F7K">
-                                                <rect key="frame" x="126" y="0.0" width="43" height="51.5"/>
+                                                <rect key="frame" x="144" y="0.0" width="52" height="62.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="8Zm-us-F7K" secondAttribute="height" multiplier="181:217" id="UFb-C6-LO8"/>
                                                 </constraints>
@@ -621,7 +621,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAa-0T-cxb">
-                                                <rect key="frame" x="184" y="0.0" width="59" height="51.5"/>
+                                                <rect key="frame" x="211" y="0.0" width="71" height="62.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="iAa-0T-cxb" secondAttribute="height" multiplier="271:237" id="rUI-P0-J1p"/>
                                                 </constraints>
@@ -690,17 +690,17 @@
             <objects>
                 <viewController id="cTi-qR-OF4" customClass="BGViewController" customModule="AR_Game_Stamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sJ9-B9-eOp">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="17b-Pg-nIK" userLabel="BGMainView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                                 <connections>
                                     <segue destination="mUH-gW-xtL" kind="embed" id="FOe-2s-9Sk"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="npi-Gl-IeK">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                                 <connections>
                                     <segue destination="9cJ-dn-vPn" kind="embed" id="hki-bx-TNj"/>
                                 </connections>
@@ -731,11 +731,11 @@
             <objects>
                 <viewController id="mUH-gW-xtL" customClass="BGMickyController" customModule="AR_Game_Stamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="iw6-RQ-1dG">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="E6V-t1-FKt">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                             </imageView>
                         </subviews>
                         <constraints>
@@ -759,11 +759,11 @@
             <objects>
                 <viewController id="9cJ-dn-vPn" customClass="MickyController" customModule="AR_Game_Stamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fCM-4A-Thu">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KJP-Wz-NmP" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="0.0" y="44" width="375" height="734"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -883,51 +883,51 @@
             <objects>
                 <viewController id="Sxi-U5-TiG" customClass="GameViewHeaderController" customModule="AR_Game_Stamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MFE-ov-15f">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="182"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="201"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lc3-ca-MSx" userLabel="behide-bg-header">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="5"/>
                                 <color key="backgroundColor" red="0.41176470588235292" green="0.76862745098039209" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="5" id="spv-j5-vs4"/>
                                 </constraints>
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="9em-ST-49L" userLabel="Net Header Flash Animated safe" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="138"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="152"/>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="bg-header" translatesAutoresizingMaskIntoConstraints="NO" id="lb3-EO-MUD">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="133"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="147"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="lb3-EO-MUD" secondAttribute="height" multiplier="138:49" id="Tae-j3-Cyh"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="BG_progress_bar" translatesAutoresizingMaskIntoConstraints="NO" id="LW4-gN-yj6">
-                                <rect key="frame" x="159" y="53" width="166" height="18.5"/>
+                                <rect key="frame" x="168.5" y="53" width="195.5" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="LW4-gN-yj6" secondAttribute="height" multiplier="599:67" id="2JX-DP-nAp"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="fill_progress_bar" translatesAutoresizingMaskIntoConstraints="NO" id="XCB-vL-wJB">
-                                <rect key="frame" x="159" y="53" width="166" height="18.5"/>
+                                <rect key="frame" x="168.5" y="53" width="195.5" height="22"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="bg-header-timer" translatesAutoresizingMaskIntoConstraints="NO" id="63k-MA-Kfp">
-                                <rect key="frame" x="24" y="40" width="90" height="98"/>
+                                <rect key="frame" x="24" y="40" width="99.5" height="108"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="63k-MA-Kfp" secondAttribute="height" multiplier="231:251" id="gHp-6g-uMf"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oxR-AN-UHq" userLabel="lottie-header-timer" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="24" y="40" width="90" height="98"/>
+                                <rect key="frame" x="24" y="40" width="99.5" height="108"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gjb-wk-8R0" userLabel="lottie-header-timer-effect" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="24" y="40" width="90" height="98"/>
+                                <rect key="frame" x="24" y="40" width="99.5" height="108"/>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="border_time" translatesAutoresizingMaskIntoConstraints="NO" id="E18-JQ-26z">
-                                <rect key="frame" x="24" y="40" width="90" height="98"/>
+                                <rect key="frame" x="24" y="40" width="99.5" height="108"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="60" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DQt-Rb-ak3" userLabel="l-header-timer">
-                                <rect key="frame" x="24" y="40" width="90" height="98"/>
+                                <rect key="frame" x="24" y="40" width="99.5" height="108"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                 </accessibility>
@@ -936,7 +936,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0/0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Sl-c2-N3E" userLabel="HP">
-                                <rect key="frame" x="318.5" y="48" width="40.5" height="30"/>
+                                <rect key="frame" x="357.5" y="48" width="40.5" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="6Qz-4E-Aap"/>
                                 </constraints>
@@ -946,17 +946,17 @@
                                 <size key="shadowOffset" width="0.0" height="0.0"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="extstgame_stamp_you_got_bg" translatesAutoresizingMaskIntoConstraints="NO" id="GpF-z3-xgB">
-                                <rect key="frame" x="116" y="36" width="53.5" height="53.5"/>
+                                <rect key="frame" x="124.5" y="35" width="59" height="59.5"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="iv-header-stamp" image="stamp_empty" translatesAutoresizingMaskIntoConstraints="NO" id="vTz-r5-Wiw" userLabel="iv-header-stamp">
-                                <rect key="frame" x="124" y="44" width="37.5" height="37.5"/>
+                                <rect key="frame" x="133.5" y="44" width="41.5" height="41.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="vTz-r5-Wiw" secondAttribute="height" multiplier="1:1" id="A9u-E7-zy0"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jej-dZ-UmK">
-                                <rect key="frame" x="336.5" y="98.5" width="35" height="38.5"/>
+                                <rect key="frame" x="375" y="112.5" width="35" height="38"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="35" id="rXK-64-yo6"/>
                                     <constraint firstAttribute="width" secondItem="Jej-dZ-UmK" secondAttribute="height" multiplier="127:138" id="reN-S8-RJP"/>
@@ -964,7 +964,7 @@
                                 <state key="normal" image="sound on"/>
                             </button>
                             <view userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="jCW-Kx-vOM" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="138"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="152"/>
                             </view>
                         </subviews>
                         <constraints>
@@ -1048,31 +1048,31 @@
             <objects>
                 <viewController id="3fI-af-OQS" customClass="GameViewSpecialController" customModule="AR_Game_Stamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" userInteractionEnabled="NO" contentMode="scaleToFill" id="wYV-Fu-0dH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="701"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Sa-sN-T8D">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="701"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                             <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Yha-1x-sCF" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="701"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </view>
                             <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lat-2e-vi1" userLabel="BGLoading">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="701"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" red="0.098039215686274508" green="0.27843137254901962" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                             <view userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="pHn-d0-8PA" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="47" y="44" width="281" height="657"/>
+                                <rect key="frame" x="52" y="44" width="310.5" height="818"/>
                             </view>
                             <view hidden="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="fuH-gN-R6B" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="0.0" y="44" width="375" height="657"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rQc-GL-kMP" userLabel="LoadingText">
-                                <rect key="frame" x="130" y="534" width="135" height="50"/>
+                                <rect key="frame" x="149.5" y="654.5" width="135" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="135" id="NBd-k7-9Tc"/>
                                     <constraint firstAttribute="height" constant="50" id="Rga-tL-QMA"/>
@@ -1082,7 +1082,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wJs-3c-Tks" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="0.0" y="44" width="375" height="657"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                             </view>
                         </subviews>
                         <constraints>
