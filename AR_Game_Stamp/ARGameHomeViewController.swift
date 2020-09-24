@@ -856,7 +856,7 @@ public class ARGameHomeViewController : UIViewController, CLLocationManagerDeleg
                     }
                     
                     let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-                    print("Response data string:\n \(dataString)")
+                    //print("Response data string:\n \(dataString)")
                     self.gameDetailResultObject = try JSONDecoder().decode(responseGameDetailObject.self, from: data!)
                     
                 } catch {

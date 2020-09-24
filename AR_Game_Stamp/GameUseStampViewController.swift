@@ -37,6 +37,8 @@ class GameUseStampViewController: UIViewController {
     
     @IBOutlet weak var tutorialBtn: UIButton!
     @IBOutlet weak var vPopUpUseMStamp: UIView!
+    @IBOutlet weak var ivUseMStamp: UIImageView!
+    @IBOutlet weak var ivFreeMStamp: UIImageView!
     @IBOutlet weak var loading_ani: AnimationView!
     @IBOutlet weak var confirm_btn: UIButton!
     //@IBOutlet weak var loadingImage: UIImageView!
@@ -544,6 +546,15 @@ class GameUseStampViewController: UIViewController {
                 }
                 
                 DispatchQueue.main.async(execute: { () -> Void in
+                    if((self.gameDetailResultObject?.data?.game?.is_free_day)!){
+                        self.ivUseMStamp.isHidden = true
+                        self.ivFreeMStamp.isHidden = false
+                    }
+                    else {
+                        self.ivUseMStamp.isHidden = false
+                        self.ivFreeMStamp.isHidden = true
+                    }
+                    
                     if((self.gameDetailResultObject?.code)! == 0){
                         if((self.gameDetailResultObject?.data?.game?.is_firsttime)!){
                             self.gameDetailResultObject?.data?.game?.is_firsttime = false

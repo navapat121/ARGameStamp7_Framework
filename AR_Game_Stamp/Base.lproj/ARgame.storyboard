@@ -39,19 +39,26 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="i_bg_usem" translatesAutoresizingMaskIntoConstraints="NO" id="DgY-uB-ou6">
                                         <rect key="frame" x="0.0" y="96.5" width="414" height="590"/>
                                     </imageView>
+                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="i_bg_usem_free" translatesAutoresizingMaskIntoConstraints="NO" id="Ci4-c8-r8U">
+                                        <rect key="frame" x="0.0" y="96.5" width="414" height="590"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstItem="csa-yJ-poI" firstAttribute="leading" secondItem="OZk-tM-MFJ" secondAttribute="leading" id="0SM-83-ttV"/>
                                     <constraint firstAttribute="trailing" secondItem="W3l-u9-MUE" secondAttribute="trailing" id="1JT-vA-ZRT"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ci4-c8-r8U" secondAttribute="trailing" id="2p9-6g-ieq"/>
                                     <constraint firstItem="DgY-uB-ou6" firstAttribute="leading" secondItem="OZk-tM-MFJ" secondAttribute="leading" id="5DY-AZ-sD2"/>
                                     <constraint firstAttribute="trailing" secondItem="csa-yJ-poI" secondAttribute="trailing" id="6Zw-ie-S3k"/>
                                     <constraint firstItem="csa-yJ-poI" firstAttribute="top" secondItem="DgY-uB-ou6" secondAttribute="bottom" constant="-1" id="Cg1-wx-q1a"/>
                                     <constraint firstItem="W3l-u9-MUE" firstAttribute="top" secondItem="OZk-tM-MFJ" secondAttribute="top" id="RMC-Yj-CIa"/>
+                                    <constraint firstItem="Ci4-c8-r8U" firstAttribute="leading" secondItem="OZk-tM-MFJ" secondAttribute="leading" id="Xjs-H0-f9s"/>
                                     <constraint firstAttribute="bottom" secondItem="csa-yJ-poI" secondAttribute="bottom" id="hfZ-Za-103"/>
+                                    <constraint firstItem="csa-yJ-poI" firstAttribute="top" secondItem="Ci4-c8-r8U" secondAttribute="bottom" constant="-1" id="kV9-zP-UN1"/>
                                     <constraint firstAttribute="trailing" secondItem="DgY-uB-ou6" secondAttribute="trailing" id="ncN-mL-iv1"/>
                                     <constraint firstItem="DgY-uB-ou6" firstAttribute="top" secondItem="W3l-u9-MUE" secondAttribute="bottom" constant="-1" id="tOd-mD-kbE"/>
                                     <constraint firstItem="W3l-u9-MUE" firstAttribute="leading" secondItem="OZk-tM-MFJ" secondAttribute="leading" id="tr1-Rr-gdT"/>
+                                    <constraint firstItem="Ci4-c8-r8U" firstAttribute="top" secondItem="W3l-u9-MUE" secondAttribute="bottom" constant="-1" id="wPx-hL-7dm"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KKd-dN-tkS">
@@ -149,6 +156,8 @@
                     <connections>
                         <outlet property="cancel_btn" destination="zJ8-Sk-TKl" id="erU-3B-AmG"/>
                         <outlet property="confirm_btn" destination="EFa-wd-h2d" id="sHA-At-2Ku"/>
+                        <outlet property="ivFreeMStamp" destination="Ci4-c8-r8U" id="8ag-wz-jZQ"/>
+                        <outlet property="ivUseMStamp" destination="DgY-uB-ou6" id="oX8-Ps-m15"/>
                         <outlet property="loadingBG" destination="Rga-tT-Xwe" id="vg7-Yi-CVa"/>
                         <outlet property="loading_ani" destination="XQq-mT-8mn" id="K4M-n7-1oE"/>
                         <outlet property="tutorialBtn" destination="jxZ-mB-8Iy" id="sXq-li-Y1l"/>
@@ -1299,6 +1308,7 @@
         <image name="extsttutorial_b_play_game" width="420" height="161"/>
         <image name="fill_progress_bar" width="599" height="67"/>
         <image name="i_bg_usem" width="1080" height="1920"/>
+        <image name="i_bg_usem_free" width="1080" height="1920"/>
         <image name="i_bg_usemfoot" width="1080" height="435"/>
         <image name="i_bg_usemheader" width="1080" height="254"/>
         <image name="left arrow" width="62" height="103"/>

@@ -59,6 +59,7 @@ struct gameInfo : Codable {
     var detail:String?
     var description:String?
     var is_firsttime:Bool?
+    var is_free_day:Bool?
     var start_date:String?
     var end_date:String?
     var schedule:scheduleObject?
